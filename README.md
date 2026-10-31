@@ -1,5 +1,22 @@
 # IA-TB — DEBUG IA Workspace
 
+## 🧠 AI-Core multi-agents — documentation v1.0
+
+La nouvelle architecture validée est versionnée sur `work/ai-core-multi-agent-v1.0`.
+Consulter le [sommaire du wiki technique](Documentation/Wiki/Home.md) et la
+[référence d'architecture](AI-Core/ARCHITECTURE_V1.md).
+
+Décisions figées : `Soul.md` narratif uniquement (aucun `Soul.json`),
+`Agent-Memory.db` SQLite **par agent**, `Agent-Registry.db` SQLite central,
+`Events.jsonl`, et table `Statistiques` append-only avec scores 0–100 historisés.
+Le futur Supervisor utilise le code AI-Core partagé mais sans partage de privilèges.
+
+**État : conception et schémas publiés, non déployés sur GEN-1.**
+Les interfaces Admin existantes et les anciens modules mémoire constituent des
+prototypes distincts à migrer explicitement ; ce jalon ne les remplace pas.
+
+
+
 Espace de développement IA dédié au projet [IA-Trading-Bot](https://github.com/florian74410/IA-Trading-Bot).
 
 ## Rôle
