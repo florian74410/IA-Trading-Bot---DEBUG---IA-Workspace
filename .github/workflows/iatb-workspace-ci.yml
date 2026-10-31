@@ -7,11 +7,13 @@ on:
     paths:
       - 'App/**'
       - 'Infrastructure/DEBUG_ONLINE/**'
+      - 'AI Agent/**'
       - '.github/workflows/iatb-workspace-ci.yml'
   pull_request:
     paths:
       - 'App/**'
       - 'Infrastructure/DEBUG_ONLINE/**'
+      - 'AI Agent/**'
       - '.github/workflows/iatb-workspace-ci.yml'
   workflow_dispatch:
 
@@ -108,6 +110,18 @@ jobs:
             exit 1
           fi
           echo 'PASS: isolated R/W and denied unsafe commands'
+      - name: Validate AI Agent memory SQL and skills
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 -m py_compile 'AI Agent/Memory/General/journal.py'
+          python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
+          test -f 'AI Agent/Soul/identity.md'
+          test -f 'AI Agent/Rules/Authorized/README.md'
+          test -f 'AI Agent/Rules/Non-Authorized/README.md'
+          test -f 'AI Agent/Skills/SSH/SKILL.md'
+          test -f 'AI Agent/Skills/GitHub/SKILL.md'
+          test -f 'AI Agent/Skills/Deploy-DEBUG/SKILL.md'
       - name: Build full IA-TB image (never start engines)
         run: docker build -f App/Dockerfile.app --pull -t iatb-workspace:ci App
       - name: Verify Auth21 runtime imports inside the built image
