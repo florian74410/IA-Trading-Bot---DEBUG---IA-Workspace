@@ -1,0 +1,108 @@
+name: IA-TB DEBUG - Restricted VPS Operations
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - Infrastructure/DEBUG_ONLINE/ops/request.json
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'DEBUG only: status/start/stop/restart/deploy'
+        required: true
+        type: choice
+        options: [status, start, stop, restart, deploy]
+      sha:
+        description: 'Full SHA required for deploy; blank otherwise'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iatb-debug-operations-gen1
+  cancel-in-progress: false
+
+jobs:
+  operate:
+    if: github.repository == 'florian74410/IA-Trading-Bot---DEBUG---IA-Workspace' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    environment: debug-ssh
+    steps:
+      - name: Checkout audited operation request
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate operation against strict allowlist
+        id: request
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_OPERATION: ${{ inputs.operation }}
+          INPUT_SHA: ${{ inputs.sha }}
+        run: |
+          set -Eeuo pipefail
+          if [[ "$EVENT_NAME" == "push" ]]; then
+            readarray -t FIELDS < <(python3 - <<'PY'
+          import json
+          with open("Infrastructure/DEBUG_ONLINE/ops/request.json", encoding="utf-8") as f:
+              value = json.load(f)
+          if set(value) != {"request_id", "operation", "sha"}:
+              raise SystemExit("Request contains unexpected keys")
+          if not isinstance(value["request_id"], str) or not 1 <= len(value["request_id"]) <= 100:
+              raise SystemExit("Invalid request id")
+          print(value["operation"])
+          print(value["sha"])
+          PY
+            )
+            OP="${FIELDS[0]:-}"
+            SHA="${FIELDS[1]:-}"
+          else
+            OP="$INPUT_OPERATION"
+            SHA="$INPUT_SHA"
+          fi
+          case "$OP" in
+            status|start|stop|restart)
+              [[ -z "$SHA" ]] || { echo 'SHA must be empty except for deploy' >&2; exit 1; }
+              ;;
+            deploy)
+              [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Deploy requires 40-hex commit SHA' >&2; exit 1; }
+              ;;
+            *)
+              echo 'Operation not allowed' >&2
+              exit 1
+              ;;
+          esac
+          echo "operation=$OP" >> "$GITHUB_OUTPUT"
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Allowed DEBUG operation: $OP"
+
+      - name: Run restricted SSH operator
+        shell: bash
+        env:
+          IATB_DEBUG_SSH_KEY: ${{ secrets.IATB_DEBUG_SSH_KEY }}
+          IATB_DEBUG_SSH_KNOWN_HOSTS: ${{ secrets.IATB_DEBUG_SSH_KNOWN_HOSTS }}
+          OP: ${{ steps.request.outputs.operation }}
+          SHA: ${{ steps.request.outputs.sha }}
+        run: |
+          set -Eeuo pipefail
+          [[ -n "$IATB_DEBUG_SSH_KEY" && -n "$IATB_DEBUG_SSH_KNOWN_HOSTS" ]] || {
+            echo 'Configure encrypted environment debug-ssh secrets first' >&2; exit 1;
+          }
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$IATB_DEBUG_SSH_KEY" > "$HOME/.ssh/iatb_debug_ci_ed25519"
+          printf '%s\n' "$IATB_DEBUG_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          if [[ "$OP" == "deploy" ]]; then
+            ARGS=(deploy "$SHA")
+          else
+            ARGS=("$OP")
+          fi
+          ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+              -o ClearAllForwardings=yes -o ConnectTimeout=15 -o ConnectionAttempts=1 \
+              -i "$HOME/.ssh/iatb_debug_ci_ed25519" \
+              iatb-debug-ci@169.58.177.163 "${ARGS[@]}"
+          echo "IA-TB DEBUG operation command completed."
