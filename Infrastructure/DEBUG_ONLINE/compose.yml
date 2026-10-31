@@ -1,0 +1,46 @@
+# Dedicated IA-TB 2.5.3 DEBUG. Never use docker compose down -v.
+name: iatb-debug-online
+services:
+  app:
+    build:
+      context: ../../App
+      dockerfile: Dockerfile.app
+    image: iatb-debug-online:local
+    container_name: iatb-debug-online-app
+    restart: unless-stopped
+    user: "10053:10053"
+    working_dir: /opt/iatb/App
+    init: true
+    entrypoint: ["/bin/bash", "/opt/iatb/App/Tools/debug_online_start.sh"]
+    environment:
+      NODE_ENV: production
+      IATB_AUTH_MODE: authenticated
+      IATB_DEPLOYMENT_MODE: AUTHENTICATED
+      IATB_AUTH_ORIGIN: https://trading.debug.iatb.dns.org
+      IATB_AUTH_TLS_CERT: /debug-private/tls/localhost.crt
+      IATB_AUTH_TLS_KEY: /debug-private/tls/localhost.key
+      IATB_DATA_ROOT: /debug-private/data
+      IATB_RUNTIME_ROOT: /debug-private/runtime
+      IATB_STATE_ROOT: /debug-private/state
+      IATB_ANNEX_ROOT: /debug-private/annex
+      IATB_UPDATES_ROOT: /debug-private/updates
+      IATB_TRADING_LIVE: "0"
+      IATB_AUTH21_TRADING_ADMIN_BRIDGE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+    ports:
+      # No 0.0.0.0 host listener: Caddy is the ONLY public ingress.
+      - "127.0.0.1:18000:18000"
+    volumes:
+      # NEW, isolated, unshared DEBUG data. NEVER mount /var/lib/iatb or PROD accounts.
+      - /srv/iatb-debug/online/private:/debug-private
+    security_opt: [no-new-privileges:true]
+    cap_drop: [ALL]
+    pids_limit: 256
+    mem_limit: 3g
+    tmpfs: ["/tmp:rw,nosuid,nodev,size=64m"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "const https=require('https'),fs=require('fs');const q=https.get({hostname:'127.0.0.1',port:8000,path:'/ui-health',servername:'localhost',ca:fs.readFileSync('/debug-private/tls/localhost.crt'),timeout:3500},r=>{r.resume();process.exit(r.statusCode===200?0:1)});q.on('error',()=>process.exit(1));q.on('timeout',()=>q.destroy())"]
+      interval: 20s
+      timeout: 5s
+      retries: 4
+      start_period: 90s
