@@ -1,0 +1,23 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "diagnostics.status",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "diagnostics.logs.redacted",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "diagnostics.resources",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}
