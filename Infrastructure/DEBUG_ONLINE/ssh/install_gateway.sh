@@ -35,7 +35,7 @@ if [[ ! -f "$GATEWAY" && -e "$GATEWAY" ]]; then
   echo 'Unsafe gateway destination' >&2; exit 1
 fi
 curl --fail --silent --show-error --location \
-  'https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/work/debug-online-v1/Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh' \
+  'https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/69df841987857c920060146e96b370e65a33b603/Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh' \
   -o /tmp/iatb-debug-ssh-gateway.new
 /bin/sh -n /tmp/iatb-debug-ssh-gateway.new
 install -o root -g root -m 0755 /tmp/iatb-debug-ssh-gateway.new "$GATEWAY"
