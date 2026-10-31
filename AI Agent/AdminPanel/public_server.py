@@ -46,7 +46,7 @@ class PublicHandler(core.BaseHTTPRequestHandler):
         self.connection.settimeout(5)
 
     def log_message(self, fmt, *args):
-        # Never log full URLs or cookie/password/TOTP.
+        # Never log full URLs or cookie/password.
         pass
 
     def respond(self, body: bytes, content_type="text/html; charset=utf-8", status=200, extra=None):
@@ -149,6 +149,19 @@ class PublicHandler(core.BaseHTTPRequestHandler):
                 self.json({"error":"authentication_required"}, 401)
             else:
                 self.respond(b"", status=303, extra=[("Location", "/login")])
+            return
+        if self.path == "/logout":
+            # Revoke session only on a same-origin CSRF-protected POST.
+            form = (
+                "<!doctype html><html lang='fr'><meta charset='utf-8'>"
+                "<title>IA-TB · Déconnexion</title><link rel='stylesheet' href='/login.css'>"
+                "<main><h1>Déconnexion</h1><p>Terminer la session administrateur ?</p>"
+                "<form method='post' action='/logout'>"
+                f"<input type='hidden' name='csrf' value='{session['csrf']}'>"
+                "<button type='submit'>Déconnecter ma session</button></form>"
+                "<p><a href='/'>Retour au tableau de bord</a></p></main></html>"
+            )
+            self.respond(form.encode("utf-8"))
             return
         if self.path in ASSET_FILES:
             name, kind = ASSET_FILES[self.path]
