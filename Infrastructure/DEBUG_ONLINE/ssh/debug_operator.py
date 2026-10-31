@@ -73,7 +73,7 @@ def preflight():
         if target.is_symlink() or not target.is_file():
             error("Missing or unsafe approved deployment file")
         actual = target.read_bytes()
-        digest = hashlib.sha1(b"blob " + str(len(actual)).encode() + b"\\x00" + actual).hexdigest()
+        digest = hashlib.sha1(b"blob " + str(len(actual)).encode() + b"\x00" + actual).hexdigest()
         if digest != approved_blob:
             error(f"Unapproved deployment definition: {relative}")
     config = json.loads(compose("config", "--format", "json").stdout)
