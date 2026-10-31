@@ -1,0 +1,44 @@
+name: IA-TB AI DEV - Verify restricted SSH R/W
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping-and-stage:
+    name: Test isolated AI developer identity (no deployment)
+    if: github.repository == 'florian74410/IA-Trading-Bot---DEBUG---IA-Workspace'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: debug-ai-dev
+    env:
+      AI_DEV_SSH_KEY: ${{ secrets.IATB_AI_DEV_SSH_KEY }}
+      AI_DEV_KNOWN_HOSTS: ${{ secrets.IATB_AI_DEV_KNOWN_HOSTS }}
+    steps:
+      - name: SSH restricted gateway test
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          if [[ -z "$AI_DEV_SSH_KEY" || -z "$AI_DEV_KNOWN_HOSTS" ]]; then
+            echo 'Missing debug-ai-dev environment secrets'
+            exit 1
+          fi
+          umask 077
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$AI_DEV_SSH_KEY" > "$HOME/.ssh/iatb_ai_dev"
+          printf '%s\n' "$AI_DEV_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          KEY="$HOME/.ssh/iatb_ai_dev"
+          HOST='iatb-ai-dev@169.58.177.163'
+          ssh_do() {
+            ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=12 -o ConnectionAttempts=1 -o ClearAllForwardings=yes \
+              -i "$KEY" "$HOST" "$@"
+          }
+          ssh_do ping | grep -Fx 'IATB_AI_DEV_OK'
+          printf 'IA-TB AI DEV handshake v1\n' | ssh_do write drafts/gha-handshake.md | grep -Fx 'WRITE_OK drafts/gha-handshake.md'
+          ssh_do read drafts/gha-handshake.md | grep -Fx 'IA-TB AI DEV handshake v1'
+          ssh_do list | grep -Fx 'drafts/gha-handshake.md'
+          echo 'PASS: GitHub Actions -> restricted non-admin SSH R/W workspace.'
+          echo 'NOTE: No Docker, no RELEASE, no source promotion or runtime deployment rights.'
