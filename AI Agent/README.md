@@ -24,7 +24,7 @@ Branche : `work/ai-agent-v0.2` — évolution de `work/ai-agent-v0.1`.
   RESTRICTED prédéfinies, décision administrative via vérificateur externe injecté,
   expiration/rejet/révocation. **Un état APPROVED n'accorde aucun droit technique.**
 - `Audit/` : base d'audit distincte append-only avec traces structurées.
-- `AdminPanel/index.html` : prévisualisation Cyber Nexus **statique et lecture seule**.
+- `AdminPanel/index.html` : prévisualisation IA-TB Admin **statique et lecture seule**.
 - `Tests/test_agent_v02.py` : tests sans accès réseau ou VPS.
 
 ## Matrice d'avancement
