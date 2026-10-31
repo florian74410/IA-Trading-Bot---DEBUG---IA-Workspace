@@ -36,11 +36,13 @@ jobs:
           grep -Fq "ORIGINAL='/opt/iatb-admin/AI Agent'" 'AI Agent/AdminPanel/upgrade_phase3.sh'
           grep -Fq 'STAGE="$ROOT/releases/$REV"' 'AI Agent/AdminPanel/upgrade_phase3.sh'
           grep -Fq 'trap cleanup EXIT' 'AI Agent/AdminPanel/upgrade_phase3.sh'
-          grep -Fq 'Existing MFA enrollment: verify/rotate the exposed seed offline before publication' 'AI Agent/AdminPanel/upgrade_phase3.sh'
-          if grep -Fq 'Authenticator URI (private):' 'AI Agent/AdminPanel/public_server.py'; then
-            echo 'Do not expose the TOTP secret twice during enrollment'
+          # Password-only contract: no OTP enrollment, no MFA file in systemd.
+          if grep -Eq 'init-mfa|--mfa-file|totp_secret' 'AI Agent/AdminPanel/upgrade_phase3.sh' 'AI Agent/AdminPanel/public_server.py' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'; then
+            echo 'Unexpected MFA requirement in password-only public panel'
             exit 1
           fi
+          grep -Fq 'ConditionPathExists=/var/lib/iatb-admin-panel/credentials.json' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -Fq '"password_read_only"' 'AI Agent/AdminPanel/public_server.py'
           echo 'Phase 3 manifest safety checks passed'
       - name: Validate isolated Caddy HTTPS site syntax
         shell: bash
