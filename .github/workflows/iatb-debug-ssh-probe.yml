@@ -1,0 +1,35 @@
+name: IA-TB DEBUG SSH connectivity (manual)
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: Restricted SSH gateway ping (NO DEPLOY)
+    if: github.repository == 'florian74410/IA-Trading-Bot---DEBUG---IA-Workspace' && github.ref == 'refs/heads/work/debug-online-v1'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    environment: debug-ssh
+    env:
+      IATB_DEBUG_SSH_KEY: ${{ secrets.IATB_DEBUG_SSH_KEY }}
+      IATB_DEBUG_SSH_KNOWN_HOSTS: ${{ secrets.IATB_DEBUG_SSH_KNOWN_HOSTS }}
+    steps:
+      - name: Establish pinned, restricted SSH connection
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          [[ -n "$IATB_DEBUG_SSH_KEY" && -n "$IATB_DEBUG_SSH_KNOWN_HOSTS" ]] || {
+            echo 'Environment debug-ssh is missing SSH credentials or pinned host key'
+            exit 1
+          }
+          umask 077
+          mkdir -p "$HOME/.ssh"
+          printf '%s\n' "$IATB_DEBUG_SSH_KEY" > "$HOME/.ssh/iatb_debug_ci_ed25519"
+          printf '%s\n' "$IATB_DEBUG_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o ConnectTimeout=12 -o ConnectionAttempts=1 \
+            -i "$HOME/.ssh/iatb_debug_ci_ed25519" \
+            iatb-debug-ci@169.58.177.163 ping | grep -Fx 'IA-TB_DEBUG_SSH_OK'
+          echo 'DEBUG SSH gateway connectivity verified. No deployment and no shell access.'
