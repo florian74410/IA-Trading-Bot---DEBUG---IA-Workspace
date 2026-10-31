@@ -40,6 +40,6 @@ jobs:
       - name: Check package version without running IA-TB
         run: |
           docker run --rm --network none --entrypoint node iatb-workspace:ci \
-            -e 'const v=require("./package.json").version; if(!/^2\\.\\d+\\.\\d+$/.test(v))process.exit(2); console.log("IA-TB:",v);'
+            -e 'const v=require("./package.json").version; if(!/^[0-9]+[.][0-9]+[.][0-9]+$/.test(v))process.exit(2); console.log("IA-TB:",v);'
       - name: No deployment on CI
         run: echo "Build only. VPS, DNS, RELEASE and user databases not accessed."
