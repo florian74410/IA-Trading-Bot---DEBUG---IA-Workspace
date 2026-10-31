@@ -1,0 +1,22 @@
+# Exemple NON ACTIVÉ : à intégrer au Caddyfile existant après validation du DNS,
+# du runtime HTTPS Auth21 et de la confiance du certificat local.
+#
+# Le serveur backend est intentionnellement lié au loopback du VPS.
+# NE PAS utiliser tls_insecure_skip_verify.
+trading.debug.iatb.dns.org {
+    encode zstd gzip
+
+    reverse_proxy https://127.0.0.1:18000 {
+        transport http {
+            tls_server_name localhost
+            tls_trust_pool file /etc/caddy/iatb-debug-backend.crt
+        }
+    }
+
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer
+        X-Frame-Options DENY
+        Strict-Transport-Security "max-age=31536000"
+    }
+}
