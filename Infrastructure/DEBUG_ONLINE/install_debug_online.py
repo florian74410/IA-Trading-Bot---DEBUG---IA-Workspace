@@ -165,6 +165,18 @@ def has_admin():
     finally:
         conn.close()
 
+def migration_done():
+    db = PRIVATE / "data" / "Database" / "clients.sqlite"
+    if not db.is_file(): return False
+    conn = sqlite3.connect("file:" + str(db) + "?mode=ro", uri=True, timeout=3)
+    try:
+        row = conn.execute("SELECT 1 FROM client_schema_migrations WHERE version=5").fetchone()
+        return bool(row)
+    except sqlite3.Error:
+        return False
+    finally:
+        conn.close()
+
 def init_admin():
     if has_admin(): return
     print("\nFirst-time DEBUG ADMIN initialization (separate from RELEASE).")
@@ -176,9 +188,19 @@ def init_admin():
     compose("run","--rm","--no-deps","--entrypoint","node","app","Tools/debug_online_seed_db.js")
     db=PRIVATE/"data"/"Database"/"clients.sqlite"
     if not db.exists(): raise RuntimeError("Fresh DEBUG database not initialized; public exposure blocked")
-    print("Migrating Auth21, then create a TEST admin on the interactive TTY.")
-    compose("run","--rm","--no-deps","-it","--entrypoint","node","app","CLI/users.js","migrate")
-    compose("run","--rm","--no-deps","-it","--entrypoint","node","app","CLI/users.js","create-first-admin")
+    if not migration_done():
+        print("\n=== MIGRATION AUTH21 (DB DEBUG UNIQUEMENT) ===")
+        print("At the next prompt, TYPE EXACTLY: MIGRATE USER MANAGEMENT V1")
+        print("Text is visible; press Enter. No RELEASE data are imported.", flush=True)
+        compose("run","--rm","--no-deps","-it","--entrypoint","node","app",
+                "Tools/debug_online_operator_cli.js","migrate")
+    else:
+        print("User management migration version 5 already present; skipping.")
+    print("\n=== CREATE A SEPARATE TEST ADMIN ===")
+    print("Enter a test identity and a NEW password (password remains hidden).")
+    print("At the final confirmation, TYPE EXACTLY: CREATE FIRST ADMIN", flush=True)
+    compose("run","--rm","--no-deps","-it","--entrypoint","node","app",
+            "Tools/debug_online_operator_cli.js","create-first-admin")
     if not has_admin(): raise RuntimeError("DEBUG ADMIN not validated; public exposure blocked")
 
 def check_dns():
