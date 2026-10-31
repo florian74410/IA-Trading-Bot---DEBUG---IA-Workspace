@@ -39,7 +39,7 @@ if grep -R -Fq "$DOMAIN" /etc/caddy --include='*.caddy' --include='Caddyfile' 2>
 fi
 IPS="$(getent ahostsv4 "$DOMAIN" | awk '{print $1}' | sort -u)"
 [[ "$IPS" == '169.58.177.163' ]] || fail 'DNS IPv4 record does not exclusively target GEN-1'
-[[ -z "$(getent ahostsv6 "$DOMAIN" || true)" ]] || fail 'DNS IPv6 requires a separate review'
+echo "DNS check delegated to pinned dns_guard.py after source verification"
 if ss -ltn '( sport = :18083 )' | grep -Fq ':18083'; then
   fail 'Port 18083 is already in use'
 fi
@@ -112,6 +112,7 @@ PY
 git clone --quiet --depth 1 --single-branch --no-tags \
   --branch work/ai-agent-admin-phase3 "$REPO" "$TMP/checkout"
 [[ "$(git -C "$TMP/checkout" rev-parse HEAD)" == "$REV" ]] || fail 'Branch HEAD differs from approved SHA'
+python3 "$TMP/checkout/AI Agent/AdminPanel/dns_guard.py" "$DOMAIN" "169.58.177.163" || fail "Strict A/AAAA DNS validation failed"
 [[ -f "$TMP/checkout/AI Agent/AdminPanel/public_server.py" ]] || fail 'Phase3 backend missing'
 [[ -f "$TMP/checkout/AI Agent/AdminPanel/login.css" ]] || fail 'Phase3 login stylesheet missing'
 [[ -z "$(find "$TMP/checkout/AI Agent" -type l -print -quit)" ]] || fail 'Unexpected symlinks in Phase3 source'
