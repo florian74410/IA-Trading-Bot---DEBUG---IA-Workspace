@@ -92,6 +92,25 @@ class Phase3Tests(unittest.TestCase):
         # Same valid password may create an independent session without OTP.
         self.assertEqual(self.login()[0],303)
 
+    def test_csrf_protected_logout(self):
+        status,_,headers=self.login()
+        self.assertEqual(status,303)
+        cookie=headers["Set-Cookie"].split(";",1)[0]
+        status,body,_=self.req("GET","/logout",headers={"Cookie":cookie})
+        self.assertEqual(status,200)
+        import re
+        match=re.search(rb"name='csrf' value='([^']+)'",body)
+        self.assertIsNotNone(match)
+        csrf=match.group(1).decode("ascii")
+        status,_,_=self.req("POST","/logout",urlencode({"csrf":"incorrect"}),{
+            "Cookie":cookie,"Origin":public.ORIGIN,"Content-Type":"application/x-www-form-urlencoded"})
+        self.assertEqual(status,403)
+        status,_,headers=self.req("POST","/logout",urlencode({"csrf":csrf}),{
+            "Cookie":cookie,"Origin":public.ORIGIN,"Content-Type":"application/x-www-form-urlencoded"})
+        self.assertEqual(status,303)
+        self.assertIn("Max-Age=0",headers.get("Set-Cookie",""))
+        self.assertEqual(self.req("GET","/api/overview",headers={"Cookie":cookie})[0],401)
+
     def test_anonymous_requests_and_form_strictness(self):
         self.assertEqual(self.req("GET","/login")[0],200)
         self.assertEqual(self.req("GET","/")[0],303)
