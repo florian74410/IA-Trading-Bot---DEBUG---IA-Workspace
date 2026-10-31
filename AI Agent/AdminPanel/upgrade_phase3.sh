@@ -65,24 +65,26 @@ TMP="$(mktemp -d /tmp/iatb-admin-phase3-upgrade.XXXXXXXX)"
 CADDY_BACKUP=''
 CADDY_CHANGED=0
 SERVICE_CREATED=0
-rollback(){
+cleanup(){
   code="$?"
-  trap - ERR
+  trap - EXIT ERR
   set +e
-  if [[ "$CADDY_CHANGED" == 1 && -f "$CADDY_BACKUP" ]]; then
-    cp -a "$CADDY_BACKUP" "$MAIN"
-    caddy validate --config "$MAIN" --adapter caddyfile >/dev/null 2>&1 && systemctl reload caddy
-    printf 'RESTORED_CADDYFILE: %s\n' "$CADDY_BACKUP" >&2
+  if [[ "$code" != 0 ]]; then
+    if [[ "$CADDY_CHANGED" == 1 && -f "$CADDY_BACKUP" ]]; then
+      cp -a "$CADDY_BACKUP" "$MAIN"
+      caddy validate --config "$MAIN" --adapter caddyfile >/dev/null 2>&1 && systemctl reload caddy
+      printf 'RESTORED_CADDYFILE: %s\n' "$CADDY_BACKUP" >&2
+    fi
+    if [[ "$SERVICE_CREATED" == 1 ]]; then
+      systemctl stop "$SERVICE" >/dev/null 2>&1
+      printf 'STOPPED_NEW_PHASE3_SERVICE\n' >&2
+    fi
+    printf 'Existing installation left unchanged at %s\n' "$ORIGINAL" >&2
   fi
-  if [[ "$SERVICE_CREATED" == 1 ]]; then
-    systemctl stop "$SERVICE" >/dev/null 2>&1
-    printf 'STOPPED_NEW_PHASE3_SERVICE\n' >&2
-  fi
-  printf 'Existing installation left unchanged at %s\n' "$ORIGINAL" >&2
+  rm -rf "$TMP"
   exit "$code"
 }
-trap rollback ERR
-trap 'rm -rf "$TMP"' EXIT
+trap cleanup EXIT
 
 curl -fsSL --max-time 25 -H 'Accept: application/vnd.github+json' \
   "https://api.github.com/repos/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/actions/runs?head_sha=$REV&per_page=50" \
