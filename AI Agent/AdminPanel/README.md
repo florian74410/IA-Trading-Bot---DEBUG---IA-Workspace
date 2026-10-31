@@ -6,7 +6,7 @@ n'interagit PAS avec Docker et ne publie PAS de site public.
 
 ## Composants
 
-- \`index.html\`, \`app.css\`, \`app.js\` : interface Cyber Nexus compacte responsive,
+- \`index.html\`, \`app.css\`, \`app.js\` : interface IA-TB Admin compacte et responsive,
   six onglets, tri visuel par état, filtres, détails, actualisation et indicateurs.
   En ouvrant \`index.html\` comme fichier local, des données d'exemple clairement
   marquées **PREVIEW** sont affichées, sans aucune requête.
