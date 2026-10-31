@@ -196,6 +196,42 @@ def collect(section: str) -> dict:
     raise ValueError("Unknown section")
 
 
+def collect_soul() -> dict:
+    """Fixed allowlist of text-only Soul documents, no arbitrary path input."""
+    names = ("identity.md", "behavior.md", "personality.json", "objectives.json")
+    items = []
+    for name in names:
+        file = AGENT / "Soul" / name
+        if not file.is_file() or file.is_symlink() or file.stat().st_size > 32000:
+            continue
+        raw = file.read_text(encoding="utf-8")
+        # Never publish a file with a detected credential. These are public manifests.
+        if REDACT.search(raw):
+            continue
+        items.append({"name": name, "content": raw[:12000], "mode": "READ_ONLY"})
+    return {"status": "read_only", "items": items}
+
+
+def collect_journal() -> dict:
+    """Join allowlisted audit and requests as an event feed; never invent model thoughts."""
+    events = []
+    for entry in collect("audit")["items"]:
+        events.append({
+            "timestamp": entry["timestamp_utc"], "type": "AUDIT",
+            "status": entry["decision"], "message": entry["action"] + " · " + entry["result"],
+            "source": "AUDIT", "reference": entry["id"],
+        })
+    for entry in collect("requests")["items"]:
+        events.append({
+            "timestamp": entry["created_at_utc"], "type": "REQUEST",
+            "status": entry["status"], "message": entry["action"] + " · " + entry["reason"],
+            "source": "PERMISSION MANAGER", "reference": entry["id"],
+        })
+    events.sort(key=lambda e: e["timestamp"], reverse=True)
+    configured = bool(os.environ.get("IATB_ADMIN_AUDIT_DB") or os.environ.get("IATB_ADMIN_REQUESTS_DB"))
+    return {"status": "read_only" if configured else "not_configured", "items": events[:MAX_ITEMS]}
+
+
 class AdminServer(ThreadingHTTPServer):
     daemon_threads = True
     def __init__(self, bind: tuple[str, int], credentials: tuple[bytes, bytes]):
@@ -208,7 +244,7 @@ class AdminServer(ThreadingHTTPServer):
 
 
 class AdminHandler(BaseHTTPRequestHandler):
-    server_version = "IATB-Admin/0.3"
+    server_version = "IATB-Admin/1.0"
     sys_version = ""
 
     def setup(self):
@@ -275,10 +311,10 @@ class AdminHandler(BaseHTTPRequestHandler):
             filename, mime = files[path]
             self.send_bytes((HERE / filename).read_bytes(), mime)
             return
-        sections = {"permissions", "denied", "requests", "audit", "skills", "memory"}
+        sections = {"permissions", "denied", "requests", "audit", "skills", "memory", "soul", "journal"}
         if path.startswith("/api/") and path[5:] in sections and self.path == path:
             try:
-                result = collect(path[5:])
+                result = collect_soul() if path[5:] == "soul" else (collect_journal() if path[5:] == "journal" else collect(path[5:]))
             except (ValueError, OSError, KeyError):
                 self.send_json({"status": "unavailable", "items": []}, 503)
                 return
