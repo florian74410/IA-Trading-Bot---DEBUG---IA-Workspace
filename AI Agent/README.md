@@ -1,5 +1,32 @@
 # IA-TB — AI Agent v0.3 (Admin Panel isolé)
 
+## Architecture cible v1.0 — mise à jour de documentation
+
+**Attention :** le contenu ci-dessous complète les prototypes v0.3 présentés
+dans ce README ; il ne signifie pas qu'ils ont été migrés vers l'architecture v1.
+
+- [Wiki technique versionné](../Documentation/Wiki/Home.md)
+- [AI-Core multi-agents](../AI-Core/ARCHITECTURE_V1.md)
+- [SQLite Agent-Memory](../AI-Core/database/agent_memory.schema.sql)
+- [Registre SQLite](../AI-Core/database/agent_registry.schema.sql)
+- [Soul.md modèle](../Agents/templates/Soul.md)
+
+Choix validés : une base `Agent-Memory.db` par agent, `Agent-Registry.db`
+central, `Events.jsonl` et `Soul.md` **sans `Soul.json`**. Les
+statistiques (0–100) sont stockées et historisées dans la table SQLite
+`Statistiques`, une nouvelle ligne par itération. Les autres tables sont
+`records`, `events`, `actions`, `interactions`, `responses`,
+`reflexions`, `memories` et `snapshots`.
+
+L'agent développeur `IATB-AGT-0001` est prioritaire ; le futur Supervisor
+`IATB-AGT-0002` est réservé, pas encore créé. Le Risk Engine et le contrôleur
+de permissions restent indépendants de la personnalité.
+
+**Les chemins AI-Core sont des propositions d'implémentation.** Les fichiers
+historiques du prototype v0.3 restent présents dans le dépôt : aucune
+migration, changement RELEASE ou déploiement n'est réalisé ici.
+
+
 Branche : `work/ai-agent-admin-v0.3` — évolution de `work/ai-agent-v0.2`.
 
 > **IMPORTANT : NON DÉPLOYÉ, NON AUTONOME.**
