@@ -169,16 +169,17 @@ def init_admin():
     if has_admin(): return
     print("\nFirst-time DEBUG ADMIN initialization (separate from RELEASE).")
     print("Existing RELEASE users and databases will NOT be imported.")
-    # Core creates its own fresh files, but migrations and admin CLI run with writers STOPPED.
-    compose("stop","app")
+    # Offline sequence: seed fresh identity database -> migrate -> create ADMIN.
+    # No authenticated Core process may start before UserManagement migration.
+    compose("stop","app",check=False)
+    print("Creating isolated database OFFLINE (never from /var/lib/iatb).")
+    compose("run","--rm","--no-deps","--entrypoint","node","app","Tools/debug_online_seed_db.js")
     db=PRIVATE/"data"/"Database"/"clients.sqlite"
     if not db.exists(): raise RuntimeError("Fresh DEBUG database not initialized; public exposure blocked")
-    print("Local migration: follow interactive prompts. Use a TEST admin identity only.")
+    print("Migrating Auth21, then create a TEST admin on the interactive TTY.")
     compose("run","--rm","--no-deps","-it","--entrypoint","node","app","CLI/users.js","migrate")
     compose("run","--rm","--no-deps","-it","--entrypoint","node","app","CLI/users.js","create-first-admin")
     if not has_admin(): raise RuntimeError("DEBUG ADMIN not validated; public exposure blocked")
-    compose("up","-d","--no-build","app")
-    wait_private_health()
 
 def check_dns():
     try:
@@ -252,9 +253,9 @@ def main():
     cert=setup_private()
     compose("config","--quiet")
     compose("build","--pull","app")
+    init_admin()
     compose("up","-d","--no-build","app")
     wait_private_health()
-    init_admin()
     check_dns()
     publish_caddy(cert)
     print("Local DEBUG checked. PUBLIC URL: https://"+DOMAIN)
