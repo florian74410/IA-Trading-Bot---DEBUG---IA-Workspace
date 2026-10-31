@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""IA-TB Admin Phase 3: read-only HTTPS reverse-proxy backend with password + TOTP.
+"""IA-TB Admin Phase 3: read-only HTTPS reverse-proxy backend with password-protected sessions.
 
 Bound to 127.0.0.1 only. HTTPS termination is the separately reviewed Caddy
 configuration. No permission grants, shell, Docker, or data mutations.
@@ -8,22 +8,17 @@ from __future__ import annotations
 
 import argparse
 import base64
-from datetime import datetime, timezone
-import getpass
 import hashlib
 import hmac
 from http import cookies
-import html
 import json
 import os
 from pathlib import Path
 import re
 import secrets
-import struct
 import sys
 import time
 import urllib.parse
-import stat
 
 import server as core
 
@@ -33,8 +28,6 @@ COOKIE = "__Host-iatb_admin"
 IDLE_SECONDS = 1800
 ABSOLUTE_SECONDS = 8 * 3600
 MAX_SESSIONS = 32
-TOTP_WINDOW = 1
-MFA_FILE_MODE = 0o600
 SAFE_GET = frozenset(("dashboard","connections","permissions","denied","requests",
                       "audit","skills","memory","soul","journal","overview"))
 ASSET_FILES = {
@@ -43,62 +36,6 @@ ASSET_FILES = {
     "/app.css": ("app.css", "text/css; charset=utf-8"),
     "/app.js": ("app.js", "text/javascript; charset=utf-8"),
 }
-
-def read_mfa(path: Path) -> bytes:
-    path = core.credential_file(path)
-    data = json.loads(path.read_text(encoding="utf-8"))
-    if set(data) != {"version", "totp_secret"} or data["version"] != 1:
-        raise ValueError("Unrecognized MFA data")
-    secret = data["totp_secret"]
-    if not isinstance(secret, str) or not re.fullmatch(r"[A-Z2-7]{32}", secret):
-        raise ValueError("Invalid TOTP seed")
-    return base64.b32decode(secret)
-
-def otp_code(seed: bytes, step: int) -> str:
-    mac = hmac.new(seed, struct.pack(">Q", step), hashlib.sha1).digest()
-    offset = mac[-1] & 15
-    value = (struct.unpack(">I", mac[offset:offset + 4])[0] & 0x7fffffff) % 1000000
-    return f"{value:06d}"
-
-def verify_totp(seed: bytes, supplied: str, now: float | None = None) -> int | None:
-    if not re.fullmatch(r"[0-9]{6}", supplied):
-        return None
-    current = int((time.time() if now is None else now) // 30)
-    for step in (current, current - 1, current + 1):
-        if step >= 0 and hmac.compare_digest(otp_code(seed, step), supplied):
-            return step
-    return None
-
-def init_mfa(path: Path) -> None:
-    path = Path(path)
-    if os.geteuid() == 0 or not sys.stdin.isatty() or not sys.stdout.isatty():
-        raise ValueError("MFA enrollment requires a non-root interactive terminal")
-    if not path.is_absolute() or path.is_symlink():
-        raise ValueError("MFA file must be an absolute non-symlink path")
-    if not path.parent.is_dir() or path.parent.is_symlink() or path.parent.stat().st_mode & 0o077:
-        raise PermissionError("MFA directory must exist and have mode 0700")
-    if path.exists():
-        raise FileExistsError("MFA exists; use controlled offline rotation")
-    seed = secrets.token_bytes(20)
-    code = base64.b32encode(seed).decode()
-    print("PRIVATE TOTP ENROLLMENT: never copy this seed to Git, ChatGPT or logs.")
-    print("Issuer: IA-TB Admin; account: admin@" + HOST)
-    print("Enter the following one-time enrollment key MANUALLY into your authenticator app.")
-    print("This value is private: do not photograph, record, paste, or share it.")
-    print("Secret for authenticator app: " + code)
-    checked = getpass.getpass("Enter the current 6-digit authenticator code: ")
-    if verify_totp(seed, checked) is None:
-        raise ValueError("TOTP verification failed; no enrollment performed")
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
-    fd = os.open(path, flags, MFA_FILE_MODE)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8") as handle:
-            json.dump({"version": 1, "totp_secret": code}, handle)
-            handle.write("\n")
-    except BaseException:
-        path.unlink(missing_ok=True)
-        raise
-    print("MFA_READY. Store the backup authenticator seed offline.")
 
 class PublicHandler(core.BaseHTTPRequestHandler):
     server_version = "IATB-Admin-Public/phase3"
@@ -177,16 +114,15 @@ class PublicHandler(core.BaseHTTPRequestHandler):
             return session
 
     def login_page(self, error: bool = False):
-        notice = "<p role='alert'>Identifiants ou code incorrects.</p>" if error else ""
+        notice = "<p role='alert'>Identifiants incorrects.</p>" if error else ""
         page = f"""<!doctype html><html lang="fr"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IA-TB · ADMIN Login</title>
 <link rel="stylesheet" href="/login.css">
-<main><h1>IA-TB · ADMIN</h1><p>Authentification renforcée</p>{notice}
+<main><h1>IA-TB · ADMIN</h1><p>Connexion administrateur sécurisée</p>{notice}
 <form method="post" action="/login" autocomplete="off">
 <label>Compte<input name="username" value="admin" autocomplete="username" required></label>
 <label>Mot de passe<input name="password" type="password" autocomplete="current-password" required></label>
-<label>Code authenticator<input name="totp" inputmode="numeric" pattern="[0-9]{{6}}" maxlength="6" autocomplete="one-time-code" required></label>
 <button type="submit">Connexion sécurisée</button>
 </form></main></html>"""
         self.respond(page.encode("utf-8"), status=401 if error else 200)
@@ -199,7 +135,7 @@ class PublicHandler(core.BaseHTTPRequestHandler):
             return
         if self.path == "/healthz":
             # Caddy must block this public route; private loopback probe only.
-            self.json({"ok": True, "mode": "mfa_read_only"})
+            self.json({"ok": True, "mode": "password_read_only"})
             return
         session = self.session()
         if self.path == "/login":
@@ -228,7 +164,7 @@ class PublicHandler(core.BaseHTTPRequestHandler):
                 elif name == "journal":
                     data = core.collect_journal()
                 elif name == "overview":
-                    data = {"mode":"mfa_read_only","principal":"ADMIN",
+                    data = {"mode":"password_read_only","principal":"ADMIN",
                             "environment":"GEN-1 DEBUG / ISOLATED",
                             "permissions":"DECLARATIVE_ONLY",
                             "gateway":"UNCONNECTED","execution":False}
@@ -279,7 +215,7 @@ class PublicHandler(core.BaseHTTPRequestHandler):
         if self.path != "/login":
             self.json({"error":"read_only"},405)
             return
-        if set(body) != {"username", "password", "totp"}:
+        if set(body) != {"username", "password"}:
             self.json({"error":"invalid_form"},400)
             return
         now=time.monotonic()
@@ -291,22 +227,15 @@ class PublicHandler(core.BaseHTTPRequestHandler):
             return
         username=body["username"][0]
         password=body["password"][0]
-        otp=body["totp"][0]
         ok_pwd = len(password) <= 256 and core.verify_admin(
             "Basic " + base64.b64encode((username+":"+password).encode()).decode(),
             *self.server.credentials)
-        step = verify_totp(self.server.mfa_seed, otp)
-        if not ok_pwd or step is None:
+        if not ok_pwd:
             with self.server.lock:
                 self.server.attempts.append(now)
             self.login_page(error=True)
             return
         with self.server.lock:
-            if step <= self.server.last_totp_step:
-                self.server.attempts.append(now)
-                self.login_page(error=True)
-                return
-            self.server.last_totp_step=step
             if len(self.server.sessions) >= MAX_SESSIONS:
                 self.server.sessions.clear()
             token=secrets.token_urlsafe(32)
@@ -323,35 +252,26 @@ class PublicHandler(core.BaseHTTPRequestHandler):
     do_PATCH = do_DELETE = do_PUT
 
 class PublicServer(core.AdminServer):
-    def __init__(self, port: int, credential_file: Path, mfa_file: Path):
+    def __init__(self, port: int, credential_file: Path):
         creds=core.load_admin(credential_file)
-        mfa=read_mfa(mfa_file)
         super().__init__(("127.0.0.1", port), creds)
         self.RequestHandlerClass=PublicHandler
-        self.mfa_seed=mfa
         self.sessions={}
-        self.last_totp_step=-1
         self.allowed_hosts={HOST}
 
 def main():
-    parser=argparse.ArgumentParser(description="IA-TB read-only HTTPS/MFA Admin backend (loopback)")
+    parser=argparse.ArgumentParser(description="IA-TB read-only HTTPS Admin backend (loopback)")
     sub=parser.add_subparsers(dest="command",required=True)
-    enroll=sub.add_parser("init-mfa")
-    enroll.add_argument("--mfa-file",type=Path,required=True)
     serve=sub.add_parser("serve")
     serve.add_argument("--credential-file",type=Path,required=True)
-    serve.add_argument("--mfa-file",type=Path,required=True)
     serve.add_argument("--port",type=int,default=18083)
     args=parser.parse_args()
     if os.geteuid()==0:
         parser.error("Never run as root")
-    if args.command=="init-mfa":
-        init_mfa(args.mfa_file)
-        return
     if not 1024<=args.port<=65535:
         parser.error("Invalid port")
-    service=PublicServer(args.port,args.credential_file,args.mfa_file)
-    print(f"IA-TB PUBLIC MFA backend bound to 127.0.0.1:{args.port}; no admin actions",flush=True)
+    service=PublicServer(args.port,args.credential_file)
+    print(f"IA-TB PUBLIC password-only backend bound to 127.0.0.1:{args.port}; no admin actions",flush=True)
     try:
         service.serve_forever()
     except KeyboardInterrupt:
