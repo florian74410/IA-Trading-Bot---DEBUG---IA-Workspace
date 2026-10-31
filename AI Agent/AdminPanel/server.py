@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import binascii
 import getpass
 import hashlib
 import hmac
@@ -109,7 +110,7 @@ def verify_admin(authorization: str, salt: bytes, digest: bytes) -> bool:
             return False
         candidate = hashlib.scrypt(password.encode(), salt=salt, n=16384, r=8, p=1, dklen=32)
         return hmac.compare_digest(candidate, digest)
-    except (ValueError, UnicodeDecodeError, UnicodeError):
+    except (ValueError, UnicodeError, binascii.Error):
         return False
 
 
@@ -203,12 +204,16 @@ class AdminServer(ThreadingHTTPServer):
         self.attempts: list[float] = []
         import threading
         self.lock = threading.Lock()
-        self.allowed_hosts = {f"127.0.0.1:{bind[1]}", f"localhost:{bind[1]}"}
+        self.allowed_hosts = {f"127.0.0.1:{self.server_address[1]}", f"localhost:{self.server_address[1]}"}
 
 
 class AdminHandler(BaseHTTPRequestHandler):
     server_version = "IATB-Admin/0.3"
     sys_version = ""
+
+    def setup(self):
+        super().setup()
+        self.connection.settimeout(5)
 
     def log_message(self, fmt, *args):
         # No raw URLs/headers, basic credentials or secret-bearing logs.
