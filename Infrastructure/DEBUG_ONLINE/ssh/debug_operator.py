@@ -97,7 +97,7 @@ def preflight():
     if len(volumes) != 1 or volumes[0].get("source") != str(PRIVATE) or volumes[0].get("target") != "/debug-private":
         error("Unexpected mounted volume")
     ports = app.get("ports", [])
-    if len(ports) != 1 or ports[0].get("host_ip") != "127.0.0.1" or ports[0].get("published") != "18000":
+    if len(ports) != 1 or ports[0].get("host_ip") != "127.0.0.1" or str(ports[0].get("published")) != "18000":
         error("Public ingress forbidden")
     # Never act on a colliding Docker container or a different Compose project.
     state = run("docker", "inspect", CONTAINER, check=False)
