@@ -182,10 +182,7 @@ class PublicHandler(core.BaseHTTPRequestHandler):
         page = f"""<!doctype html><html lang="fr"><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IA-TB · ADMIN Login</title>
-<style>body{{min-height:100vh;display:grid;place-items:center;background:#070e1c;color:#e2f4ff;font:16px system-ui}}
-main{{width:min(360px,90vw);padding:2rem;background:#0e1b2e;border:1px solid #2472a0;border-radius:16px}}
-label{{display:block;margin-top:1rem}}input{{width:100%;box-sizing:border-box;padding:.7rem;background:#081326;border:1px solid #2c7498;border-radius:8px;color:white}}
-button{{margin-top:1.3rem;width:100%;padding:.8rem;background:#0877bb;color:white;border:0;border-radius:8px;font-weight:bold}}</style>
+<link rel="stylesheet" href="/login.css">
 <main><h1>IA-TB · ADMIN</h1><p>Authentification renforcée</p>{notice}
 <form method="post" action="/login" autocomplete="off">
 <label>Compte<input name="username" value="admin" autocomplete="username" required></label>
@@ -197,6 +194,9 @@ button{{margin-top:1.3rem;width:100%;padding:.8rem;background:#0877bb;color:whit
 
     def do_GET(self):
         if not self.valid_host():
+            return
+        if self.path == "/login.css":
+            self.respond((core.HERE / "login.css").read_bytes(), "text/css; charset=utf-8")
             return
         if self.path == "/healthz":
             # Caddy must block this public route; private loopback probe only.
