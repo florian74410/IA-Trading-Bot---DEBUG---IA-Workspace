@@ -91,7 +91,7 @@ class AdminHTTP(unittest.TestCase):
         self.assertIn("WWW-Authenticate",headers)
         status,headers,data=self.request("GET","/",authorized=True)
         self.assertEqual(status,200)
-        self.assertIn(b"Agent Command",data)
+        self.assertIn(b"IA-TB",data)
         self.assertIn("default-src 'none'",headers["Content-Security-Policy"])
         self.assertEqual(headers["X-Frame-Options"],"DENY")
         self.assertEqual(headers["Cache-Control"],"no-store")
