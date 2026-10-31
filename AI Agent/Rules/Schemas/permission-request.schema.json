@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "principal",
+    "action",
+    "resource",
+    "reason",
+    "risks",
+    "duration_seconds",
+    "max_uses"
+  ],
+  "properties": {
+    "principal": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96
+    },
+    "action": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96
+    },
+    "resource": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 192
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 2000
+    },
+    "risks": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 2000
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600
+    },
+    "max_uses": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    }
+  }
+}
