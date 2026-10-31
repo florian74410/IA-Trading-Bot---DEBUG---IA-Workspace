@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "project": "IA-TB",
+  "workspace_branch": "work/base-2.5.3",
+  "base_repository": "florian74410/IA-Trading-Bot",
+  "base_ref": "2.5.3",
+  "base_commit": "8caae37ac25ffbd72c25f52ca4eeab21ee10aa8b",
+  "deployment": "not-deployed",
+  "trading_live": false,
+  "description": "Snapshot public importé via Github Actions, secrets exclus et RELEASE hors portée"
+}
