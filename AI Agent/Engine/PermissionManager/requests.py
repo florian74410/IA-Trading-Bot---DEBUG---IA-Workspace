@@ -62,7 +62,9 @@ class RequestStore:
 
     def submit(self, *, principal: str, action: str, resource: str,
                reason: str, risks: str, duration_seconds: int,
-               max_uses: int, rollback: str = "", conditions: str = "") -> dict:
+               max_uses: int, rollback: str = "", conditions: str = "",
+               procedure: str = "", consequences: str = "",
+               no_existing_permission_reason: str = "") -> dict:
         if not IDENT.fullmatch(principal) or not ACTION.fullmatch(action) or not RESOURCE.fullmatch(resource):
             raise ValueError("Invalid request identity or scope")
         if action not in ("debug.config.system", "debug.support.restart", "debug.package.install") or resource != "iatb-debug-online":
@@ -75,16 +77,19 @@ class RequestStore:
             raise ValueError("Invalid duration")
         if not (isinstance(max_uses, int) and 1 <= max_uses <= 5):
             raise ValueError("Invalid use count")
-        if len(rollback) > 2000 or len(conditions) > 2000:
+        if any(len(v) > 2000 for v in (rollback, conditions, procedure, consequences, no_existing_permission_reason)):
             raise ValueError("Excessive free text")
         request_id = str(uuid.uuid4())
         deadline = (now_utc() + timedelta(seconds=duration_seconds)).isoformat()
         with self.db:
             self.db.execute("""INSERT INTO requests
                 (id, principal, action, resource, reason, risks, conditions, rollback,
-                 expires_at, max_uses, status) VALUES (?,?,?,?,?,?,?,?,?,?,'PENDING')""",
+                 procedure, consequences, no_existing_permission_reason,
+                 requested_duration_seconds, expires_at, max_uses, status)
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'PENDING')""",
                 (request_id, principal, action, resource, reason, risks,
-                 conditions, rollback, deadline, max_uses))
+                 conditions, rollback, procedure, consequences,
+                 no_existing_permission_reason, duration_seconds, deadline, max_uses))
         return self.get(request_id)
 
     def get(self, request_id: str) -> dict:
@@ -119,7 +124,7 @@ class RequestStore:
             verified = self.verifier.verify(
                 proof=proof, request_id=request_id, admin_identity=admin_identity,
                 action=item["action"], resource=item["resource"],
-                duration_seconds=max(0, int((datetime.fromisoformat(item["expires_at"]) - now_utc()).total_seconds())),
+                duration_seconds=item["requested_duration_seconds"],
                 max_uses=item["max_uses"])
         except Exception as exc:
             raise PermissionError("Approval verifier unavailable") from exc
