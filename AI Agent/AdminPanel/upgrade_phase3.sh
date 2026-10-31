@@ -55,6 +55,11 @@ if [[ -e "$STATE" ]]; then
   [[ "$(stat -c '%a' "$STATE")" == '700' ]] || fail 'Existing private state directory is not 0700'
   [[ "$(stat -c '%U' "$STATE")" == "$ACCOUNT" ]] || fail 'Existing private state owner differs'
 fi
+# An enrollment seed was visible in a shared screenshot. Fail closed if it was
+# already confirmed to disk; require an explicit supervised rotation offline.
+if [[ -e "$STATE/mfa.json" || -L "$STATE/mfa.json" ]]; then
+  fail 'Existing MFA enrollment: verify/rotate the exposed seed offline before publication'
+fi
 printf 'Existing installation retained at %s\n' "$ORIGINAL"
 printf 'Versioned Phase3 deployment at %s\n' "$STAGE"
 printf 'To approve Phase3 HTTPS on %s, type PUBLISH IA-TB ADMIN PHASE3: ' "$DOMAIN"
