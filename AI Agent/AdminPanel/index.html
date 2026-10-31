@@ -13,7 +13,7 @@
   <aside class="sidebar" aria-label="Navigation AI Agent">
     <div class="identity">
       <div class="symbol" aria-hidden="true">✣</div>
-      <div class="identity-copy"><span class="eyebrow">IA-TB / CONTROL</span><strong>AI AGENT</strong><span class="muted tiny">ADMIN CONSOLE · v1.0</span></div>
+      <div class="identity-copy"><span class="eyebrow">IA-TB / CONTROL</span><strong>AI AGENT</strong><span class="muted tiny">ADMIN CONSOLE · v1.1</span></div>
     </div>
     <div class="sidebar-label">SECURITY &amp; GOVERNANCE</div>
     <nav id="navigation" aria-label="Sections administratives"></nav>
@@ -33,7 +33,7 @@
       </div>
     </header>
     <div class="head-intro">
-      <div><span class="eyebrow cyan">OPERATIONAL GOVERNANCE / 1.0.0</span>
+      <div><span class="eyebrow cyan">OPERATIONAL GOVERNANCE / 1.1.0</span>
         <h1>IA-TB <span>AI Command Center</span></h1>
         <p>Memory · Soul · Permissions · Journal général — contrôles administratifs sécurisés.</p>
       </div>
@@ -64,16 +64,16 @@
     </section>
     <div class="two-panels">
       <section class="info-panel"><div class="panel-title">◈ <b>RÈGLES D'EXÉCUTION</b></div>
-        <div class="rule"><span class="check">✓</span> RELEASE isolé de DEBUG</div>
-        <div class="rule"><span class="check">✓</span> Aucune élévation depuis GitHub</div>
+        <div class="rule"><span class="check">✓</span> Exigence : isoler RELEASE de DEBUG</div>
+        <div class="rule"><span class="check">✓</span> Règles Git sans privilèges exécutables</div>
         <div class="rule"><span class="check">✓</span> Interdictions HARD_DENY prioritaires</div>
-        <div class="rule"><span class="check">✓</span> Approbation indépendante obligatoire</div>
+        <div class="rule"><span class="check">✓</span> Contrôleur indépendant non raccordé</div>
       </section>
       <section class="info-panel last-panel"><div class="panel-title">◎ <b>CONNEXION &amp; ENVIRONNEMENT</b></div>
         <div class="kv"><span>Mode de consultation</span><strong id="connectionMode">PREVIEW LOCALE</strong></div>
         <div class="kv"><span>Identité applicative</span><strong>ADMIN</strong></div>
         <div class="kv"><span>Exécution distante</span><strong class="warning">DÉSACTIVÉE</strong></div>
-        <div class="kv"><span>Version</span><strong>1.0.0</strong></div>
+        <div class="kv"><span>Version</span><strong>1.1.0</strong></div>
       </section>
     </div>
     <footer>IA-TB GAME MASTER / ADMINISTRATIVE BOUNDARY <span>●</span> Aucun contrôle Docker ou SSH n'est exposé par cette page.</footer>
@@ -82,6 +82,7 @@
 <dialog id="recordDialog" aria-labelledby="dialogTitle">
   <div class="dialog-head"><div><span class="eyebrow cyan" id="dialogType">INSPECTOR</span><h2 id="dialogTitle">Détail de l'enregistrement</h2></div><button type="button" id="closeDialog" aria-label="Fermer">✕</button></div>
   <div id="dialogRows" class="dialog-body"></div>
+  <section id="proposalEditor" hidden><h3>Proposer une correction</h3><p>Conserver l'historique. Le brouillon doit être soumis par PR puis validé en CI et approuvé.</p><label for="proposalText">Modification proposée (sans secret)</label><textarea id="proposalText" maxlength="12000" rows="7"></textarea><button id="copyProposal" type="button">Copier le brouillon de proposition</button><p id="proposalStatus" role="status"></p></section>
   <div class="dialog-actions"><span>Lecture seule · aucune opération administrative</span><button id="approveBtn" disabled title="Contrôleur d'approbation non connecté">Approuver</button><button id="rejectBtn" disabled title="Contrôleur d'approbation non connecté">Refuser</button></div>
 </dialog>
 </body>

@@ -136,3 +136,17 @@ dialog::backdrop{background:#050b16d9;backdrop-filter:blur(5px)}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(#2861b013 1px,transparent 1px),linear-gradient(90deg,#2861b013 1px,transparent 1px);background-size:34px 34px}
 @keyframes bluePulse{0%,100%{box-shadow:0 0 9px rgba(38,140,255,.20)}50%{box-shadow:0 0 27px rgba(38,140,255,.40)}}
 @media(prefers-reduced-motion:reduce){.identity .symbol{animation:none}}
+
+/* v1.1: local proposal workbench and keyboard visibility. */
+#proposalEditor{padding:20px;border-top:1px solid var(--stroke)}
+#proposalEditor textarea{display:block;width:100%;margin:12px 0;padding:12px;background:var(--night);color:var(--txt);border:1px solid var(--stroke-light);font:13px/1.6 monospace;resize:vertical}
+#proposalEditor button{padding:10px;background:#12345b;color:var(--txt);border:1px solid var(--cyan);border-radius:6px}
+:focus-visible{outline:2px solid #52c7ff;outline-offset:3px}
+.dialog-kv span:last-child{white-space:pre-wrap;overflow-wrap:anywhere}
+.tag.not-configured,.tag.unverified,.tag.denied-no-controller{color:var(--orange)}
+@media(max-width:590px){
+  .masthead{height:auto;min-height:70px;flex-wrap:wrap;gap:8px;padding:12px 0}
+  .pathline{white-space:normal;overflow-wrap:anywhere;font-size:9px}
+  .head-tools{min-width:0;flex-wrap:wrap}.head-intro>div{min-width:0}
+  .content,.workbench,.metrics{min-width:0}.workbench-head{gap:10px;flex-wrap:wrap}
+}

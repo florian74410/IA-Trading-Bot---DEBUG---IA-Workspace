@@ -28,7 +28,7 @@ HERE = Path(__file__).resolve().parent
 AGENT = HERE.parent
 REDACT = re.compile(
     r"(Bearer\s+\S+|-----BEGIN\s+[A-Z ]*PRIVATE KEY-----|"
-    r"(?:api[_-]?key|access[_-]?token|password|passwd|secret)\s*[:=]\s*\S+)", re.I)
+    r"(?:api[_-]?key|access[_-]?token|password|passwd|secret)[\"\']?\s*[:=]\s*[\"\']?\S+|(?:gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|sk-[A-Za-z0-9_-]{20,}))", re.I)
 MAX_ITEMS = 100
 FAIL_LIMIT = 8
 FAIL_WINDOW = 300
@@ -146,6 +146,7 @@ def collect(section: str) -> dict:
             {"id": clean(r.get("id")), "action": clean(r.get("action")),
              "resource": clean(r.get("resource")), "principal": clean(r.get("principal")),
              "access": clean(r.get("access")),
+             "effective": "DENIED_NO_CONTROLLER",
              "state": "DECLARED_ONLY" if r.get("enabled") else "DISABLED"}
             for r in rules if isinstance(r, dict)]}
     if section == "denied":
@@ -166,25 +167,25 @@ def collect(section: str) -> dict:
         items = module.inspect_skills(AGENT / "Skills")
         return {"status": "catalog_only", "items": [
             {"name": clean(i["name"]), "version": clean(i["version"]),
-             "actions": len(i["actions"]), "folder": clean(i["folder"]),
+             "actions": ", ".join(clean(a) for a in i["actions"]), "folder": clean(i["folder"]),
              "state": "CATALOG_ONLY"} for i in items]}
     if section == "requests":
         rows, status = readonly_rows("IATB_ADMIN_REQUESTS_DB",
-            "SELECT id, created_at_utc, principal, action, resource, reason, risks, conditions,"
-            " rollback, expires_at, max_uses, status FROM requests ORDER BY created_at_utc DESC LIMIT 100")
+            "SELECT * FROM requests ORDER BY created_at_utc DESC LIMIT 100")
         keys = ("id", "created_at_utc", "principal", "action", "resource", "reason",
-                "risks", "conditions", "rollback", "expires_at", "status")
+                "risks", "conditions", "rollback", "expires_at", "status",
+                "requested_duration_seconds", "decided_by", "decided_at_utc", "procedure", "consequences")
         return {"status": status, "items": [
             {**{k: clean(row.get(k), 360 if k in ("reason", "risks", "conditions", "rollback") else 160)
                 for k in keys}, "max_uses": row.get("max_uses")} for row in rows]}
     if section == "audit":
         rows, status = readonly_rows("IATB_ADMIN_AUDIT_DB",
             "SELECT id, timestamp_utc, principal, action, resource, decision, policy_version,"
-            " result FROM audit_events ORDER BY id DESC LIMIT 100")
+            " result, request_id, commit_sha, exit_code, execution_duration_ms FROM audit_events ORDER BY id DESC LIMIT 100")
         return {"status": status, "items": [
             {k: clean(row.get(k), 220) for k in
              ("id", "timestamp_utc", "principal", "action", "resource", "decision",
-              "policy_version", "result")} for row in rows]}
+              "policy_version", "result", "request_id", "commit_sha", "exit_code", "execution_duration_ms")} for row in rows]}
     if section == "memory":
         rows, status = readonly_rows("IATB_ADMIN_MEMORY_DB",
             "SELECT id, created_at_utc, kind, source, reference, confidence, summary "
@@ -215,36 +216,79 @@ def collect_soul() -> dict:
 def collect_journal() -> dict:
     """Join allowlisted audit and requests as an event feed; never invent model thoughts."""
     events = []
-    for entry in collect("audit")["items"]:
+    audit = collect("audit")
+    requests = collect("requests")
+    for entry in audit["items"]:
         events.append({
             "timestamp": entry["timestamp_utc"], "type": "AUDIT",
-            "status": entry["decision"], "message": entry["action"] + " · " + entry["result"],
+            "status": {"ALLOW": "VALIDATED", "DENY": "DENIED", "HARD_DENY": "DENIED", "RESTRICTED": "PENDING"}.get(entry["decision"], "ERROR"), "message": entry["action"] + " · " + entry["result"],
             "source": "AUDIT", "reference": entry["id"],
+            "correlation_id": entry["request_id"] or "audit:" + entry["id"],
+            "commit_sha": entry["commit_sha"] or None, "exit_code": entry["exit_code"] or None,
+            "execution_duration_ms": entry["execution_duration_ms"] or None,
+            "result": entry["result"],
         })
-    for entry in collect("requests")["items"]:
+    for entry in requests["items"]:
         events.append({
-            "timestamp": entry["created_at_utc"], "type": "REQUEST",
-            "status": entry["status"], "message": entry["action"] + " · " + entry["reason"],
-            "source": "PERMISSION MANAGER", "reference": entry["id"],
+            "timestamp": entry["created_at_utc"], "type": "PERMISSION",
+            "status": "PENDING", "recorded_decision": entry["status"], "message": entry["action"] + " · " + entry["reason"],
+            "source": "PERMISSION", "reference": entry["id"],
+            "correlation_id": entry["id"], "result": "REQUEST_CREATED",
+            "commit_sha": None, "exit_code": None, "execution_duration_ms": None,
         })
     events.sort(key=lambda e: e["timestamp"], reverse=True)
-    configured = bool(os.environ.get("IATB_ADMIN_AUDIT_DB") or os.environ.get("IATB_ADMIN_REQUESTS_DB"))
-    return {"status": "read_only" if configured else "not_configured", "items": events[:MAX_ITEMS]}
+    sources = {"audit": audit["status"], "requests": requests["status"]}
+    state = "unavailable" if "unavailable" in sources.values() else ("read_only" if "connected" in sources.values() else "not_configured")
+    return {"status": state, "sources": sources, "items": events[:MAX_ITEMS]}
+
+
+def collect_connections() -> dict:
+    """Only local facts. Configuration and reachability are never conflated."""
+    from datetime import datetime, timezone
+    observed = datetime.now(timezone.utc).isoformat()
+    return {"status": "local_observation", "items": [
+        {"name": "Admin backend", "state": "LOCAL", "endpoint": "127.0.0.1:18082", "detail": "API de consultation authentifiée", "observed_at_utc": observed},
+        {"name": "GitHub", "state": "NOT_CONFIGURED", "endpoint": "florian74410/IA-Trading-Bot---DEBUG---IA-Workspace", "detail": "Aucun connecteur réseau du panneau", "observed_at_utc": observed},
+        {"name": "ChatGPT / fournisseurs IA", "state": "NOT_CONFIGURED", "endpoint": "—", "detail": "Aucune session fournisseur vérifiée", "observed_at_utc": observed},
+        {"name": "VPS DEBUG / SSH", "state": "UNVERIFIED", "endpoint": "GEN-1 DEBUG", "detail": "Passerelle non raccordée ; aucun diagnostic distant", "observed_at_utc": observed},
+        {"name": "Contrôleur indépendant", "state": "NOT_CONFIGURED", "endpoint": "—", "detail": "Zéro autorisation exécutable ; approbations verrouillées", "observed_at_utc": observed},
+        {"name": "Caddy / MFA", "state": "UNVERIFIED", "endpoint": "https://ia.iatb.duckdns.org", "detail": "Phase B bloquée ; déploiement et HTTPS non vérifiés", "observed_at_utc": observed},
+    ]}
 
 
 class AdminServer(ThreadingHTTPServer):
     daemon_threads = True
     def __init__(self, bind: tuple[str, int], credentials: tuple[bytes, bytes]):
+        if bind[0] != "127.0.0.1":
+            raise ValueError("Loopback bind required")
         super().__init__(bind, AdminHandler)
         self.credentials = credentials
         self.attempts: list[float] = []
         import threading
         self.lock = threading.Lock()
+        self.slots = threading.BoundedSemaphore(8)
         self.allowed_hosts = {f"127.0.0.1:{self.server_address[1]}", f"localhost:{self.server_address[1]}"}
 
 
+    def process_request(self, request, client_address):
+        if not self.slots.acquire(blocking=False):
+            self.shutdown_request(request)
+            return
+        try:
+            super().process_request(request, client_address)
+        except Exception:
+            self.slots.release()
+            raise
+
+    def process_request_thread(self, request, client_address):
+        try:
+            super().process_request_thread(request, client_address)
+        finally:
+            self.slots.release()
+
+
 class AdminHandler(BaseHTTPRequestHandler):
-    server_version = "IATB-Admin/1.0"
+    server_version = "IATB-Admin/1.1"
     sys_version = ""
 
     def setup(self):
@@ -280,11 +324,17 @@ class AdminHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         # The public surface is only on loopback. Reject DNS rebinding.
-        if self.headers.get("Host", "") not in self.server.allowed_hosts:
+        if len(self.headers.get_all("Host", [])) != 1 or self.headers.get("Host", "") not in self.server.allowed_hosts:
             self.send_json({"error": "invalid_host"}, 400)
+            return
+        if any(self.headers.get(h) is not None for h in ("Forwarded", "X-Forwarded-Host", "X-Forwarded-For", "X-Forwarded-Proto", "X-Remote-User")):
+            self.send_json({"error": "proxy_not_enabled"}, 400)
             return
         if self.path == "/healthz":
             self.send_json({"ok": True, "mode": "read_only"})
+            return
+        if len(self.headers.get_all("Authorization", [])) > 1:
+            self.send_json({"error": "ambiguous_identity"}, 400)
             return
         now = time.monotonic()
         with self.server.lock:
@@ -311,10 +361,10 @@ class AdminHandler(BaseHTTPRequestHandler):
             filename, mime = files[path]
             self.send_bytes((HERE / filename).read_bytes(), mime)
             return
-        sections = {"permissions", "denied", "requests", "audit", "skills", "memory", "soul", "journal"}
+        sections = {"permissions", "denied", "requests", "audit", "skills", "memory", "soul", "journal", "dashboard", "connections"}
         if path.startswith("/api/") and path[5:] in sections and self.path == path:
             try:
-                result = collect_soul() if path[5:] == "soul" else (collect_journal() if path[5:] == "journal" else collect(path[5:]))
+                result = collect_connections() if path[5:] in ("dashboard", "connections") else collect_soul() if path[5:] == "soul" else (collect_journal() if path[5:] == "journal" else collect(path[5:]))
             except (ValueError, OSError, KeyError):
                 self.send_json({"status": "unavailable", "items": []}, 503)
                 return

@@ -3,12 +3,14 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const sections = {
+    dashboard: {label:"Dashboard",icon:"◈",note:"Observations locales uniquement. Aucun statut distant présumé.", columns:[["name","Service"],["state","État vérifié"],["detail","Observation"],["observed_at_utc","Date UTC"]]},
+    connections: {label:"Connections",icon:"⌁",note:"Configuration non sensible. Les secrets et la configuration système se gèrent hors du navigateur.", columns:[["name","Connexion"],["endpoint","Destination"],["state","État"],["detail","Détail"]]},
     permissions: {label:"Permissions",icon:"⬡",note:"La configuration Git est déclarative, pas une autorisation d'exécution.",
-      columns:[["action","Action"],["resource","Ressource"],["principal","Identité"],["access","Accès"],["state","État"]]},
+      columns:[["action","Action"],["resource","Ressource"],["principal","Identité"],["access","Accès"],["state","Déclaré"],["effective","Droit effectif"]]},
     denied: {label:"Denied",icon:"⛨",note:"HARD_DENY prévaut sur toute autre permission et ne peut pas être levé ici.",
       columns:[["action","Action"],["resource","Périmètre"],["level","Décision"],["reason","Justification"],["exception","Exception"]]},
     requests: {label:"Requests",icon:"◷",note:"Les demandes peuvent être consultées, pas approuvées depuis ce prototype.",
-      columns:[["created_at_utc","Date UTC"],["principal","Identité"],["action","Opération"],["resource","Périmètre"],["status","État"]]},
+      columns:[["created_at_utc","Date UTC"],["principal","Identité"],["action","Opération"],["resource","Périmètre"],["requested_duration_seconds","Durée (s)"],["max_uses","Quota"],["expires_at","Expiration UTC"],["status","Décision enregistrée"]]},
     audit: {label:"Audit",icon:"▤",note:"Le journal d'audit reste une source séparée de la mémoire de travail.",
       columns:[["timestamp_utc","Date UTC"],["principal","Identité"],["action","Action"],["decision","Décision"],["result","Résultat"]]},
     skills: {label:"Skills",icon:"◈",note:"Un Skill installé dans Git ne donne aucune capacité privilégiée à l'agent.",
@@ -16,38 +18,11 @@
     soul: {label:"Soul",icon:"◉",note:"Identité et comportement de l'agent : lecture seule, fichiers versionnés.",
       columns:[["name","Fichier"],["content","Contenu"],["mode","Accès"]]},
     journal: {label:"Journal général",icon:"◴",note:"Événements audit et permissions réels uniquement. Aucun raisonnement interne brut.",
-      columns:[["timestamp","Date UTC"],["type","Type"],["status","Statut"],["message","Événement"],["source","Source"]]},
+      columns:[["timestamp","Date UTC"],["source","Source"],["type","Type"],["message","Événement"],["status","Statut"]]},
     memory: {label:"Memory",icon:"✧",note:"Les entrées mémoire sont des données non fiables et ne peuvent changer les Rules.",
       columns:[["created_at_utc","Date UTC"],["kind","Catégorie"],["source","Origine"],["reference","Référence"],["summary","Résumé"]]}
   };
-  const placeholder = {
-    permissions: {status:"preview",items:[
-      {action:"memory.stats",resource:"general-memory",principal:"iatb-agent",access:"read",state:"DECLARED_ONLY",id:"memory-read"},
-      {action:"debug.status",resource:"iatb-debug-online",principal:"iatb-debug-ci",access:"read",state:"DISABLED",id:"debug-status"},
-      {action:"debug.health",resource:"iatb-debug-online",principal:"iatb-debug-ci",access:"read",state:"DISABLED",id:"debug-health"},
-      {action:"github.read",resource:"iatb-debug-workspace",principal:"iatb-agent",access:"read",state:"DISABLED",id:"github-read"}]},
-    denied: {status:"preview",items:[
-      {action:"release.*",resource:"*",level:"HARD_DENY",reason:"Isolation de RELEASE",exception:"NO"},
-      {action:"keys.private.*",resource:"*",level:"HARD_DENY",reason:"Aucune lecture des clés privées",exception:"NO"},
-      {action:"debug.package.install",resource:"iatb-debug-online",level:"RESTRICTED",reason:"Changement système",exception:"YES"},
-      {action:"debug.support.restart",resource:"iatb-debug-online",level:"RESTRICTED",reason:"Impact service",exception:"YES"}]},
-    requests: {status:"preview",items:[
-      {id:"DEMO-REQ-001",created_at_utc:"EXEMPLE",principal:"iatb-agent",action:"debug.package.install",resource:"iatb-debug-online",
-       status:"PENDING",reason:"Diagnostic d'un dysfonctionnement du collecteur.",risks:"Modification d'une dépendance DEBUG.",
-       conditions:"Autorisation ponctuelle d'un contrôleur indépendant.",max_uses:1,expires_at:"15 minutes",rollback:"Revenir à l'environnement validé."}]},
-    audit: {status:"preview",items:[
-      {timestamp_utc:"EXEMPLE",principal:"iatb-agent",action:"debug.status",resource:"iatb-debug-online",decision:"DENY",result:"Aucune autorité vérifiée"}]},
-    skills: {status:"preview",items:["SSH","GitHub","Deploy-DEBUG","Diagnostics","Memory","SkillManager"].map((folder) => ({
-      folder,name:"iatb-"+folder.toLowerCase(),version:"0.2.0",actions:"Catalogue",state:"CATALOG_ONLY"}))},
-    soul: {status:"preview",items:[
-      {name:"identity.md",content:"Identité IA-TB (contenu d'exemple)",mode:"READ_ONLY"},
-      {name:"personality.json",content:"Objectifs et personnalité (aperçu seulement)",mode:"READ_ONLY"}]},
-    journal: {status:"preview",items:[
-      {timestamp:"EXEMPLE",type:"REQUEST",status:"PENDING",message:"Demande de diagnostic DEBUG",source:"PERMISSION MANAGER"},
-      {timestamp:"EXEMPLE",type:"AUDIT",status:"DENY",message:"Opération refusée : droit absent",source:"AUDIT"}]},
-    memory: {status:"preview",items:[]}
-  };
-  const ui = {active:"permissions",data:{},term:"",state:""};
+  const ui = {active:"dashboard",data:{},term:"",state:""};
   const demo = window.location.protocol === "file:";
 
   function labelState(value) {
@@ -114,8 +89,8 @@
   }
   function format(key,value){
     if(value===null||value===undefined||value==="")return "—";
-    if((key==="created_at_utc"||key==="timestamp_utc"||key==="expires_at") && typeof value==="string" && value.includes("T")){
-      const date=new Date(value);if(!Number.isNaN(date.getTime()))return date.toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"medium"});
+    if((key==="created_at_utc"||key==="timestamp_utc"||key==="timestamp"||key==="observed_at_utc"||key==="expires_at") && typeof value==="string" && value.includes("T")){
+      const date=new Date(value);if(!Number.isNaN(date.getTime()))return date.toLocaleString("fr-FR",{dateStyle:"short",timeStyle:"medium",timeZone:"UTC"});
     }
     return String(value);
   }
@@ -132,6 +107,10 @@
       line.appendChild(addText("span",String(value)));
       content.appendChild(line);
     });
+    $("proposalEditor").hidden=!["soul","memory"].includes(ui.active);
+    $("proposalText").value="";
+    $("proposalStatus").textContent="Brouillon local : rien n'est envoyé ni enregistré côté serveur.";
+    ui.selected=item;
     if(!content.children.length)content.appendChild(addText("p","Aucune donnée"));
     if(typeof detail.showModal==="function") detail.showModal();
   }
@@ -182,16 +161,16 @@
     $("refreshBtn").disabled=true;
     try{
       if(demo){
-        ui.data=structuredClone(placeholder);
+        ui.data=Object.fromEntries(Object.keys(sections).map(k=>[k,{status:"offline",items:[]}]));
         $("modeBadge").textContent="PREVIEW / OFFLINE";
         $("modeBadge").classList.remove("connected");
         $("connectionMode").textContent="MAQUETTE HTML";
-        $("noticeText").textContent="Données d'exemple. Aucune connexion à GEN-1, aucune permission d'exécution.";
+        $("noticeText").textContent="Aperçu hors ligne sans événements simulés. Connectez le backend pour consulter les sources.";
       }else{
         const keys=Object.keys(sections);
         const results=await Promise.all(keys.map(async (key)=>{
           const response=await fetch("/api/"+key,{cache:"no-store",credentials:"same-origin"});
-          if(!response.ok)throw new Error("API HTTP "+response.status+" pour "+key);
+          if(!response.ok)return [key,{status:"unavailable",items:[]}];
           return [key,await response.json()];
         }));
         ui.data=Object.fromEntries(results);
@@ -220,6 +199,15 @@
   $("closeDialog").addEventListener("click",()=>$("recordDialog").close());
   $("recordDialog").addEventListener("click",(event)=>{
     if(event.target===$("recordDialog"))$("recordDialog").close();
+  });
+  $("copyProposal").addEventListener("click", async ()=>{
+    const content=$("proposalText").value.trim();
+    if(!content || content.length>12000){$("proposalStatus").textContent="Proposition requise, maximum 12 000 caractères.";return;}
+    const draft={kind:ui.active,reference:ui.selected?.name||ui.selected?.id,
+      base_content:ui.selected?.content||ui.selected?.summary,proposal:content,
+      workflow:"GitHub PR → CI → approbation indépendante",status:"DRAFT_NOT_SUBMITTED"};
+    try{await navigator.clipboard.writeText(JSON.stringify(draft,null,2));$("proposalStatus").textContent="Brouillon copié. À joindre à une PR GitHub ; aucune modification appliquée.";}
+    catch{ $("proposalStatus").textContent="Presse-papiers indisponible. Sélectionnez et copiez le texte manuellement.";}
   });
   load();
 })();
