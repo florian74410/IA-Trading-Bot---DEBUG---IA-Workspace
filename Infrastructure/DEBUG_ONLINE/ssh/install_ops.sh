@@ -11,7 +11,7 @@ GATEWAY="$ROOT/iatb-debug-ssh-gateway"
 OPERATOR="$ROOT/iatb-debug-operator"
 SUDOERS='/etc/sudoers.d/iatb-debug-ci-operator'
 GATEWAY_URL='https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/85acf3ae70118a9c763f431039fd1486a1850074/Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh'
-OPERATOR_URL='https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/fb9e6bbc3fc02fdda64d38cfc92701ff54964abf/Infrastructure/DEBUG_ONLINE/ssh/debug_operator.py'
+OPERATOR_URL='https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/44f32fb88c5ba3e61a948bd0716bd02743fe6d3a/Infrastructure/DEBUG_ONLINE/ssh/debug_operator.py'
 [[ -d /srv/iatb-debug/online/source && -d /srv/iatb-debug/online/private ]] || {
   echo 'Isolated DEBUG runtime absent; abort' >&2; exit 1;
 }
