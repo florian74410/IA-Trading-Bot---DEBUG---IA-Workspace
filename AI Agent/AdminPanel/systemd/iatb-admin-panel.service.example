@@ -1,0 +1,35 @@
+# EXEMPLE NON INSTALLÉ — à valider par l'administrateur GEN-1.
+# Installer dans /etc/systemd/system/iatb-admin-panel.service uniquement après revue.
+[Unit]
+Description=IA-TB AI Agent Admin Panel (read only, SSH-only loopback)
+After=network.target
+
+[Service]
+Type=simple
+User=iatb-admin-panel
+Group=iatb-admin-panel
+WorkingDirectory=/opt/iatb-admin
+ExecStart=/usr/bin/python3 "/opt/iatb-admin/AI Agent/AdminPanel/server.py" serve --credential-file /var/lib/iatb-admin-panel/credentials.json --port 18082
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+RestrictAddressFamilies=AF_INET AF_UNIX
+IPAddressDeny=any
+IPAddressAllow=localhost
+MemoryMax=256M
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target
