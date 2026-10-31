@@ -43,10 +43,35 @@ jobs:
           python3 -m py_compile Infrastructure/DEBUG_ONLINE/diagnose.py
           bash -n App/Tools/debug_online_start.sh
           bash -n Infrastructure/DEBUG_ONLINE/ssh/install_gateway.sh
+          bash -n Infrastructure/DEBUG_ONLINE/ssh/install_ai_dev.sh
+          python3 -m py_compile Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py
           sh -n Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh
           node --check App/Tools/debug_online_forward.js
           node --check App/Tools/debug_online_operator_cli.js
           docker compose -f Infrastructure/DEBUG_ONLINE/compose.yml config --quiet
+      - name: Exercise AI DEV sandbox gateway locally (NO SSH, NO VPS)
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          trap 'sudo rm -rf /var/lib/iatb-ai-dev' EXIT
+          sudo mkdir -p /var/lib/iatb-ai-dev/workspace/{drafts,patches,reports}
+          printf 'hello from CI\n' | SSH_ORIGINAL_COMMAND='write drafts/check.md' \
+            python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py | grep -Fx 'WRITE_OK drafts/check.md'
+          SSH_ORIGINAL_COMMAND='read drafts/check.md' \
+            python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py | grep -Fx 'hello from CI'
+          SSH_ORIGINAL_COMMAND='list' \
+            python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py | grep -Fx 'drafts/check.md'
+          if SSH_ORIGINAL_COMMAND='read ../etc/passwd' \
+            python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py 2>/dev/null; then
+            echo 'Unsafe path traversal accepted' >&2
+            exit 1
+          fi
+          if SSH_ORIGINAL_COMMAND='rm -rf /' \
+            python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py 2>/dev/null; then
+            echo 'Arbitrary shell command accepted' >&2
+            exit 1
+          fi
+          echo 'PASS: isolated R/W and denied unsafe commands'
       - name: Build full IA-TB image (never start engines)
         run: docker build -f App/Dockerfile.app --pull -t iatb-workspace:ci App
       - name: Verify Auth21 runtime imports inside the built image
