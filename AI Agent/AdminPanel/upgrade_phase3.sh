@@ -65,6 +65,8 @@ TMP="$(mktemp -d /tmp/iatb-admin-phase3-upgrade.XXXXXXXX)"
 CADDY_BACKUP=''
 CADDY_CHANGED=0
 SERVICE_CREATED=0
+UNIT_CREATED=0
+SITE_CREATED=0
 cleanup(){
   code="$?"
   trap - EXIT ERR
@@ -78,6 +80,13 @@ cleanup(){
     if [[ "$SERVICE_CREATED" == 1 ]]; then
       systemctl stop "$SERVICE" >/dev/null 2>&1
       printf 'STOPPED_NEW_PHASE3_SERVICE\n' >&2
+    fi
+    if [[ "$UNIT_CREATED" == 1 ]]; then
+      rm -f -- "$UNIT"
+      systemctl daemon-reload >/dev/null 2>&1
+    fi
+    if [[ "$SITE_CREATED" == 1 ]]; then
+      rm -f -- "$SITE"
     fi
     printf 'Existing installation left unchanged at %s\n' "$ORIGINAL" >&2
   fi
@@ -148,6 +157,7 @@ PY
 sed "s|/opt/iatb-admin/AI Agent|$STAGE/AI Agent|g; s|WorkingDirectory=/opt/iatb-admin|WorkingDirectory=$STAGE|g" \
   "$STAGE/AI Agent/AdminPanel/systemd/iatb-admin-public.service.example" > "$TMP/iatb-admin-public.service"
 install -o root -g root -m 0644 "$TMP/iatb-admin-public.service" "$UNIT"
+UNIT_CREATED=1
 systemd-analyze verify "$UNIT" || fail 'Generated systemd unit invalid'
 systemctl daemon-reload
 SERVICE_CREATED=1
@@ -165,6 +175,7 @@ CODE="$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" 
 
 install -o root -g root -m 0644 \
   "$STAGE/AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example" "$SITE"
+SITE_CREATED=1
 CADDY_BACKUP="$MAIN.phase3-upgrade-$(date -u +%Y%m%dT%H%M%SZ)"
 cp -a "$MAIN" "$CADDY_BACKUP"
 CADDY_CHANGED=1
