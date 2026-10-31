@@ -44,11 +44,46 @@ jobs:
           bash -n App/Tools/debug_online_start.sh
           bash -n Infrastructure/DEBUG_ONLINE/ssh/install_gateway.sh
           bash -n Infrastructure/DEBUG_ONLINE/ssh/install_ai_dev.sh
+          bash -n Infrastructure/DEBUG_ONLINE/ssh/install_ops.sh
+          python3 -m py_compile Infrastructure/DEBUG_ONLINE/ssh/debug_operator.py
           python3 -m py_compile Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py
           sh -n Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh
           node --check App/Tools/debug_online_forward.js
           node --check App/Tools/debug_online_operator_cli.js
           docker compose -f Infrastructure/DEBUG_ONLINE/compose.yml config --quiet
+      - name: Verify DEBUG operator command gates and approved configuration
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          import hashlib
+          p = Path("Infrastructure/DEBUG_ONLINE/ssh/debug_operator.py")
+          spec = importlib.util.spec_from_file_location("debug_operator_test", p)
+          op = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(op)
+          assert op.PROJECT == "iatb-debug-online"
+          assert op.CONTAINER == "iatb-debug-online-app"
+          assert str(op.SOURCE) == "/srv/iatb-debug/online/source"
+          assert str(op.PRIVATE) == "/srv/iatb-debug/online/private"
+          assert not op.SHA.fullmatch("evil;docker stop release")
+          assert not op.SHA.fullmatch("0"*39)
+          for relative, blob in op.APPROVED_BLOBS.items():
+              data = Path(relative).read_bytes()
+              expected = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\x00" + data).hexdigest()
+              assert expected == blob, f"approved file changed unexpectedly: {relative}"
+          print("PASS: DEBUG operator allowlisted paths and Docker build boundaries")
+          PY
+          SSH_ORIGINAL_COMMAND=ping sh Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh | grep -Fx IA-TB_DEBUG_SSH_OK
+          if SSH_ORIGINAL_COMMAND='docker ps' sh Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh; then
+            echo 'Arbitrary Docker command accepted' >&2
+            exit 1
+          fi
+          if SSH_ORIGINAL_COMMAND='deploy not-a-sha' sh Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh; then
+            echo 'Invalid deploy revision accepted' >&2
+            exit 1
+          fi
       - name: Exercise AI DEV sandbox gateway locally (NO SSH, NO VPS)
         shell: bash
         run: |
