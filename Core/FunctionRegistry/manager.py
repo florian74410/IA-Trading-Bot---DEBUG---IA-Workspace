@@ -72,6 +72,7 @@ class FunctionRegistryManager:
             previous=[v["function_id"] for v in self.db.execute("SELECT function_id FROM functions WHERE engine=?",(engine,))]
             for fid in previous:
                 if fid not in contracts:
+                    self.db.execute("DELETE FROM privileges WHERE engine=? AND function_id=?",(engine,fid))
                     self.db.execute("DELETE FROM functions WHERE engine=? AND function_id=?",(engine,fid))
             self.db.execute("INSERT INTO audit(occurred_at,actor,event,engine,details) VALUES(?,?,?,?,?)",(now,actor,"REGISTRY_SYNC",engine,canonical({"revision":revision,"count":len(contracts)})))
         return {"status":"APPLIED","revision":revision,"count":len(contracts)}
