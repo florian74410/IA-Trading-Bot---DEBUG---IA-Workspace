@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "description": "HARD_DENY cannot be elevated by this agent. RESTRICTED needs an independent out-of-band administrative procedure.",
+  "rules": [
+    {
+      "id": "release",
+      "level": "HARD_DENY",
+      "action": "*",
+      "resource": "*RELEASE*",
+      "why": "Isolated production boundary",
+      "exception_allowed": false
+    },
+    {
+      "id": "release-action",
+      "level": "HARD_DENY",
+      "action": "release.*",
+      "resource": "*",
+      "why": "RELEASE out of scope",
+      "exception_allowed": false
+    },
+    {
+      "id": "private-keys",
+      "level": "HARD_DENY",
+      "action": "keys.private.*",
+      "resource": "*",
+      "why": "No private key access",
+      "exception_allowed": false
+    },
+    {
+      "id": "disable-security",
+      "level": "HARD_DENY",
+      "action": "security.disable",
+      "resource": "*",
+      "why": "Protections cannot be disabled",
+      "exception_allowed": false
+    },
+    {
+      "id": "arbitrary-shell",
+      "level": "HARD_DENY",
+      "action": "ssh.shell",
+      "resource": "*",
+      "why": "No arbitrary interactive shell",
+      "exception_allowed": false
+    },
+    {
+      "id": "arbitrary-docker",
+      "level": "HARD_DENY",
+      "action": "docker.raw.*",
+      "resource": "*",
+      "why": "No Docker socket or raw daemon",
+      "exception_allowed": false
+    },
+    {
+      "id": "delete-volumes",
+      "level": "HARD_DENY",
+      "action": "debug.volumes.delete",
+      "resource": "*",
+      "why": "Persistent DEBUG data protection",
+      "exception_allowed": false
+    },
+    {
+      "id": "real-transactions",
+      "level": "HARD_DENY",
+      "action": "trading.live.*",
+      "resource": "*",
+      "why": "No real transactions via DEBUG",
+      "exception_allowed": false
+    },
+    {
+      "id": "audit-tamper",
+      "level": "HARD_DENY",
+      "action": "audit.delete",
+      "resource": "*",
+      "why": "Audit immutable",
+      "exception_allowed": false
+    },
+    {
+      "id": "grants-self",
+      "level": "HARD_DENY",
+      "action": "policy.grant.*",
+      "resource": "*",
+      "why": "Approval independent of agent",
+      "exception_allowed": false
+    },
+    {
+      "id": "system-file",
+      "level": "RESTRICTED",
+      "action": "debug.config.system",
+      "resource": "iatb-debug-online",
+      "why": "System configuration change",
+      "exception_allowed": true,
+      "max_duration_seconds": 900,
+      "max_uses": 1
+    },
+    {
+      "id": "support-restart",
+      "level": "RESTRICTED",
+      "action": "debug.support.restart",
+      "resource": "iatb-debug-online",
+      "why": "Service impact",
+      "exception_allowed": true,
+      "max_duration_seconds": 900,
+      "max_uses": 1
+    },
+    {
+      "id": "dependency-install",
+      "level": "RESTRICTED",
+      "action": "debug.package.install",
+      "resource": "iatb-debug-online",
+      "why": "Supply chain risk",
+      "exception_allowed": true,
+      "max_duration_seconds": 900,
+      "max_uses": 1
+    }
+  ]
+}

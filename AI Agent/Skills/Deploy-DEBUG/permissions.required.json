@@ -1,0 +1,47 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "debug.status",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.start",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.stop",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.restart",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.deploy",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.health",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "debug.rollback",
+      "resource": "iatb-debug-online",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}

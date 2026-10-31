@@ -1,0 +1,23 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "ssh.ping",
+      "resource": "iatb-debug-ssh",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "ssh.execute.known",
+      "resource": "iatb-debug-ssh",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "ssh.transfer.allowed",
+      "resource": "iatb-debug-ssh",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "iatb-github",
+  "version": "0.2.0",
+  "description": "Capability inventory, not a gateway or an authority.",
+  "actions": [
+    "github.read",
+    "github.branch.create",
+    "github.commit",
+    "github.ci.status"
+  ],
+  "dependencies": [],
+  "executable": false,
+  "approval_required_for_new_powers": true
+}

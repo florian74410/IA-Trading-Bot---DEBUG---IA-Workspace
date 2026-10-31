@@ -1,0 +1,13 @@
+{
+  "name": "iatb-diagnostics",
+  "version": "0.2.0",
+  "description": "Capability inventory, not a gateway or an authority.",
+  "actions": [
+    "diagnostics.status",
+    "diagnostics.logs.redacted",
+    "diagnostics.resources"
+  ],
+  "dependencies": [],
+  "executable": false,
+  "approval_required_for_new_powers": true
+}

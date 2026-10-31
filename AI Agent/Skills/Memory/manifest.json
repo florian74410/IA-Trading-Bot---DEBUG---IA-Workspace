@@ -1,0 +1,17 @@
+{
+  "name": "iatb-memory",
+  "version": "0.2.0",
+  "description": "Capability inventory, not a gateway or an authority.",
+  "actions": [
+    "memory.init",
+    "memory.append",
+    "memory.search",
+    "memory.get",
+    "memory.stats",
+    "memory.correct",
+    "memory.export"
+  ],
+  "dependencies": [],
+  "executable": false,
+  "approval_required_for_new_powers": true
+}

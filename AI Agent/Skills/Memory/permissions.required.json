@@ -1,0 +1,47 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "memory.init",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.append",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.search",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.get",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.stats",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.correct",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "memory.export",
+      "resource": "general-memory",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}

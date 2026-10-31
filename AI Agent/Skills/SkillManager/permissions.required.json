@@ -1,0 +1,23 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "skills.list",
+      "resource": "skill-catalog",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "skills.inspect",
+      "resource": "skill-catalog",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "skills.approve.request",
+      "resource": "skill-catalog",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}

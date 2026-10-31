@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "description": "Inventory only. No file-based privilege delegation. All enabled rules require independent protected authority.",
+  "rules": [
+    {
+      "id": "memory-read",
+      "action": "memory.stats",
+      "resource": "general-memory",
+      "access": "read",
+      "principal": "iatb-agent",
+      "conditions": {
+        "target": "GEN-1-DEBUG",
+        "audit_required": true
+      },
+      "approval_mode": "existing",
+      "expires_at": null,
+      "max_uses": null,
+      "approved_by": null,
+      "enabled": true
+    },
+    {
+      "id": "debug-status",
+      "action": "debug.status",
+      "resource": "iatb-debug-online",
+      "access": "read",
+      "principal": "iatb-debug-ci",
+      "conditions": {
+        "target": "GEN-1-DEBUG",
+        "audit_required": true
+      },
+      "approval_mode": "existing",
+      "expires_at": null,
+      "max_uses": null,
+      "approved_by": null,
+      "enabled": false
+    },
+    {
+      "id": "debug-health",
+      "action": "debug.health",
+      "resource": "iatb-debug-online",
+      "access": "read",
+      "principal": "iatb-debug-ci",
+      "conditions": {
+        "target": "GEN-1-DEBUG",
+        "audit_required": true
+      },
+      "approval_mode": "existing",
+      "expires_at": null,
+      "max_uses": null,
+      "approved_by": null,
+      "enabled": false
+    },
+    {
+      "id": "github-read",
+      "action": "github.read",
+      "resource": "iatb-debug-workspace",
+      "access": "read",
+      "principal": "iatb-agent",
+      "conditions": {
+        "target": "DEBUG-WORKSPACE",
+        "audit_required": true
+      },
+      "approval_mode": "existing",
+      "expires_at": null,
+      "max_uses": null,
+      "approved_by": null,
+      "enabled": false
+    }
+  ]
+}
