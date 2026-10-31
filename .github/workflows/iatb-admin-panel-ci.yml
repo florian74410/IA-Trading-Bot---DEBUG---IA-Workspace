@@ -17,9 +17,20 @@ jobs:
           persist-credentials: false
       - name: Compile Python and JavaScript
         run: |
-          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py'
+          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py'
           node --check 'AI Agent/AdminPanel/app.js'
       - name: Unit, localhost HTTP and security regression tests
         run: python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
+      - name: Verify Phase 3 deployment assets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          grep -q '^ia.iatb.duckdns.org {' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q '^    respond @internal_health 404' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q 'reverse_proxy 127.0.0.1:18083' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q 'User=iatb-admin-panel' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -q 'IPAddressDeny=any' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -q 'NoNewPrivileges=yes' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          echo 'Phase 3 manifest safety checks passed'
       - name: No remote or privileged execution
         run: echo 'No VPS, SSH credentials, Caddy mutation or RELEASE access in this job.'
