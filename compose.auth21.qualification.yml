@@ -1,0 +1,111 @@
+# Fictional isolated Auth21 qualification ONLY. No GEN-1 paths or published ports.
+name: iatb-auth21-qualification
+x-runtime: &runtime
+  image: iatb-auth21:qualification
+  user: "${IATB_QA_UID:?}:${IATB_QA_GID:?}"
+  read_only: true
+  restart: "no"
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  tmpfs: [/tmp]
+  volumes:
+    - ${IATB_QA_ROOT:?}/data:/fixture/data:rw
+    - ${IATB_QA_ROOT:?}/runtime:/fixture/runtime:rw
+    - ${IATB_QA_ROOT:?}/state:/fixture/state:rw
+    - ${IATB_QA_ROOT:?}/annexes:/fixture/annexes:rw
+    - ${IATB_QA_ROOT:?}/updates:/fixture/updates:rw
+    - ${IATB_QA_ROOT:?}/tls:/fixture/tls:ro
+  environment: &auth21-env
+    IATB_DATA_ROOT: /fixture/data
+    IATB_RUNTIME_ROOT: /fixture/runtime
+    IATB_STATE_ROOT: /fixture/state
+    IATB_MARKET_SETTINGS: /fixture/runtime/config/market_data_settings.json
+    IATB_ANNEX_ROOT: /fixture/annexes
+    IATB_UPDATES_ROOT: /fixture/updates
+    IATB_DEPLOYMENT_MODE: AUTHENTICATED
+    IATB_AUTH_MODE: authenticated
+    IATB_AUTH_ORIGIN: https://localhost:8000
+    IATB_AUTH_TLS_CERT: /fixture/tls/cert.pem
+    IATB_AUTH_TLS_KEY: /fixture/tls/key.pem
+    IATB_DEBUG_BOOTSTRAP: "0"
+    IATB_TRADING_LIVE: "0"
+    IATB_TRADING_ENGINE_ENABLED: "0"
+    IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    IATB_FIREWALL_ENABLED: "1"
+services:
+  router:
+    <<: *runtime
+    command: ["node", "Core/Router/router.js"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    networks: [isolated]
+  core:
+    <<: *runtime
+    command: ["node", "--require", "./Tools/CI/auth21_provider_fixture_transport.js", "Core/Server/server.js"]
+    environment:
+      <<: *auth21-env
+      IATB_QA_AI_FIXTURE: "1"
+    network_mode: service:router
+    depends_on: [router]
+  ui:
+    <<: *runtime
+    command: ["node", "UI/Gateway/ui_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  ssh-ui-bridge:
+    <<: *runtime
+    command: ["node", "Tools/ssh_ui_bridge.js"]
+    network_mode: service:router
+    depends_on: [router]
+  firewall:
+    <<: *runtime
+    command: ["node", "Core/Firewall/firewall_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  marketdata:
+    <<: *runtime
+    command: ["node", "--require", "./Tools/CI/auth21_provider_fixture_transport.js", "MarketData/market_data_service.js"]
+    environment:
+      <<: *auth21-env
+      IATB_QA_MARKET_FIXTURE: "1"
+    network_mode: service:router
+    depends_on: [router]
+  indicator:
+    <<: *runtime
+    command: ["node", "Indicators/Engine/indicator_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  liquidity:
+    <<: *runtime
+    command: ["node", "Liquidity/Engine/liquidity_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  strategy:
+    <<: *runtime
+    command: ["node", "Strategy/Engine/strategy_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  risk:
+    <<: *runtime
+    command: ["node", "Risk/Engine/risk_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  portfolio:
+    <<: *runtime
+    command: ["node", "Portfolio/Engine/portfolio_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  supervisor:
+    <<: *runtime
+    command: ["node", "Supervisor/supervisor_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+  fundamental:
+    <<: *runtime
+    command: ["node", "Fundamental/Engine/fundamental_service.js"]
+    network_mode: service:router
+    depends_on: [router]
+networks:
+  isolated:
+    internal: true

@@ -1,0 +1,9 @@
+{
+  "name": "iatb-bank-runtime",
+  "private": true,
+  "version": "2.0.0",
+  "description": "IA-TB Bank signer runtime",
+  "dependencies": {
+    "ethers": "5.7.2"
+  }
+}

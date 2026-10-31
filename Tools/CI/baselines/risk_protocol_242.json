@@ -1,0 +1,149 @@
+{
+  "id": "risk",
+  "label": "Risk Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8019,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "risk.list_capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "risk.position.analyze",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "position",
+            "portfolio"
+          ]
+        }
+      },
+      {
+        "name": "risk.portfolio.analyze",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "portfolio"
+          ]
+        }
+      },
+      {
+        "name": "risk.strategy.analyze",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "strategy",
+            "portfolio"
+          ]
+        }
+      },
+      {
+        "name": "risk.snapshot",
+        "arguments": {
+          "allowUnknown": true
+        }
+      },
+      {
+        "name": "risk.settings.get",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "risk.settings.set",
+        "arguments": {
+          "allowUnknown": true
+        }
+      },
+      {
+        "name": "risk.gate.evaluate",
+        "arguments": {
+          "allowed": [
+            "intent",
+            "schema",
+            "source",
+            "mode",
+            "exchange",
+            "market_type",
+            "marketType",
+            "symbol",
+            "action",
+            "side",
+            "orderType",
+            "order_type",
+            "size",
+            "quantity",
+            "quoteQuantity",
+            "quote_quantity",
+            "limitPrice",
+            "price",
+            "stopLoss",
+            "stop_loss",
+            "takeProfit",
+            "take_profit",
+            "leverage",
+            "reduceOnly",
+            "reduce_only",
+            "confidence",
+            "createdAt",
+            "metadata"
+          ]
+        }
+      },
+      {
+        "name": "risk.gate.verify",
+        "arguments": {
+          "allowed": [
+            "risk_approval_id",
+            "intent",
+            "consume"
+          ],
+          "required": [
+            "risk_approval_id",
+            "intent"
+          ]
+        }
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "risk.analysis",
+        "direction": "PRODUCE",
+        "schema": "risk.analysis/0.1"
+      },
+      {
+        "name": "portfolio.snapshot",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "market.candles",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "indicator.analysis",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "risk.approval",
+        "direction": "PRODUCE",
+        "schema": "risk.gate-decision/1.0"
+      }
+    ],
+    "events": []
+  },
+  "registration": {
+    "dynamic": true
+  }
+}

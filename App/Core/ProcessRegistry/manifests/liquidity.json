@@ -1,0 +1,24 @@
+{
+  "id": "liquidity",
+  "label": "Liquidity Engine V2.0",
+  "type": "ENGINE",
+  "order": 80,
+  "port": 8014,
+  "healthPath": "/health",
+  "marker": "IA-TB Liquidity Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Liquidity/Engine/liquidity_service.js",
+  "log": ".runtime/logs/liquidity.log",
+  "env": {
+    "IATB_LIQUIDITY_PORT": "8014",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router"
+  ],
+  "versionSource": "RUNTIME_HEALTH",
+  "optionalDependencies": [
+    "marketdata"
+  ]
+}

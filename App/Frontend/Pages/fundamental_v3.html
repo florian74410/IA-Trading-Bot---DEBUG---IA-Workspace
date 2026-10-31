@@ -1,0 +1,202 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IA-TB · Fondamental</title><script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script><script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script><link rel="stylesheet" href="/assets/fundamental_v3.css?v=20401"><link rel="stylesheet" href="/assets/fundamental_globe_expanded_v2_2_5.css?v=225">
+<link rel="stylesheet" href="/assets/companion_v1.0.css"><link rel="stylesheet" href="/assets/global_navigation_v2.0.css?v=2013"><script defer src="/assets/global_navigation_v2.0.js?v=3023"></script><style id="iatbFinanceCalendarV24">.macroCalendarSplit{align-items:stretch}.macroCalendarSplit>.calendarPane{min-height:0}.macroCalendarSplit .calendarEventList{height:300px;max-height:300px;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3178a5 #071a29}.macroCalendarSplit .calendarEventList::-webkit-scrollbar{width:8px}.macroCalendarSplit .calendarEventList::-webkit-scrollbar-thumb{background:#3178a5;border-radius:6px}.macroCalendarSplit .calendarEventList::-webkit-scrollbar-track{background:#071a29}.cmePane footer a{color:#7dc8f3;text-decoration:underline}</style></head>
+<body>
+<div class="page">
+  <header class="topbar">
+    
+    <nav class="nav" aria-label="Navigation principale">
+      <button id="navTrading">Trading IA</button><button id="navChart">📈 Chart Viewer</button><button id="navPortfolio">📊 Portfolio</button><button class="active">🧭 Fondamental</button><button id="navAdmin" class="hide">🛠 Admin</button>
+    </nav>
+    <div class="engineState"><span id="healthDot" class="dot"></span><span id="healthText">Fundamental --</span></div>
+  </header>
+
+  <aside class="fundSidebar" aria-label="Navigation Fundamental"><div class="sideTitle"><span class="sideOrb">◈</span><b>FUNDAMENTAL V3</b></div>
+<button data-view="overview" class="active">⌂ Vue d’ensemble</button>
+<div class="sideCategory open"><button class="sideCategoryToggle" type="button" aria-expanded="true"><span>▤ Analyse & Actualités</span><b>›</b></button><div class="sideCategoryItems"><button data-view="news">News & Événements</button><button data-view="ai">Analyse IA</button></div></div>
+<div class="sideCategory open"><button class="sideCategoryToggle" type="button" aria-expanded="true"><span>◉ Sources & Collecte</span><b>›</b></button><div class="sideCategoryItems"><button data-view="sources">Sources & Providers</button><button data-view="source-manager">Source Manager</button></div></div>
+<div class="sideCategory open"><button class="sideCategoryToggle" type="button" aria-expanded="true"><span>▣ Outils</span><b>›</b></button><div class="sideCategoryItems"><button data-view="console">Console</button></div></div>
+<div class="sideFoot">INFORMATION_ONLY</div></aside>
+  <main class="content">
+    <section class="hero">
+      <div><div class="eyebrow">FUNDAMENTAL ENGINE V3 · INFORMATION_ONLY</div><h1>Contexte fondamental</h1><p>Une mémoire structurée des sources et publications. Le moteur reste <strong>informationnel</strong> : le biais par news est une aide visuelle et n'influence aucune stratégie.</p></div>
+    </section>
+
+    <section class="summaryGrid summaryGridAi viewBlock aiBlock" aria-label="Synthèse fondamentale">
+      <article class="metric wide aiSummaryCard"><div class="aiSummaryTop"><div><span>Synthèse IA</span><small id="aiSummaryLastGenerated" class="aiSummaryLastGenerated">Dernière génération · --</small></div><div class="aiSummaryState"><strong id="aiToneTop" class="aiToneTop uncertain">--</strong><small id="aiConfidenceTop">Confiance · --</small><button id="aiSummaryRefresh" class="aiSummaryBtn" type="button" title="Régénérer la synthèse">↻ Refresh</button></div></div><strong id="aiSummaryHeadline" class="pending">Initialisation…</strong><small id="aiSummaryText">La synthèse OpenAI reste INFORMATION_ONLY et n’exécute aucune action de trading.</small><div id="aiSummaryMeta" class="aiSummaryMeta"></div><div id="aiSummaryThemes" class="aiSummaryThemes"></div></article>
+    </section>
+
+    <section class="section aiHistorySection viewBlock aiHistoryBlock" aria-label="Historique des synthèses IA">
+      <div class="aiHistoryHead">
+        <div>
+          <span class="eyebrow">MÉMOIRE IA · BASE FUNDAMENTAL</span>
+          <h2>Historique des synthèses IA</h2>
+          <p>Les synthèses enregistrées dans la base Fundamental, filtrables par domaine.</p>
+        </div>
+        <div class="aiHistoryControls">
+          <label>Domaine
+            <select id="aiHistoryDomain">
+              <option value="ALL">Tous</option>
+              <option value="MACRO">MACRO</option>
+              <option value="MONETARY">MONETARY</option>
+              <option value="MARKET_RISK">MARKET_RISK</option>
+              <option value="REGULATION">REGULATION</option>
+              <option value="CRYPTO">CRYPTO</option>
+              <option value="DEFI">DEFI</option>
+              <option value="ADOPTION">ADOPTION</option>
+              <option value="SECURITY">SECURITY</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </label>
+          <label>Tri
+            <select id="aiHistorySort">
+              <option value="DESC">Plus récentes</option>
+              <option value="ASC">Plus anciennes</option>
+            </select>
+          </label>
+          <button id="aiHistoryRefresh" type="button">↻ Actualiser</button>
+        </div>
+      </div>
+      <div id="aiHistoryMeta" class="aiHistoryMeta">Chargement de la mémoire IA…</div>
+      <div id="aiHistoryList" class="aiHistoryList"><div class="empty">Aucune synthèse chargée.</div></div>
+    </section>
+
+    <section id="cockpit" class="cockpit viewBlock cockpitBlock">
+  <div class="cockpitMetrics">
+    <button class="cockpitMetric sourceMetric" data-expand-target="sourcesBody" aria-label="Ouvrir les sources"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><ellipse cx="16" cy="8" rx="9" ry="4"/><path d="M7 8v8c0 2.2 4 4 9 4s9-1.8 9-4V8"/><path d="M7 16v8c0 2.2 4 4 9 4s9-1.8 9-4v-8"/></svg></span><b id="dashSources">--</b><small>SOURCES</small></button>
+    <button class="cockpitMetric feedMetric" data-expand-target="feedsBody" aria-label="Ouvrir les flux actifs"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="8" cy="24" r="3" fill="currentColor" stroke="none"/><path d="M6 14c6.6 0 12 5.4 12 12"/><path d="M6 6c11 0 20 9 20 20"/></svg></span><b id="dashFeeds">--</b><small>FLUX ACTIFS</small></button>
+    <button class="cockpitMetric totalMetric" data-expand-target="recentList" aria-label="Ouvrir toutes les publications"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 5h15v22H6z"/><path d="M21 9h5v18h-5"/><path d="M9 10h9M9 14h9M9 18h9M9 22h6"/></svg></span><b id="dashTotal">--</b><small>NOMBRE TOTAL</small><em id="dashEmptyBodies">dont -- sans corps</em></button>
+    <button class="cockpitMetric newsMetric" data-expand-target="recentList" aria-label="Ouvrir les publications des dernières 24 heures"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M6 5h15v22H6z"/><path d="M21 9h5v18h-5"/><path d="M9 10h9M9 14h9M9 18h9M9 22h6"/></svg></span><b id="dashNews">--</b><small>PUBLICATIONS 24H</small></button>
+    <button class="cockpitMetric eventMetric" data-expand-target="recentList" aria-label="Ouvrir les événements"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M18 3 8 18h7l-1 11 10-16h-7z" fill="currentColor" stroke="none"/></svg></span><b id="dashEvents">--</b><small>ÉVÉNEMENTS</small></button>
+    <button class="cockpitMetric alertMetric" data-expand-target="fundamentalConsole" aria-label="Ouvrir les alertes"><span class="metricIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M16 4 29 27H3z"/><path d="M16 11v8M16 23v1"/></svg></span><b id="dashErrors">--</b><small>ALERTES</small></button>
+    <button class="cockpitMetric aiMetric" data-expand-target="aiSummaryHeadline" aria-label="Ouvrir la confiance IA"><span class="metricIcon aiIcon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="8" y="8" width="16" height="16" rx="4"/><circle cx="13" cy="14" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="14" r="1.5" fill="currentColor" stroke="none"/><path d="M12 19c1.2 1.2 2.5 1.8 4 1.8s2.8-.6 4-1.8M16 3v5M16 24v5M3 16h5M24 16h5M6.5 6.5l3.5 3.5M22 22l3.5 3.5M25.5 6.5 22 10M10 22l-3.5 3.5"/></svg></span><b id="dashConfidence">--</b><small>CONFIANCE IA</small></button>
+  </div>
+  <div class="cockpitMain">
+    <article class="marketPanel">
+      <div class="panelHead"><b>VUE FONDAMENTALE DU MARCHÉ</b><button id="openEarthRadar" class="plusBtn overviewExpand" type="button" aria-label="Agrandir la Terre" title="Agrandir la Terre">⤢</button></div>
+      <div class="radarToolbar"><button type="button" class="radarFilter active" data-radar-domain="ALL">TOP</button><button type="button" class="radarFilter" data-radar-domain="CRYPTO">CRYPTO</button><button type="button" class="radarFilter" data-radar-domain="DEFI">DEFI</button><button type="button" class="radarFilter" data-radar-domain="MACRO">MACRO</button><button type="button" class="radarFilter" data-radar-domain="REGULATION">RÉGULATION</button><button type="button" class="radarFilter" data-radar-domain="SECURITY">SECURITY</button></div><div class="globePeriodBar" role="group" aria-label="Période des événements du globe"><span>Événements</span><button type="button" data-globe-period="DAY" aria-pressed="false">Jour</button><button type="button" data-globe-period="WEEK" class="active" aria-pressed="true">Semaine</button><button type="button" data-globe-period="MONTH" aria-pressed="false">Mois</button></div><div class="marketVisual"><div class="globeStage"><div id="fundamentalGlobeWebGL" class="fundamentalGlobeMiniWebGL" aria-label="Globe réaliste miniature"></div><canvas id="fundamentalGlobe" aria-label="Global Fundamental Radar 3D" title="Cliquer pour ouvrir la Terre"></canvas><div id="globeFallback" class="globeFallback">Chargement du radar 3D…</div><div class="globeLegend"><span>● TOP NEWS</span><small>Glisser : rotation · molette : zoom · clic : détail</small></div></div><div class="marketRead"><small>État global du marché</small><strong id="dashTone">INCERTAIN</strong><div class="confidenceBar"><i id="dashConfidenceBar"></i></div><div class="overviewMarketFacts" aria-label="Indicateurs fondamentaux réels"><div><span>Sources actives</span><strong id="overviewSources">--</strong></div><div><span>Publications (24h)</span><strong id="overviewNews">--</strong></div><div><span>Alertes du moteur</span><strong id="overviewAlerts">--</strong></div></div><div class="overviewMarketNote">Synthèse informative · aucun ordre de trading émis</div><div id="dashDomains" class="dashDomains"></div></div></div>
+    </article>
+    <article class="eventsPanel">
+      <div class="panelHead"><b>ACTIVITÉ DU MOTEUR</b></div>
+      <div id="dashRecentEvents" class="dashEventList"><div class="dashEmpty">Chargement de l’activité…</div></div>
+    </article>
+  </div>
+  <div class="cockpitLower">
+    <article class="miniPanel sourcePreview"><div class="panelHead"><b>SOURCES & PROVIDERS</b><button class="plusBtn" data-expand-target="sourcesBody">＋</button></div><div id="dashSourcePreview" class="previewBody">Chargement…</div></article>
+    <article class="miniPanel overviewIndicatorPanel"><div class="panelHead"><b>INDICATEURS CLÉS</b></div><div class="overviewIndicatorGrid"><div><span>Sources enregistrées</span><strong id="overviewTotalSources">--</strong></div><div><span>Flux actifs</span><strong id="overviewFeeds">--</strong></div><div><span>Événements récents</span><strong id="overviewEvents">--</strong></div><div><span>Confiance IA</span><strong id="overviewConfidence">--</strong></div></div><small>Données du moteur Fundamental · INFORMATION_ONLY</small></article>
+    
+  </div>
+</section>
+<section class="fedwatchPanel viewBlock overviewOnly" id="fedwatchPanel">
+  <div class="fedwatchHead">
+    <div><span class="eyebrow">MONETARY EXPECTATIONS</span><h2>FedWatch IA-TB</h2><p>Probabilités FOMC reconstruites à partir de données publiques + validation tierce.</p></div>
+    <div class="fedwatchHeadActions"><span id="fedwatchState" class="fedwatchState">CHARGEMENT</span><button id="fedwatchRefresh" type="button">↻ Actualiser</button></div>
+  </div>
+  <div class="fedwatchGrid">
+    <article class="fedwatchMeeting">
+      <div class="fedwatchMetric"><span>Prochaine réunion</span><b id="fedwatchMeetingDate">--</b><small id="fedwatchMeetingMeta">Calendrier Federal Reserve</small></div>
+      <div class="fedwatchMetric"><span>EFFR actuel</span><b id="fedwatchEffr">--</b><small id="fedwatchTarget">Target --</small></div>
+      <div class="fedwatchMetric"><span>Future Fed Funds</span><b id="fedwatchFuture">--</b><small id="fedwatchFutureMeta">ZQ / prix public</small></div>
+    </article>
+    <article class="fedwatchProbBox">
+      <div class="fedwatchProbTitle"><b>Probabilités de taux · IA-TB</b><span id="fedwatchMethod">Weighted month · 25 bp</span></div>
+      <div id="fedwatchProbabilities" class="fedwatchProbabilities"><div class="fedwatchEmpty">Calcul en cours…</div></div>
+    </article>
+    <article class="fedwatchSources">
+      <div class="fedwatchProbTitle"><b>Sources & validation</b><span>sans API CME payante</span></div>
+      <div id="fedwatchSources" class="fedwatchSourceList"><div class="fedwatchEmpty">Vérification des sources…</div></div>
+    </article>
+  </div>
+  <div class="fedwatchFoot"><span id="fedwatchUpdated">Dernière mise à jour · --</span><small>Estimation IA-TB informative · ne pas confondre avec une publication officielle CME FedWatch.</small></div>
+</section>
+<section class="macroCalendarPanel viewBlock overviewOnly" id="macroCalendarPanel">
+  <div class="macroCalendarHead">
+    <div><span class="eyebrow">MACRO & DERIVATIVES CALENDARS</span><h2>Calendriers FED & économie</h2><p>Réunions FOMC et événements économiques internationaux issus de Finance Calendar.</p></div>
+    <div class="macroCalendarLegend"><span><i class="fed"></i>FED</span><span><i class="cme"></i>Finance Calendar</span></div>
+  </div>
+  <div class="macroCalendarSplit">
+    <article class="calendarPane fedPane">
+      <header class="calendarPaneHead">
+        <div class="calendarBrand"><span class="calendarLogo">🇺🇸</span><div><b>Federal Reserve</b><small>FOMC · calendrier officiel</small></div></div>
+        <div class="calendarNav"><button type="button" data-cal-nav="fed:-1">‹</button><strong id="fedCalendarMonth">--</strong><button type="button" data-cal-nav="fed:1">›</button></div>
+      </header>
+      <div id="fedCalendarGrid" class="calendarMonthGrid"><div class="calendarLoading">Chargement…</div></div>
+      <div id="fedCalendarEvents" class="calendarEventList"></div>
+      <footer><span id="fedCalendarStatus">FED · --</span><small>Source : Federal Reserve Board</small></footer>
+    </article>
+    <article class="calendarPane cmePane">
+      <header class="calendarPaneHead">
+        <div class="calendarBrand"><span class="calendarLogo cmeLogo">FC</span><div><b>Finance Calendar</b><small>Événements macro internationaux</small></div></div>
+        <div class="calendarNav"><button type="button" data-cal-nav="cme:-1">‹</button><strong id="cmeCalendarMonth">--</strong><button type="button" data-cal-nav="cme:1">›</button></div>
+      </header>
+      
+      <div id="cmeCalendarGrid" class="calendarMonthGrid"><div class="calendarLoading">Chargement…</div></div>
+      <div id="cmeCalendarEvents" class="calendarEventList"></div>
+      <footer><span id="cmeCalendarStatus">CME · --</span><small id="cmeExpirationStatus">Échéances CME : non disponibles</small><a href="https://www.financecalendar.com" target="_blank" rel="noopener noreferrer">Données : Finance Calendar ↗</a></footer>
+    </article>
+  </div>
+  <div class="macroCalendarFoot"><span>🧠 Disponible au Supervisor via CP/1</span><small>Finance Calendar fournit les publications économiques et décisions monétaires ; les échéances contractuelles CME nécessitent une autre source.</small></div>
+</section>
+
+
+    <details class="section publicationsSection viewBlock publicationsBlock" open><summary><span>Publications récentes</span><small>5 visibles · défilement interne pour la suite</small></summary><div class="sectionBody"><div id="recentList" class="newsList"><div class="empty">Aucune publication collectée pour le moment.</div></div></div></details>
+    <div class="newsControlBar viewBlock newsToolsBlock"><div id="notice" class="notice">Chargement du Fundamental Engine…</div><div class="newsControlActions"><button id="collectNow" class="newsRefreshBtn" type="button">↻ Actualiser</button><button id="purgeNews" class="newsPurgeBtn" type="button" title="Supprime les publications et traductions puis recharge les flux">Purger</button></div></div>
+    <details class="section providersSection viewBlock providersBlock" open><summary><span>Providers</span><span id="providerTestResult" class="providerTestResult" aria-live="polite"></span><small id="providersMeta">Diagnostic RSS / Atom / Web</small></summary><div class="sectionBody"><div id="providerSummary" class="providerSummary"></div><div class="tableWrap fiveRowsWrap providerRowsWrap"><table class="providersTable"><thead><tr><th>Provider</th><th>Type</th><th>État</th><th>Dernière tentative</th><th>Dernier succès</th><th>Items</th><th>Latence</th><th>Actions</th></tr></thead><tbody id="providersBody"><tr><td colspan="8" class="empty">Chargement des providers…</td></tr></tbody></table></div><div id="providerDetail" class="providerDetail hide"></div></div></details>
+    
+    <details class="section sourcesSection viewBlock" open><summary><span>Sources & qualité</span><small>Source Registry central · grades, domaines, flux</small></summary><div class="sectionBody"><div class="toolbar"><input id="sourceSearch" placeholder="Rechercher une source…"><select id="domainFilter"><option value="">Tous les domaines</option><option>MACRO</option><option>MONETARY</option><option>MARKET_RISK</option><option>REGULATION</option><option>CRYPTO_NETWORK</option><option>ADOPTION</option><option>SECURITY</option><option>DEFI</option></select><button id="applySourceFilter">Filtrer</button></div><div class="tableWrap fiveRowsWrap sourceRowsWrap"><table><thead><tr><th>Source</th><th>Type</th><th>Priorité</th><th>Grade</th><th>Fiabilité</th><th>Rapidité</th><th>Flux</th></tr></thead><tbody id="sourcesBody"></tbody></table></div></div></details>
+    <details class="section feedsSection viewBlock" open><summary><span>Flux & collecte</span><small>Flux Manager v1 · RSS / Atom / Web / X</small></summary><div class="sectionBody"><div class="feedManagerBar"><button id="addFeed" class="primary" type="button">Ajouter</button><button id="testSelectedFeed" type="button" disabled>Tester</button><button id="editSelectedFeed" type="button" disabled>Modifier</button><button id="toggleSelectedFeed" type="button" disabled>Activer/Désactiver</button><button id="deleteSelectedFeed" class="dangerMini" type="button" disabled>Supprimer</button><label class="feedSortControl">Trier par <select id="feedSort"><option value="DEFAULT">Ordre actuel</option><option value="PROVIDER">Provider</option><option value="SOURCE">Source</option><option value="TYPE">Type</option><option value="STATE">État</option><option value="SUCCESS">Dernier succès</option></select></label><span id="xTokenHint" class="managerHint">X : état du token inconnu</span></div><div class="tableWrap"><table><thead><tr><th>Flux</th><th>Source</th><th>Provider</th><th>Classe</th><th>État</th><th>Dernier succès</th><th>Diagnostic</th></tr></thead><tbody id="feedsBody"></tbody></table></div></div></details>
+    <section id="consoleDiagnostiqueSection" class="consolePage viewBlock consoleBlock">
+  <header class="consolePageHead">
+    <div><span class="eyebrow">FUNDAMENTAL ENGINE</span><h2>Console Diagnostique</h2><p>Console existante du moteur Fundamental : événements, chat, collectes, IA et erreurs.</p></div>
+  </header>
+  <details class="section fundamentalConsoleSection" open><summary><span>▣ Console Diagnostique</span><small><span id="consoleLiveDot" class="consoleLiveDot"></span> Événements · chat · collecte · IA · erreurs</small></summary><div class="sectionBody">
+      <div class="consoleToolbar"><button type="button" class="consoleFilter active" data-console-filter="ALL">Tout</button><button type="button" class="consoleFilter" data-console-filter="CHAT">Chat</button><button type="button" class="consoleFilter" data-console-filter="COLLECTOR">Collecte</button><button type="button" class="consoleFilter" data-console-filter="AI">IA</button><button type="button" class="consoleFilter" data-console-filter="DIAGNOSTIC">Événements</button><button type="button" class="consoleFilter" data-console-filter="ERROR">⚠ Erreurs</button><label class="consoleQuiet"><input id="consoleHideQuiet" type="checkbox" checked> Masquer collectes sans changement</label><button id="consolePause" type="button">Pause</button></div>
+      <div id="fundamentalConsole" class="fundamentalConsole" role="log" aria-live="polite"><div class="consoleEntry system"><div class="consoleEntryHead"><b>CONSOLE DIAGNOSTIQUE</b><span>Console prête</span></div><p>Les événements, messages du chat, collectes, réponses IA et erreurs apparaissent dans ce fil unique.</p></div></div>
+      <div class="consoleComposer"><textarea id="consoleInput" rows="2" maxlength="1200" placeholder="Demander à Fundamental… Ex. « diagnostique le flux sélectionné », « actualise la synthèse », « trouve-moi des sources DeFi »"></textarea><button id="consoleSend" class="primary" type="button">Envoyer</button></div>
+      <div class="consoleHint">Entrée pour envoyer · Maj+Entrée pour une nouvelle ligne · les détails techniques restent privés Admin.</div>
+    </div></details>
+</section>
+    <details class="section methodologySection viewBlock"><summary><span>Méthodologie & garde-fous</span><small>Ce que le moteur sait et ce qu'il ne prétend pas encore savoir</small></summary><div class="sectionBody methodology"><div><b>INFORMATION</b><p>Publication ou fait à vérifier/structurer. Une publication brute n'est pas encore un événement confirmé.</p></div><div><b>PRÉVISION</b><p>Estimation, probabilité ou calcul. Elle ne devient jamais un fait parce qu'elle est probable.</p></div><div><b>RÉFLEXION</b><p>Interprétation produite par une IA ou un analyste. Elle reste distincte des données sources.</p></div><div><b>BIAIS VISUEL</b><p>Le pictogramme Bull/Bear/Neutre/Mixte est une heuristique locale informative. Il ne crée pas de signal de stratégie.</p></div><div><b>ANTI-REDONDANCE</b><p>Une source et ses différents feeds ne valent pas plusieurs confirmations indépendantes. L'Event Engine fera ce regroupement dans une prochaine itération.</p></div><div><b>WEB PROVIDER</b><p>Il surveille seulement des pages explicitement enregistrées. Les pages dynamiques nécessitant un adaptateur dédié restent PROVIDER PENDING.</p></div></div></details>
+  </main>
+</div>
+<div id="eventDetailModal" class="eventDetailModal hide" role="presentation"><section class="eventDetailFrame" role="dialog" aria-modal="true" aria-labelledby="eventDetailTitle"><header class="eventDetailHead"><div><span id="eventDetailKind" class="eventDetailKind">ÉVÉNEMENT</span><h2 id="eventDetailTitle">Détail de l’événement</h2></div><button id="eventDetailClose" class="eventDetailClose" type="button" aria-label="Fermer" title="Fermer">×</button></header><div id="eventDetailBody" class="eventDetailBody"></div></section></div>
+<div id="earthRadarModal" class="earthRadarBackdrop hide" role="presentation"><section class="earthRadarModal" role="dialog" aria-modal="true" aria-labelledby="earthRadarTitle"><header><div><span class="eyebrow">GLOBAL FUNDAMENTAL RADAR</span><h2 id="earthRadarTitle">Terre · News géolocalisées</h2></div><button id="closeEarthRadar" class="iconClose earthCloseBtn" type="button" aria-label="Fermer la Terre" title="Fermer">✕</button></header><div class="earthRadarTools"><button type="button" class="earthFilter active" data-earth-domain="ALL">TOP</button><button type="button" class="earthFilter" data-earth-domain="CRYPTO">CRYPTO</button><button type="button" class="earthFilter" data-earth-domain="DEFI">DEFI</button><button type="button" class="earthFilter" data-earth-domain="MACRO">MACRO</button><button type="button" class="earthFilter" data-earth-domain="REGULATION">RÉGULATION</button><button type="button" class="earthFilter" data-earth-domain="SECURITY">SECURITY</button><label class="earthLimitLabel">MAX <select id="earthNewsLimit"><option value="10">10</option><option value="25" selected>25</option><option value="50">50</option><option value="100">100</option><option value="250">250</option></select></label><button type="button" class="earthFilter" id="earthHubToggle">HUBS</button><span>● news · ◆ hub · clic = détail</span></div><div class="earthRadarBody"><div class="earthCanvasWrap"><div class="earthMapDecor"><span>🌍 WORLD NEWS MAP</span><small>🇺🇸 🇪🇺 🇬🇧 🇨🇳 🇯🇵 · pays, grandes villes & hubs financiers</small></div><div class="earthDomainLegend"><i class="crypto"></i>Crypto <i class="defi"></i>DeFi <i class="macro"></i>Macro <i class="reg"></i>Régulation <i class="security"></i>Sécurité</div><div id="fundamentalEarthWebGL" class="fundamentalEarthWebGL" aria-label="Terre 3D interactive avec news géolocalisées"></div><canvas id="fundamentalEarthLarge" class="earthFallbackCanvas" aria-label="Terre interactive fallback"></canvas><div class="earthHint">Glisser pour tourner · molette pour zoomer · clique sur un drapeau pour ouvrir la news</div></div><aside id="earthEventDetail" class="earthEventDetail"><b>Sélectionne un point</b><p>Les événements sont placés sur la Terre uniquement lorsqu'une origine géographique est déterminable. Sinon ils restent GLOBAL.</p></aside></div></section></div>
+<div id="feedModal" class="feedModalBackdrop hide" role="presentation">
+  <div class="feedModal" role="dialog" aria-modal="true" aria-labelledby="feedModalTitle">
+    <div class="feedModalHead"><div><span class="eyebrow">FLUX MANAGER v1</span><h2 id="feedModalTitle">Ajouter un Flux</h2></div><button id="feedModalClose" class="iconClose" type="button" aria-label="Fermer">×</button></div>
+    <div class="feedFormGrid">
+      <label>Source<select id="feedSource"></select></label>
+      <label>Type de flux<select id="feedProvider"><option value="RSS">RSS</option><option value="ATOM">ATOM</option><option value="WEB">WEB</option><option value="X">X / Twitter</option></select></label>
+      <label class="span2">Nom du flux<input id="feedLabel" maxlength="180" placeholder="Ex. CoinDesk · Bitcoin"></label>
+      <div id="newSourceFields" class="newSourceFields span2 hide">
+        <label>Nom de la nouvelle source<input id="newSourceName" maxlength="180" placeholder="Nom public"></label>
+        <label>Code<input id="newSourceCode" maxlength="56" placeholder="AUTO si vide"></label>
+        <label>Type<select id="newSourceType"><option>MEDIA</option><option>OFFICIAL</option><option>DATA_PROVIDER</option><option>ANALYTICS</option><option>SECURITY</option><option>PUBLIC_FIGURE</option><option>FORECAST</option></select></label>
+        <label>Niveau de confiance<select id="newSourceGrade"><option value="A+">A+ · primaire</option><option value="A">A</option><option value="B" selected>B · reconnu</option><option value="C">C · secondaire</option><option value="D">D</option><option value="E">E</option></select></label>
+      </div>
+      <div id="urlFields" class="span2 feedTypeBlock"><label>URL du flux / de la page<input id="feedEndpoint" type="url" placeholder="https://..."></label></div>
+      <div id="webFields" class="span2 feedTypeBlock hide">
+        <label>Regex liens à inclure <span class="optional">optionnel</span><input id="feedIncludeRegex" placeholder="^https://site/...$"></label>
+        <label>Regex liens à exclure <span class="optional">optionnel</span><input id="feedExcludeRegex" placeholder="/tag/|/archive/"></label>
+        <label>Liens max / collecte<input id="feedMaxItems" type="number" min="5" max="80" value="35"></label>
+      </div>
+      <div id="xFields" class="span2 feedTypeBlock hide">
+        <div class="xInfo">Le Bearer Token X est enregistré chiffré dans <b>Trading IA → Settings</b> et n'est jamais stocké dans le flux.</div>
+        <label>Mode<select id="feedXMode"><option value="ACCOUNT">Compte X</option><option value="QUERY">Requête X API</option></select></label>
+        <label id="xAccountLabel">Compte<input id="feedXAccount" maxlength="15" placeholder="SECGov"></label>
+        <label id="xQueryLabel" class="span2 hide">Requête<textarea id="feedXQuery" maxlength="512" rows="3" placeholder="(Bitcoin OR BTC) lang:en -is:retweet"></textarea></label>
+        <label>Posts max<input id="feedXMax" type="number" min="10" max="100" value="10"></label>
+        <label class="checkLabel"><input id="feedXNoRetweets" type="checkbox" checked> Exclure les retweets (mode compte)</label>
+      </div>
+      <label>Langue<select id="feedLanguage"><option value="fr">Français</option><option value="en">Anglais</option><option value="es">Espagnol</option><option value="de">Allemand</option></select></label>
+      <label>Intervalle<select id="feedPoll"><option value="120">2 min</option><option value="180">3 min</option><option value="300" selected>5 min</option><option value="600">10 min</option><option value="900">15 min</option><option value="1800">30 min</option></select></label>
+      <label class="checkLabel span2"><input id="feedEnabled" type="checkbox" checked> Activer ce flux après enregistrement</label>
+    </div>
+    <div id="feedTestResult" class="feedTestResult">Teste le flux avant de l'enregistrer pour vérifier le connecteur.</div>
+    <div class="feedModalActions"><button id="feedTestDraft" type="button">Tester le flux</button><button id="feedSave" class="primary" type="button">Ajouter à la base</button><button id="feedCancel" type="button">Annuler</button></div>
+  </div>
+</div>
+
+<script src="/assets/calendar_events_v2_2_5.js?v=20401"></script><script src="/assets/fundamental_globe_expanded_v2_2_5.js?v=225"></script><script src="/assets/fundamental_globe_v3.js?v=225"></script><script src="/assets/fundamental_globe_bridge_v2_2_5.js?v=225"></script><script src="/assets/sync_button_state_v2_2_5.js?v=225"></script><script src="/assets/fundamental_controller_v3.js?v=20401"></script>
+<script src="/assets/companion_v1.0.js"></script></body></html>

@@ -1,0 +1,6 @@
+Runtime local cible : Node.js v16.20.2
+Plateforme : macOS Intel x64
+Fichier : node-v16.20.2-darwin-x64.tar.gz
+Source : https://nodejs.org/download/release/v16.20.2/node-v16.20.2-darwin-x64.tar.gz
+SHA-256 officiel : d7a46eaf2b57ffddeda16ece0d887feb2e31a91ad33f8774da553da0249dc4a6
+Le script install_runtime.command télécharge ce fichier uniquement si .node/bin/node v16.20.2 n'est pas déjà présent.

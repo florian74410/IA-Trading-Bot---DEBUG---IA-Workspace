@@ -1,0 +1,5 @@
+IA-TB INDICATOR IR v1.0 - INTERNE
+==================================
+L'IR est une representation interne de l'Indicator Engine. Ce n'est pas son interface publique et les clients ne doivent pas le generer directement.
+L'interface de creation est IIL (IA-TB Indicator Language). Le parser IIL compile le programme vers cet IR, puis le validateur du Registry controle le resultat avant execution.
+Les anciens .indicator.json IR restent acceptes pour compatibilite de la phase DEBUG.

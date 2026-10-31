@@ -1,0 +1,9 @@
+{
+  "name": "iatb-fundamental-runtime",
+  "private": true,
+  "version": "1.6.8",
+  "description": "Runtime local du Fundamental Engine IA-TB",
+  "dependencies": {
+    "better-sqlite3": "8.7.0"
+  }
+}

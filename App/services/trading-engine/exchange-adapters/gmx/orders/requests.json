@@ -1,0 +1,26 @@
+{
+  "prepare": {
+    "method": "POST",
+    "path": "/orders/txns/prepare"
+  },
+  "submit": {
+    "method": "POST",
+    "path": "/orders/txns/submit"
+  },
+  "status": {
+    "method": "POST",
+    "path": "/orders/txns/status"
+  },
+  "cancel_prepare": {
+    "method": "POST",
+    "path": "/orders/txns/cancel/prepare"
+  },
+  "generic_relay_submit": {
+    "method": "POST",
+    "path": "/relay/submit"
+  },
+  "generic_relay_status": {
+    "method": "POST",
+    "path": "/relay/status"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "application": "IA-Trading-Bot",
+  "version": "2.5.3",
+  "server": "Core/Server/server.js",
+  "ui": "UI/Gateway/ui_service.js",
+  "uiPort": 8000,
+  "routerPort": 8021,
+  "revision": "DEV",
+  "status": "DEV"
+}

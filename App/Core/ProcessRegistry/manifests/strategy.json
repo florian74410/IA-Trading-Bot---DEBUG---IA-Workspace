@@ -1,0 +1,28 @@
+{
+  "id": "strategy",
+  "label": "Strategy Engine v2",
+  "type": "ENGINE",
+  "order": 120,
+  "port": 8018,
+  "healthPath": "/health",
+  "marker": "IA-TB Strategy Engine v2",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Strategy/Engine/strategy_service.js",
+  "log": ".runtime/logs/strategy.log",
+  "env": {
+    "IATB_STRATEGY_PORT": "8018",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": [
+    "risk",
+    "portfolio",
+    "marketdata",
+    "indicator",
+    "fundamental"
+  ],
+  "versionSource": "RUNTIME_HEALTH"
+}

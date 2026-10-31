@@ -1,0 +1,52 @@
+IA-TB — COMMUNICATION ROUTER — Runtime v2.0
+=============================================
+
+Endpoints
+---------
+Router interne CP/1 : 127.0.0.1:8021
+UI Gateway          : 127.0.0.1:8000
+Core                : 127.0.0.1:8001
+
+Role
+----
+Le Router est le bus interne d'IA-TB. Il connait les composants via Protocol Registry et Runtime Registry, controle les contrats CP/1 et route les messages.
+
+Responsabilites
+---------------
+- registre des composants et capabilities ;
+- routage CP/1 ;
+- validation cible/action/arguments ;
+- authentification machine-to-machine ;
+- health et diagnostic ;
+- audit et evenements ;
+- canal UI read/write strictement allowliste.
+
+Le Router ne doit pas
+---------------------
+- calculer un indicateur ;
+- interpreter une analyse metier ;
+- fabriquer un score ;
+- decider d'un trade ;
+- resumer arbitrairement la reponse d'un Engine.
+
+Frontieres particulieres
+------------------------
+Trading : Router -> Firewall :8017 -> Trading Engine :8016.
+Les operations mutantes doivent franchir la frontiere Firewall.
+
+Market Data : controle / metadata / settings via CP/1.
+Les candles volumineuses gardent un data-plane HTTP explicite :
+UI -> /ui-data/market/candles -> Router -> Market Data /candles.
+
+Firewall monitoring : target firewall -> /cp/read/v1.
+Le canal Trading /cp/v1 reste separe.
+
+Endpoints UI autorises
+----------------------
+GET  /router-health
+GET  /communication-health
+POST /communication-test
+POST /communication/v1/ui/read
+POST /communication/v1/ui/write
+
+Les endpoints internes /communication/v1/request, register, event, etc. ne sont pas exposes generiquement au navigateur.

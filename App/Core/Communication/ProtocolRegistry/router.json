@@ -1,0 +1,44 @@
+{
+  "id": "router",
+  "label": "Communication Router",
+  "type": "CORE",
+  "transport": "INTERNAL",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8021,
+    "healthPath": "/router-health"
+  },
+  "registration": {
+    "dynamic": false
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "router.registry.list",
+        "transport": "INTERNAL"
+      },
+      {
+        "name": "router.capabilities",
+        "transport": "INTERNAL"
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "cp.request",
+        "direction": "BOTH",
+        "schema": "CP/1"
+      },
+      {
+        "name": "cp.response",
+        "direction": "BOTH",
+        "schema": "CP/1"
+      },
+      {
+        "name": "cp.event",
+        "direction": "BOTH",
+        "schema": "CP/1"
+      }
+    ],
+    "events": []
+  }
+}

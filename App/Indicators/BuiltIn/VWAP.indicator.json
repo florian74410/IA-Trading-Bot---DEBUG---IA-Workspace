@@ -1,0 +1,84 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "vwap",
+  "name": "Volume Weighted Average Price",
+  "version": "2.1",
+  "category": "volume",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "volume": {
+      "type": "series",
+      "default": "volume",
+      "allowed": [
+        "volume"
+      ]
+    },
+    "anchor": {
+      "type": "enum",
+      "default": "session",
+      "allowed": [
+        "session",
+        "day",
+        "week",
+        "month"
+      ]
+    }
+  },
+  "engine": {
+    "operation": "vwap"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  },
+  "notes": {
+    "anchorSemantics": "session/day = UTC day; week = UTC Monday week; month = UTC calendar month"
+  }
+}

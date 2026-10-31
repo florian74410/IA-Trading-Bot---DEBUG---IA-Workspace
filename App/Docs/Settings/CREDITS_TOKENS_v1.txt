@@ -1,0 +1,8 @@
+Credits / Tokens v1.12 DEBUG
+- Compte > Credits / Tokens.
+- Existing OpenAI token metering is persisted in per-user SQLite from this release onward. Earlier in-memory counters cannot be recovered. Some OpenAI code paths use token estimation if response usage is unavailable.
+- Graph: 7/30/90-day local recorded usage. OpenAI and Anthropic columns, with Anthropic remaining empty until actual Anthropic usage instrumentation exists.
+- Prices are manual per model (USD / 1M input/output), FX USD->EUR manual indicative; unknown prices do not generate fake cost.
+- Official provider balance is explicitly unavailable, never inferred from usage. X usage and billing not fabricated.
+- Purchase links: OpenAI Platform billing, Claude Platform billing, X Developer Console. No credit-card storage, no direct checkout.
+- Next integration: organization-admin usage/cost APIs where account permissions allow, model-aware tariffs, X billable-resource tracking, notifications for verified low balance.

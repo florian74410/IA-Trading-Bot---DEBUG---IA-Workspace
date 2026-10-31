@@ -1,0 +1,29 @@
+:root{color-scheme:dark;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#0b1020;color:#e8edf9;font-size:15px}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 70% 0%,#183352 0%,#0b1020 60%)}
+.shell{max-width:780px;margin:0 auto;padding:28px 20px 56px}
+header{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #36445e;padding-bottom:18px}
+header strong{font-size:1.3rem;letter-spacing:.06em}
+.accent{color:#58d7c2}.version{font-size:.8rem;color:#9caac8}
+.hero{margin:40px 0 24px}.hero h1{font-size:clamp(1.8rem,5vw,2.8rem);margin:0 0 10px}
+.hero p,footer{line-height:1.6;color:#9caac8;max-width:680px}
+.panel{border:1px solid #33425f;border-radius:16px;background:#121c32;padding:26px;margin-top:24px;box-shadow:0 15px 35px #060a1680}
+.panel[hidden],section[hidden]{display:none}
+h2{margin:0 0 18px;font-size:1.3rem}h3{border-top:1px solid #36445e;padding-top:24px;margin-top:28px;font-size:1rem}
+form{display:grid;gap:11px;max-width:510px;margin:18px 0}
+label{font-size:.88rem;font-weight:600;color:#d0dcf4}
+input,select{appearance:none;border:1px solid #526284;border-radius:9px;background:#0c1527;color:#f0f5ff;padding:12px 13px;width:100%;font:inherit;outline-offset:3px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid #58d7c2}
+input[type=checkbox]{appearance:auto;width:auto;accent-color:#58d7c2}
+.inline{display:flex;gap:12px;align-items:center}
+button{border:1px solid #46c2b4;border-radius:9px;background:#138c80;color:#fff;padding:12px 16px;font-weight:700;cursor:pointer;justify-self:start}
+button:hover{background:#16aa9a}
+button.secondary{background:#253653;border-color:#516485}
+button.secondary:hover{background:#354e73}
+.session{display:flex;justify-content:space-between;align-items:start;gap:18px}
+.session p{color:#9caac8}
+.status{border:1px solid #314564;padding:12px 16px;border-radius:10px;background:#132239}
+.status[data-error="1"]{border-color:#c48b50;color:#ffe0af}
+pre{max-height:300px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;color:#8fe2d4}
+footer{margin-top:32px;font-size:.8rem}
+@media(max-width:520px){.session{display:block}.panel{padding:17px}}

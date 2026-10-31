@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>IA-TB · Admin</title>
+  <link rel="stylesheet" href="/assets/admin_v1.0.css">
+  
+
+<link rel="stylesheet" href="/assets/global_navigation_v2.0.css?v=2013"><script defer src="/assets/global_navigation_v2.0.js?v=3021"></script></head>
+<body class="adminDashboard">
+<div class="adminShell">
+  <aside class="adminSidebar" aria-label="Navigation Admin">
+    <div class="sideBrand">
+    </div>
+
+    <div class="sideScroll">
+      <div class="sideSectionLabel">ADMINISTRATION</div>
+      <nav class="sideNav" id="adminSectionNav">
+        <button class="sideLink active" type="button" data-target="console"><span class="sideIcon terminalIcon">›_</span><span><b>Console</b><small>Logs et sortie système</small></span></button>
+        <button class="sideLink" type="button" data-target="firewall"><span class="sideIcon shieldIcon">♢</span><span><b>Firewall</b><small>Protection & règles</small></span></button>
+        <button class="sideLink" type="button" data-target="processus"><span class="sideIcon gearsIcon">⚙</span><span><b>Processus</b><small>État global du Core</small></span></button>
+        <button class="sideLink" type="button" data-target="engines"><span class="sideIcon engineIcon">◉</span><span><b>Engines & Services</b><small>Moteurs et services</small></span></button>
+        <button class="sideLink" type="button" data-target="maintenance"><span class="sideIcon toolsIcon">⌁</span><span><b>Maintenance</b><small>Actions administrateur</small></span></button>
+        <button class="sideLink" type="button" data-target="diagnostics"><span class="sideIcon diagIcon">⌁</span><span><b>Diagnostics</b><small>Santé de la machine</small></span></button>
+      </nav>
+
+      <div class="sideSectionLabel appLabel">APPLICATION</div>
+      <nav class="sideNav appNav">
+        <button id="navTrading" class="sideLink" type="button"><span class="sideIcon tradeIcon">↗</span><span><b>Trading IA</b><small>Exécution & ordres</small></span></button>
+        <button id="navChart" class="sideLink" type="button"><span class="sideIcon chartIcon">▥</span><span><b>Chart Viewer</b><small>Données de marché</small></span></button>
+        <button id="navPortfolio" class="sideLink" type="button"><span class="sideIcon portfolioIcon">◫</span><span><b>Portfolio</b><small>Positions & exposition</small></span></button>
+        <button id="navBank" class="sideLink" type="button"><span class="sideIcon">◇</span><span><b>Banque</b><small>Vaults & liquidité</small></span></button>
+        <button id="navVaultCreator" class="sideLink" type="button"><span class="sideIcon">▦</span><span><b>Vault Creator</b><small>Créer & administrer</small></span></button>
+        <button id="navFundamental" class="sideLink" type="button"><span class="sideIcon fundamentalIcon">◇</span><span><b>Fondamental</b><small>Analyse fondamentale</small></span></button>
+      </nav>
+    </div>
+
+    <div class="sideShortcut">
+      <div class="sideSectionLabel">RACCOURCI</div>
+      <button id="restartAllSide" class="restartShortcut" type="button"><span>↻</span><b>Redémarrer IA-TB</b><small>Redémarrage complet</small></button>
+    </div>
+    <div class="sideStatus"><span class="statusDot"></span><div><small>Statut système</small><strong>OPÉRATIONNEL</strong></div></div>
+  </aside>
+
+  <main class="adminMain">
+    <header class="adminHeader">
+      <div class="headerTitle"><h1>Admin</h1><p>Panneau d’administration central</p></div>
+      <div class="headerMeta">
+        <div><small>IA-TB Core</small><strong class="goodText">OPÉRATIONNEL</strong></div>
+        <div><small>Heure système</small><strong id="systemClock">--:--:--</strong></div>
+        <div><small>Version</small><strong id="version" class="versionBadge">v…</strong></div>
+        <span id="role" class="roleBadge">ADMIN</span>
+        <button id="refresh" class="iconButton" type="button" title="Actualiser">↻</button>
+      </div>
+    </header>
+
+    <div class="adminContent">
+      <div class="notice adminNotice">Console de diagnostic locale. Actions strictement prédéfinies : aucun shell libre, aucune commande arbitraire, aucun secret/API Key affiché.</div>
+
+      <section id="console" class="dashSection anchorSection consoleUnifiedSection">
+        <div class="dashSectionHead">
+          <div class="sectionIdentity"><span class="sectionIcon">›_</span><div><h2>Console CP/1 & Logs</h2><p>Contrôle Router, diagnostic et journaux système dans une console unique</p></div></div>
+          <div class="headActions"><span id="consoleRouterState" class="consoleRouterState">Router · …</span><button id="consoleRefresh" class="btn small" type="button">Actualiser</button><button id="consoleCopy" class="btn small" type="button">Copier</button><button id="consoleClear" class="btn small danger" type="button">Effacer</button></div>
+        </div>
+        <div class="dashSectionBody consoleBody unifiedConsoleBody">
+          <div class="consoleToolbar">
+            <label><span>Vue</span><select id="consoleView"><option value="cp1" selected>Console CP/1</option><option value="logs">Logs</option></select></label>
+            <label class="consoleCpControl"><span>Target</span><select id="consoleTarget"><option value="router">Router</option></select></label>
+            <label class="consoleCpControl"><span>Mode</span><select id="consoleMode"><option value="observation" selected>Observation</option><option value="command">Commande</option></select></label>
+            <label class="consoleLogControl isHidden"><span>Journal</span><select id="logSource"></select></label>
+            <label class="consoleLogControl isHidden"><span>Lignes</span><select id="logLines"><option>50</option><option selected>120</option><option>250</option><option>500</option></select></label>
+            <label class="consoleLogControl consoleAuto isHidden"><input id="logAuto" type="checkbox" checked> auto 2 s</label>
+            <span id="logMeta" class="msg consoleMeta"></span>
+          </div>
+          <pre id="terminal" class="terminal mainConsole unifiedTerminal">[SYSTEM] Initialisation de la Console CP/1…</pre>
+          <div id="consoleSuggestions" class="consoleSuggestions" hidden></div>
+          <div class="consoleCommandRow consoleCpControl">
+            <span class="consolePrompt">&gt;</span>
+            <input id="consoleInput" type="text" autocomplete="off" spellcheck="false" placeholder="portfolio.health  ·  /help pour les commandes" aria-label="Commande CP/1">
+            <button id="consoleSend" class="btn consoleSend" type="button">Envoyer</button>
+          </div>
+          <div class="consoleFoot">
+            <span><b>↑ ↓</b> historique · <b>Tab</b> autocomplétion · <b>/help</b> aide · <b>/targets</b> cibles · <b>/capabilities</b> commandes</span>
+            <span id="consoleSecurity">CP/1 · Admin authentifié · aucune commande shell arbitraire</span>
+          </div>
+          <!-- Legacy IDs retained as aliases for update compatibility; controls are managed by the unified console. -->
+          <button id="logRefresh" type="button" hidden></button><button id="logCopy" type="button" hidden></button><button id="logClear" type="button" hidden></button>
+        </div>
+      </section>
+
+      <section id="firewall" class="dashSection anchorSection">
+        <div class="dashSectionHead"><div class="sectionIdentity"><span class="sectionIcon shieldSection">♢</span><div><h2>Firewall</h2><p>Threads de sécurité FIREWALL / PROTECTION</p></div></div><span id="firewallCount" class="countBadge">0 thread</span></div>
+        <div class="dashSectionBody firewallSectionBody">
+          <div id="firewallSummary" class="firewallSummary"></div>
+          <div id="firewalls" class="firewallThreadList"></div>
+          <div class="firewallHelp"><strong>À propos des threads Firewall / Protection</strong><span>Un thread peut rester <b>en marche</b> tout en ayant sa protection désactivée (mode observation / pass-through selon sa configuration). Le bouton Arrêter coupe réellement le worker ; Redémarrer le recrée sans redémarrer IA-TB.</span></div>
+        </div>
+      </section>
+
+      <section id="processus" class="dashSection anchorSection">
+        <div class="dashSectionHead"><div class="sectionIdentity"><span class="sectionIcon">⚙</span><div><h2>Processus</h2><p>Vue d’ensemble du système et des composants actifs</p></div></div></div>
+        <div class="dashSectionBody"><div id="processSummary" class="processSummary dashboardSummary"></div></div>
+      </section>
+
+      <section id="engines" class="dashSection anchorSection">
+        <div class="dashSectionHead"><div class="sectionIdentity"><span class="sectionIcon">◉</span><div><h2>Engines & Services</h2><p>Moteurs de trading, d’analyse et services techniques</p></div></div><span id="engineCount" class="countBadge">0</span></div>
+        <div class="dashSectionBody"><div id="services" class="grid servicesGrid"></div></div>
+      </section>
+
+      <section id="maintenance" class="dashSection anchorSection">
+        <div class="dashSectionHead"><div class="sectionIdentity"><span class="sectionIcon">⌁</span><div><h2>Maintenance</h2><p>Actions administrateur et gestion des caches</p></div></div><span id="actionMsg" class="msg"></span></div>
+        <div class="dashSectionBody"><section class="p3Diagnostic" aria-label="Pont ADMIN P3"><h3>Pont ADMIN P3</h3><p id="p3BridgeState" role="status">Diagnostic à effectuer avec la session ADMIN.</p><p>La vérification utilise uniquement STATUS. L'autorisation LIVE et les commandes P4/P5 restent indépendantes.</p><button id="p3BridgeCheck" type="button" class="btn">Vérifier Auth21 → Firewall → Trading</button><p>Un arrêt d’urgence bloque les nouveaux envois. Les ordres déjà transmis et les positions peuvent rester exposés.</p>
+          <button id="p4Emergency" type="button" class="btn" disabled>⛔ Arrêt d’urgence</button>
+          <button id="p5Preview" type="button" class="btn" disabled>Inventaire d’arrêt progressif</button>
+          <button id="p4Recover" type="button" class="btn" disabled>Vérifier la reprise</button>
+          <details><summary>Arrêt progressif et réconciliation</summary><p>SAFE conserve les positions. CLOSE nécessite une confirmation distincte des comptes, marchés, quantités et risques. Les opérations broker réelles restent désactivées en 2.5.3 DEV.</p><button type="button" class="btn" disabled>Clôture : non qualifiée</button><pre id="p5Report" role="status">Aucun inventaire vérifié.</pre></details>
+          <p id="p4State" role="status">État du verrou à vérifier.</p></section>
+          <div class="actions maintenanceBar">
+            <button id="reloadIndicators" class="btn">Recharger les indicateurs</button>
+            <button id="clearMarket" class="btn">Vider cache MarketData</button>
+            <button id="clearLiquidity" class="btn">Vider cache Liquidity</button>
+            <button id="clearAllCaches" class="btn">Vider les 2 caches</button>
+            <button id="restartAll" class="btn danger">Redémarrer IA-TB</button>
+            <button id="stopTotal" class="btn danger strongDanger">Arrêt Total</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="diagnostics" class="dashSection anchorSection">
+        <div class="dashSectionHead"><div class="sectionIdentity"><span class="sectionIcon">⌁</span><div><h2>Diagnostics</h2><p>Santé système et ressources de la machine</p></div></div></div>
+        <div class="dashSectionBody"><div id="system" class="systemGrid dashboardSystem"></div></div>
+      </section>
+    </div>
+  </main>
+</div>
+<script src="/assets/admin_controller_v1.0.js"></script>
+
+<script src="/assets/trading_p3_admin.js?v=25301"></script></body>
+</html>

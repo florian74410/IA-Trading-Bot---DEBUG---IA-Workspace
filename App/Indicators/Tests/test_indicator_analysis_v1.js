@@ -1,0 +1,22 @@
+'use strict';
+var assert=require('assert'),path=require('path'),Reg=require('../Engine/indicator_registry').Registry,Analysis=require('../Engine/indicator_analysis_v1');
+var root=path.resolve(__dirname,'..'),reg=new Reg(root),candles=[],t=Date.now()-400*3600000,price=50000;
+for(var i=0;i<400;i++){var drift=35+Math.sin(i/9)*18,o=price,c=o+drift,h=Math.max(o,c)+60,l=Math.min(o,c)-55,v=100+i%17;price=c;candles.push({time:t+i*3600000,open:o,high:h,low:l,close:c,volume:v});}
+var ids=reg.list().filter(function(x){return x.operation!=='liquidity_heatmap';}).map(function(x){return x.id;});
+var out=Analysis.build(reg,candles,{symbol:'BTCUSD',timeframe:'1h',detail:'analysis',enabledIds:ids,disabledIds:[],marketMeta:{provider:'TEST',canonicalSymbol:'BTC/USD',providerPair:'XBTUSD',volumeAvailable:true}});
+assert.equal(out.schema,'indicator.analysis/1.0');
+assert.equal(out.symbol,'BTCUSD');
+assert.equal(out.timeframe,'1h');
+assert.ok(out.dataQuality.score>0.8);
+assert.ok(['BULLISH','BEARISH','NEUTRAL'].indexOf(out.technicalAssessment.bias)>=0);
+assert.equal(out.technicalAssessment.confidenceType,'CONFLUENCE_CONSISTENCY');
+assert.equal(out.technicalAssessment.calibratedProbability,false);
+assert.ok(out.indicators.computed.length>=15);
+assert.ok(Array.isArray(out.levels.supports));
+assert.ok(Array.isArray(out.confluence.contradictions));
+var ev=Analysis.build(reg,candles,{symbol:'BTCUSD',timeframe:'1h',detail:'evidence',enabledIds:['rsi','macd','ichimoku_cloud'],disabledIds:[],marketMeta:{provider:'TEST',canonicalSymbol:'BTC/USD',volumeAvailable:true}});
+assert.ok(ev.evidence&&ev.evidence.candles.length>0);
+assert.ok(ev.evidence.indicatorSeries.rsi);
+assert.equal(Analysis.project(ev,'analysis').evidence,undefined);
+assert.equal(Analysis.project(ev,'evidence').evidence.candles.length>0,true);
+console.log('Indicator normalized analysis: OK · bias='+out.technicalAssessment.bias+' confidence='+out.technicalAssessment.confidence+' computed='+out.indicators.computed.length);

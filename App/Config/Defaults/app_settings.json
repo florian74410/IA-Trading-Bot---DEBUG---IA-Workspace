@@ -1,0 +1,119 @@
+{
+  "version": "1.12",
+  "general": {
+    "language": "fr",
+    "defaultMarketSource": "GMX",
+    "defaultSymbol": "BTCUSD",
+    "defaultInterval": "1m",
+    "chartCandles": 100,
+    "aiCandles": 60,
+    "gmxDefaultMarket": "BTC/USD",
+    "gmxCollateral": "USDC",
+    "gmxMaxLeverage": 50,
+    "openaiModel": "gpt-5.6"
+  },
+  "power": {
+    "modeId": 2,
+    "methods": [
+      "reduce_market_data",
+      "reduce_reasoning",
+      "limit_response_length"
+    ]
+  },
+  "modulation": {
+    "modules": [
+      "gmx",
+      "strategy",
+      "wallet",
+      "system"
+    ],
+    "layout": {
+      "chat": {
+        "col": 1,
+        "row": 1,
+        "w": 4,
+        "h": 14,
+        "visible": true,
+        "order": 0
+      },
+      "chart": {
+        "col": 5,
+        "row": 1,
+        "w": 8,
+        "h": 10,
+        "visible": true,
+        "order": 1
+      },
+      "modules": {
+        "col": 5,
+        "row": 11,
+        "w": 8,
+        "h": 5,
+        "visible": true,
+        "order": 2
+      }
+    }
+  },
+  "ai": {
+    "orderExecution": "PREPARE_ONLY",
+    "autonomousTrading": {
+      "masterEnabled": false,
+      "mode": "OFF",
+      "paperRequiresConfirmation": true,
+      "liveGuardedEnabled": false,
+      "chatCommandsEnabled": true
+    },
+    "llm": {
+      "provider": "MOCK",
+      "fallbackEnabled": false,
+      "fallbackProvider": "OPENAI_API",
+      "openai": {
+        "model": "gpt-5.6",
+        "baseUrl": "https://api.openai.com/v1",
+        "timeoutMs": 45000
+      },
+      "remote": {
+        "endpoint": "",
+        "model": "",
+        "timeoutMs": 45000,
+        "healthTimeoutMs": 5000
+      }
+    }
+  },
+  "portfolio": {
+    "snapshotRefreshSec": 300,
+    "pnlRefreshSec": 3,
+    "exchangeSyncSec": 30,
+    "equityChangeTriggerPct": 1,
+    "baseCurrency": "EUR",
+    "snapshotRetention": "AUTO"
+  },
+  "marketData": {
+    "defaultSource": "KRAKEN",
+    "refreshMs": 15000,
+    "activeTtlMs": 180000,
+    "cacheTtlMs": 20000,
+    "cacheMaxEntries": 48,
+    "providers": {
+      "KRAKEN": {
+        "enabled": true
+      },
+      "GMX": {
+        "enabled": true
+      },
+      "BINANCE": {
+        "enabled": true
+      },
+      "COINGECKO": {
+        "enabled": true
+      }
+    },
+    "coingecko": {
+      "registryRefreshMs": 60000,
+      "detailRefreshMs": 21600000,
+      "pagesPerCycle": 2,
+      "perPage": 250,
+      "vsCurrency": "usd"
+    }
+  }
+}

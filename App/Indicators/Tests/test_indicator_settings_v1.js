@@ -1,0 +1,10 @@
+'use strict';
+var assert=require('assert'),fs=require('fs'),os=require('os'),path=require('path'),Settings=require('../Engine/indicator_settings').Settings;
+var app=fs.mkdtempSync(path.join(os.tmpdir(),'iatb-ind-settings-')),indRoot=path.join(app,'Indicators');fs.mkdirSync(indRoot,{recursive:true});
+var items=[{id:'rsi',name:'RSI',version:'1.0',category:'momentum',kind:'native',operation:'rsi'},{id:'atr',name:'ATR',version:'1.0',category:'volatility',kind:'native',operation:'atr'}];
+var registry={list:function(){return items.slice();}};
+var s=new Settings(indRoot,registry),a=s.get();assert.equal(a.indicators.length,2);assert.ok(s.store.ready);assert.equal(s.store.get('indicator_engine','settings',null).schema,'iatb.indicator.settings/1.0');assert.ok(!fs.existsSync(path.join(app,'Parametres')));
+s.update({refreshMs:5000,enabled:{rsi:false}});a=s.get();assert.equal(a.refreshMs,5000);assert.equal(a.indicators.filter(function(x){return x.id==='rsi';})[0].enabled,false);
+items.push({id:'macd',name:'MACD',version:'1.0',category:'momentum',kind:'native',operation:'macd'});a=s.reconcile();assert.equal(a.indicators.length,3);assert.equal(a.indicators.filter(function(x){return x.id==='macd';})[0].enabled,true);
+items=items.filter(function(x){return x.id!=='atr';});a=s.reconcile();assert.equal(a.indicators.length,2);assert.equal(a.indicators.some(function(x){return x.id==='atr';}),false);
+console.log('Indicator settings registry: OK · add/remove dynamic + SQLite persistence');

@@ -1,0 +1,253 @@
+/* IA-TB Notification Overlay v2 — small / medium / large */
+.iaNtfLayer{position:fixed;inset:0;z-index:99990;display:flex;align-items:flex-start;justify-content:center;padding-top:88px;pointer-events:none}.iaNtfLayer.hasModal{background:rgba(1,8,14,.48);backdrop-filter:blur(3px);pointer-events:auto}.iaNtf{pointer-events:auto;width:360px;max-width:calc(100vw - 28px);border:1px solid rgba(34,190,255,.55);border-radius:12px;background:linear-gradient(145deg,rgba(5,25,39,.94),rgba(2,12,21,.90));box-shadow:0 18px 60px rgba(0,0,0,.5),0 0 26px rgba(0,159,255,.18);color:#eaf8ff;overflow:hidden;animation:iaNtfIn .16s ease-out}.iaNtf.medium{width:520px}.iaNtf.large{width:760px}.iaNtfHead{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(54,179,231,.22)}.iaNtfIcon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:rgba(0,145,255,.16);color:#4bd2ff;font-size:18px}.iaNtfHead div{min-width:0;flex:1}.iaNtfHead b{display:block;font-size:13px}.iaNtfHead small{color:#6fa6bd;font-size:9px}.iaNtfClose{border:0;background:transparent;color:#8fc2d7;font-size:18px;cursor:pointer}.iaNtfBody{padding:12px 14px;font-size:11px;line-height:1.5;color:#c9e0eb}.iaNtf.small .iaNtfBody{max-height:78px;overflow:auto}.iaNtf.medium .iaNtfBody{max-height:290px;overflow:auto}.iaNtf.large .iaNtfBody{max-height:520px;overflow:auto}.iaNtfBody img{display:block;max-width:100%;max-height:210px;object-fit:cover;border-radius:8px;margin:9px 0;opacity:.9}.iaNtfActions{display:flex;justify-content:flex-end;gap:7px;padding:10px 14px;border-top:1px solid rgba(54,179,231,.18)}.iaNtfActions button{border:1px solid #19516d;background:#071c2a;color:#ccefff;border-radius:7px;padding:7px 11px;font-size:10px;font-weight:700;cursor:pointer}.iaNtfActions button.primary{border-color:#20a8ff;background:#087cf0;color:white}.iaNtfActions button.danger{border-color:#b84b59;background:#3a1119;color:#ffd8dc}.iaNtfSensitive{padding:9px;border:1px solid #6e4b1e;border-radius:7px;background:rgba(105,68,15,.16);color:#ffdca0;font-size:10px}.iaSecretBox{word-break:break-all;padding:9px;margin-top:8px;border:1px solid #16516d;border-radius:7px;background:#03101a;font-family:Menlo,monospace;font-size:10px;color:#d8f5ff}@keyframes iaNtfIn{from{opacity:0;transform:translateY(-8px) scale(.985)}to{opacity:1;transform:none}}
+
+/* v2.0 DEBUG — medium Swap/Bridge success notification */
+.iaNtf.medium .iaTxSuccess{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
+}
+.iaTxFlow{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  padding:9px 10px;
+  border:1px solid rgba(43,188,237,.20);
+  border-radius:8px;
+  background:linear-gradient(90deg,rgba(7,31,46,.92),rgba(5,22,34,.82));
+}
+.iaTxDate{
+  flex:0 0 auto;
+  color:#8eb0c0;
+  font-size:10px;
+  font-weight:700;
+}
+.iaTxAsset{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+.iaTxAsset img{
+  width:24px!important;
+  height:24px!important;
+  min-width:24px;
+  object-fit:contain!important;
+  border-radius:50%;
+  margin:0!important;
+}
+.iaTxAsset b{
+  color:#f1fbff;
+  font-size:13px;
+  line-height:1;
+}
+.iaTxAsset small{
+  color:#88a9ba;
+  font-size:8px;
+  font-weight:700;
+}
+.iaTxArrow{
+  color:#2ce6b2;
+  font-size:18px;
+  font-weight:900;
+  text-shadow:0 0 8px rgba(44,230,178,.28);
+}
+.iaTxFee{
+  margin-left:auto;
+  flex:0 0 auto;
+  color:#ffd26c;
+  font-size:10px;
+  font-weight:800;
+}
+.iaTxHash{
+  padding:8px 10px;
+  border:1px solid rgba(41,120,158,.28);
+  border-radius:7px;
+  background:#03111a;
+  color:#8eb1c3;
+  font-size:9px;
+  line-height:1.35;
+  font-family:Menlo,Monaco,monospace;
+  overflow:hidden;
+}
+.iaTxHash b{
+  color:#4bd2ff;
+}
+.iaTxHash span{
+  word-break:break-all;
+}
+@media(max-width:620px){
+  .iaTxFlow{
+    flex-wrap:wrap;
+  }
+  .iaTxFee{
+    margin-left:0;
+    width:100%;
+    padding-left:36px;
+  }
+}
+
+
+/* v2.0 DEBUG — universal large Smart Contract success notification */
+.iaScSuccess{display:flex;flex-direction:column;gap:12px}
+.iaScBadge{
+ display:inline-flex;align-self:flex-start;align-items:center;gap:6px;
+ padding:5px 9px;border:1px solid rgba(42,225,164,.35);border-radius:999px;
+ background:rgba(20,100,76,.18);color:#46e5b0;font-size:9px;font-weight:900;letter-spacing:.05em
+}
+.iaScFlow{padding:12px 13px}
+.iaScGrid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px
+}
+.iaScGrid>div{
+ min-width:0;padding:9px 10px;border:1px solid rgba(36,110,146,.30);border-radius:8px;background:#04131e
+}
+.iaScGrid small{
+ display:block;margin-bottom:4px;color:#6f96a9;font-size:7px;letter-spacing:.08em
+}
+.iaScGrid b{
+ display:block;color:#e9f8ff;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.iaScGrid .iaScOk{color:#45e6ac}
+.iaScHash{padding:10px 12px;font-size:10px}
+@media(max-width:700px){
+ .iaScGrid{grid-template-columns:1fr 1fr}
+ .iaScFlow{flex-wrap:wrap}
+ .iaScFlow .iaTxFee{width:100%;margin-left:0;padding-left:34px}
+}
+
+
+/* Universal smart-contract signature modal */
+.iaNtf.xlarge{
+  width:920px;
+  max-width:calc(100vw - 36px);
+}
+.iaNtf.xlarge .iaNtfBody{
+  max-height:620px;
+  overflow:auto;
+}
+.iaContractSign{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.iaContractWarning{
+  padding:12px 14px;
+  border:1px solid rgba(255,190,67,.42);
+  border-radius:9px;
+  background:linear-gradient(90deg,rgba(92,60,9,.23),rgba(44,29,7,.08));
+}
+.iaContractWarning b{
+  display:block;
+  color:#ffd46e;
+  font-size:14px;
+  margin-bottom:4px;
+}
+.iaContractWarning span{
+  display:block;
+  color:#c8dce7;
+  font-size:10px;
+  line-height:1.45;
+}
+.iaContractRows{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px 10px;
+}
+.iaContractRows>div{
+  min-height:48px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:8px 10px;
+  border:1px solid rgba(35,111,145,.36);
+  border-radius:8px;
+  background:#051620;
+  min-width:0;
+}
+.iaContractRows span{
+  color:#7197aa;
+  font-size:8px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.iaContractRows b{
+  margin-top:4px;
+  color:#effaff;
+  font-size:11px;
+  line-height:1.25;
+  word-break:break-all;
+}
+.iaContractFlow{
+  display:grid;
+  grid-template-columns:auto auto 34px auto auto;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:13px;
+  border:1px solid rgba(41,185,232,.30);
+  border-radius:9px;
+  background:linear-gradient(90deg,#061a27,#07111b);
+}
+.iaContractFlow span{
+  color:#56d2ff;
+  font-size:11px;
+  font-weight:800;
+}
+.iaContractFlow strong{
+  color:#fff;
+  font-size:16px;
+}
+.iaContractFlow i{
+  color:#2ce6b2;
+  font-style:normal;
+  font-size:22px;
+  text-align:center;
+}
+@media(max-width:720px){
+  .iaNtf.xlarge{width:calc(100vw - 20px)}
+  .iaContractRows{grid-template-columns:1fr}
+  .iaContractFlow{grid-template-columns:1fr auto;justify-content:stretch}
+  .iaContractFlow i{grid-column:1/-1}
+}
+
+
+/* Universal Smart Contract signature confirmation */
+.iaScConfirm{display:flex;flex-direction:column;gap:12px}
+.iaScPasswordLabel{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  color:#8fb3c5;
+  font-size:9px;
+  font-weight:700;
+}
+.iaScPasswordLabel input{
+  width:100%;
+  border:1px solid #1b5875;
+  border-radius:7px;
+  background:#03131e;
+  color:#edfaff;
+  padding:9px 10px;
+  font:11px Menlo,Monaco,monospace;
+  outline:none;
+}
+.iaScPasswordLabel input:focus{
+  border-color:#25b9ff;
+  box-shadow:0 0 0 2px rgba(37,185,255,.08);
+}
+
+
+/* Standard crypto transfer notification */
+.iaTransferSuccess{display:flex;flex-direction:column;gap:10px}
+.iaTransferLine{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:9px 10px;border:1px solid rgba(41,185,232,.25);border-radius:8px;background:#061722}
+.iaTransferNet,.iaTransferAmount{display:inline-flex;align-items:center;gap:5px}
+.iaTransferNet img,.iaTransferAmount img{width:22px!important;height:22px!important;min-width:22px;border-radius:50%;object-fit:contain!important;margin:0!important}
+.iaTransferNet small,.iaTransferAmount small{font-size:8px;color:#7ea5b9;font-weight:700}
+.iaTransferAmount b{font-size:13px;color:#f3fbff}
+.iaTransferDash{color:#5db8df;font-weight:900}
+.iaTransferAddresses{display:grid;grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);align-items:center;gap:8px}
+.iaTransferAddresses code{display:block;min-width:0;padding:8px;border:1px solid #173f54;border-radius:7px;background:#031019;color:#b7d7e6;font:9px/1.35 Menlo,Monaco,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.iaTransferAddresses strong{display:grid;place-items:center;color:#2ce6b2;font-size:22px}
+@media(max-width:620px){.iaTransferAddresses{grid-template-columns:1fr}.iaTransferAddresses strong{transform:rotate(90deg)}}

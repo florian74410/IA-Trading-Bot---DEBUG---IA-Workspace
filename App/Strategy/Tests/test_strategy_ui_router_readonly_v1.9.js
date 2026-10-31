@@ -1,0 +1,17 @@
+'use strict';
+var fs=require('fs'),path=require('path'),assert=require('assert');
+var root=path.resolve(__dirname,'../..');
+var router=fs.readFileSync(path.join(root,'Core/Router/router.js'),'utf8');
+var app=fs.readFileSync(path.join(root,'Frontend/Pages/app_v1.0.html'),'utf8');
+var core=fs.readFileSync(path.join(root,'Core/Server/server.js'),'utf8');
+assert(router.indexOf('/communication/v1/ui/read')>=0);
+assert(router.indexOf('UI_READ_DENY')>=0);
+assert(router.indexOf("'strategy.catalog':1")>=0);
+assert(router.indexOf("'strategy.pause':1")<0);
+assert(app.indexOf("strategyRouterRead('strategy.catalog')")>=0);
+assert(app.indexOf('/api/strategies')<0);
+assert(app.indexOf('/api/strategy/active')<0);
+assert(core.indexOf('STRATEGY_MANAGER')<0);
+assert(core.indexOf('STRATEGY_STORE')<0);
+assert(core.indexOf("p==='/api/strategies'")<0);
+console.log('Strategy UI Router READ_ONLY v2 contract: OK');

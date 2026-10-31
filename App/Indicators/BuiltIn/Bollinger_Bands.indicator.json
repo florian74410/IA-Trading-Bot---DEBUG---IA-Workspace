@@ -1,0 +1,92 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "bollinger_bands",
+  "name": "Bollinger Bands",
+  "version": "2.1",
+  "category": "volatility",
+  "inputs": {
+    "source": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 20,
+      "min": 2,
+      "max": 500
+    },
+    "stddev": {
+      "type": "number",
+      "default": 2,
+      "min": 0.1,
+      "max": 10
+    }
+  },
+  "engine": {
+    "operation": "bollinger_bands"
+  },
+  "outputs": {
+    "upper": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#58baf7",
+        "width": 2
+      }
+    },
+    "middle": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#d4bdff",
+        "width": 2
+      }
+    },
+    "lower": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#58baf7",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": [
+        {
+          "type": "band",
+          "upper": "upper",
+          "lower": "lower",
+          "bullColor": "#45c8ff",
+          "bearColor": "#45c8ff",
+          "opacity": 0.13
+        }
+      ]
+    }
+  }
+}

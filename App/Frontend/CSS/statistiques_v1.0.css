@@ -1,0 +1,984 @@
+:root{--s-bg:#020b12;--s-panel:#061521;--s-panel2:#081a28;--s-line:#0e78a9;--s-line-soft:#15435d;--s-cyan:#17caff;--s-blue:#118cff;--s-green:#28e79b;--s-yellow:#f4c54f;--s-purple:#a856ff;--s-text:#eef9ff;--s-muted:#87a9bb}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#020a11;color:var(--s-text);font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+button,input,select{font:inherit}
+.statsApp{max-width:1720px;margin:0 auto;display:grid;grid-template-columns:255px minmax(0,1fr);min-height:calc(100vh - 74px);background:#020a11}
+.statsSide{border:1px solid #103d55;border-top:0;background:linear-gradient(180deg,#061723,#03111b);min-width:0}
+.statsSideTitle{height:74px;display:flex;align-items:center;gap:13px;padding:0 24px;border-bottom:1px solid #12384d;font-size:20px}.statsSideTitle .iaIconBox{color:#20ceff;font-size:24px}.statsSideTitle b{font-size:22px}
+.statsSideNav{padding:8px}
+.statsSideNav>a,.statsGroupTitle,.statsSideGroup>a{min-height:51px;display:flex;align-items:center;gap:12px;padding:0 15px;color:#e8f6fd;text-decoration:none;border-bottom:1px solid #103448;font-size:13px;font-weight:700;position:relative}.statsSideNav>a i,.statsGroupTitle i{margin-left:auto;font-style:normal;font-size:22px}.statsSideNav>a:hover,.statsSideGroup>a:hover{background:#082539}
+.statsSideGroup{border-bottom:1px solid #103448}.statsGroupTitle{border-bottom:0}.statsSideGroup>a{min-height:40px;border:0;padding-left:42px;font-size:12px}.statsSideGroup>a .iaIconBox{margin-left:-16px}
+.statsSideNav>a.active{margin:7px 0;border:1px solid #1bcaff;border-radius:7px;background:linear-gradient(90deg,#0788d7,#13a8e9);box-shadow:0 0 14px rgba(0,183,255,.24);color:white}
+.statsBarsIcon{width:22px;height:20px;display:flex;align-items:flex-end;gap:3px}.statsBarsIcon i{display:block;width:4px;border-radius:2px 2px 0 0;background:#c8f4ff;box-shadow:0 0 5px #16cfff}.statsBarsIcon i:nth-child(1){height:8px}.statsBarsIcon i:nth-child(2){height:15px}.statsBarsIcon i:nth-child(3){height:20px}
+.statsHelpIcon{width:20px;height:20px;display:grid;place-items:center;border:2px solid #15c9ff;border-radius:50%;color:#15c9ff;font-weight:900}
+.statsMain{min-width:0;padding:12px 13px 18px;overflow:hidden}
+.statsPanel{border:1px solid #0f74a0;border-radius:12px;background:linear-gradient(180deg,#061722,#04111a);box-shadow:inset 0 1px rgba(255,255,255,.025),0 0 18px rgba(0,160,255,.035);min-width:0}
+.statsIntro{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,650px);gap:20px;align-items:center;padding:10px 9px 10px 20px;margin-bottom:11px;min-height:112px}.statsIntro h1{font-size:36px;line-height:1;margin:0 0 10px}.statsIntro p{margin:0;color:#b4ccda;font-size:15px}.statsIntroCopy{min-width:0}
+.statsGlobalBanner{height:92px;position:relative;overflow:hidden;border:1px solid #136890;border-radius:12px;background:#071a28}.statsGlobalBanner>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.statsBannerCopy{position:absolute;z-index:2;left:18px;top:19px}.statsBannerCopy b{display:block;color:#24d0ff;font-size:14px;letter-spacing:.03em}.statsBannerCopy span,.statsBannerCopy small{display:block;color:#c9e2ee;margin-top:6px;font-size:10px}.statsBannerCopy small{margin-top:3px;color:#8db3c5}.statsGlobalBanner>a{position:absolute;z-index:3;right:13px;top:10px;padding:7px 10px;border:1px solid #2286b3;border-radius:6px;background:rgba(4,17,27,.76);color:#dff7ff;text-decoration:none;font-size:10px;font-weight:800}
+.statsGrid{display:grid;gap:10px;margin-top:10px}.statsGridTop{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)}.statsGridMid{grid-template-columns:minmax(0,1.14fr) minmax(0,1fr)}.statsGridBottom{grid-template-columns:minmax(0,1.6fr) minmax(370px,.82fr)}
+.statsGridTop>.statsPanel{min-height:352px}.statsGridMid>.statsPanel{min-height:178px}.statsGridBottom>.statsPanel{min-height:180px}
+.statsCardHead{min-height:54px;padding:10px 13px 7px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.statsCardHead h2{font-size:17px;margin:0 0 4px}.statsCardHead p{margin:0;color:#8fb0c2;font-size:10px}.statsCardHead.compact{min-height:48px;padding:8px 12px 5px}.statsCardHead.compact h2{font-size:16px}.panelIcon{color:#1dccff;margin-right:8px}.statusPill{align-self:flex-start;border-radius:13px;padding:6px 10px;background:#082334;border:1px solid #164763;color:#bde0ed;font-size:9px;white-space:nowrap}.statusPill.good{color:#c9fbe9}.statusPill.good::first-letter{color:var(--s-green)}
+.ghostLink{border:1px solid #145e7f;border-radius:6px;background:#061a27;color:#44d2ff;font-size:9px;padding:6px 9px;cursor:pointer}
+.cexMapStage{height:285px;position:relative;overflow:hidden;margin:0 12px 12px;border-radius:8px;background:radial-gradient(circle at 50% 75%,#08283d 0,transparent 45%)}.worldMapAsset{position:absolute;inset:3px 4px;width:calc(100% - 8px);height:calc(100% - 8px);object-fit:fill;opacity:.95}.cexLines{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.cexLines path{fill:none;stroke:#29cfff;stroke-width:2.2;filter:drop-shadow(0 0 4px #22bcff);opacity:.92}
+.mapHub{position:absolute;left:50%;bottom:15px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;color:white}.hubLogo{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:3px solid #10baff;background:#08233a;color:#24d5ff;font-size:27px;box-shadow:0 0 18px #078cff77}.mapHub b{font-size:14px;margin-top:3px}.mapHub small{font-size:9px;color:#a3c0cf}
+.exchangeNode{position:absolute;display:flex;align-items:center;gap:8px;min-width:116px;padding:7px 9px;border:1px solid #1b6f96;border-radius:8px;background:linear-gradient(180deg,rgba(8,34,51,.96),rgba(4,17,27,.96));box-shadow:0 0 14px rgba(0,156,255,.07)}.exchangeNode b{display:block;font-size:11px}.exchangeNode small{display:flex;align-items:center;gap:5px;margin-top:3px;font-size:9px;color:#a8c3d1}.exchangeNode small i{width:7px;height:7px;border-radius:50%;background:#34e89f;box-shadow:0 0 6px #34e89f}.exchangeNode em{font-style:normal}.brandIcon{width:32px;height:32px;flex:0 0 32px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:16px;color:#fff}.brandIcon.coinbase{background:#1769ee}.brandIcon.binance{background:#0b1520;color:#ffd12f;border-radius:8px}.brandIcon.okx{background:#f2f6f9;color:#07111a;border-radius:7px}.brandIcon.kraken{background:#6c43d8}.brandIcon.gmx{background:linear-gradient(145deg,#1e57ff,#8b29e8);border-radius:7px}.nodeCoinbase{left:10%;top:16%}.nodeBinance{left:42%;top:6%}.nodeOkx{right:9%;top:17%}.nodeKraken{left:8%;bottom:13%}.nodeGmx{right:7%;bottom:11%}
+.engineStage{height:294px;position:relative;margin:0 10px 10px;overflow:hidden}.engineLines{position:absolute;inset:0;width:100%;height:100%}.engineLines path{fill:none;stroke:#24cfff;stroke-width:2.2;opacity:.75;filter:drop-shadow(0 0 4px #1dcbff)}.engineHub{position:absolute;width:116px;height:116px;left:50%;top:50%;transform:translate(-50%,-50%)}.engineHub img{width:100%;height:100%}
+.engineNode{position:absolute;min-width:108px;padding:6px 8px;display:grid;grid-template-columns:28px 1fr;grid-template-rows:auto auto;align-items:center;border:1px solid #1687b5;border-radius:8px;background:#071b29;box-shadow:0 0 12px #0b97dd12}.engineNode>span{grid-row:1/3;font-size:20px;color:#2acaff}.engineNode>b{font-size:10px}.engineNode>em{justify-self:start;margin-top:2px;padding:2px 7px;border-radius:9px;background:#073e44;color:#38e9bd;font-size:8px;font-style:normal}.eRouter{left:25%;top:5%}.eMarket{left:50%;top:0;transform:translateX(-50%)}.eIndicator{right:17%;top:6%}.eStrategy{right:1%;top:31%}.eTrading{right:0;top:58%}.eRisk{right:10%;bottom:1%}.ePortfolio{left:50%;bottom:0;transform:translateX(-50%)}.eFundamental{left:18%;bottom:1%}.eSupervisor{left:1%;top:57%}.eUi{left:0;top:31%}
+.platformCards,.oracleCards{display:grid;gap:8px;padding:0 11px 11px}.platformCards{grid-template-columns:repeat(5,minmax(0,1fr))}.oracleCards{grid-template-columns:repeat(4,minmax(0,1fr))}
+.platformCard,.oracleCard{min-width:0;border:1px solid #155675;border-radius:8px;background:#071926;padding:8px}.platformCardTop,.oracleCardTop{display:flex;align-items:center;gap:7px}.platformCard .brandIcon,.oracleCard .brandIcon{width:29px;height:29px;flex-basis:29px;font-size:14px}.platformCard b,.oracleCard b{font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.miniState{display:block;margin-top:4px;font-size:8px;color:#34e99f}.miniState.warn{color:#f4c54f}.miniLatency{display:inline-block;margin-top:5px;padding:2px 6px;border-radius:8px;background:#092334;color:#a4c3d3;font-size:8px}.platformMeta{margin-top:6px;border-top:1px solid #12384c;padding-top:5px}.platformMeta span{display:block;color:#8aaabb;font-size:8px}.platformMeta strong{display:block;margin-top:2px;color:#3ce4a8;font-size:9px}.platformMeta strong.warn{color:#f3c651}.oracleCard{display:grid;grid-template-columns:minmax(0,1fr) 46px;gap:5px;align-items:center}.oracleCardTop{grid-column:1/-1}.uptimeRing{--p:98;position:relative;width:42px;height:42px;border-radius:50%;background:conic-gradient(#36e6ac calc(var(--p)*1%),#153646 0);display:grid;place-items:center}.uptimeRing:after{content:"";position:absolute;inset:6px;border-radius:50%;background:#071926}.uptimeRing span{position:relative;z-index:2;font-size:7px;color:#9fc0ce}.oracleMeta span{display:block;color:#8ba9b9;font-size:8px}.oracleMeta strong{display:block;margin-top:3px;color:#36e6ac;font-size:10px}
+.adoptionHead{align-items:center}.chartLegend{display:flex;gap:9px;align-items:center;color:#91b1c1;font-size:8px}.chartLegend span{white-space:nowrap}.chartLegend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}.chartLegend .blue{background:#149cff}.chartLegend .green{background:#27e2b0}.chartLegend .purple{background:#a957ff}.rangeBtns{display:flex;border:1px solid #135170;border-radius:5px;overflow:hidden}.rangeBtns button{border:0;border-right:1px solid #135170;background:#061926;color:#a8c7d6;padding:4px 7px;font-size:8px}.rangeBtns button:last-child{border-right:0}.rangeBtns button.active{background:#159fe8;color:#fff}
+.adoptionChart{height:135px;padding:0 10px 9px}.adoptionChart svg{width:100%;height:100%;display:block}.chartGrid line{stroke:#163448;stroke-width:1}.chartAxis text{fill:#82a6b8;font-size:8px;font-family:Arial}.chartBars rect{fill:#1598e8}.chartLineVolume,.chartLineDefi{fill:none;stroke-width:2}.chartLineVolume{stroke:#27e2b0}.chartLineDefi{stroke:#a957ff}.chartPointVolume{fill:#27e2b0}.chartPointDefi{fill:#a957ff}
+.summaryGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:5px 10px 10px}.summaryCell{min-height:54px;border:1px solid #145675;border-radius:7px;background:#071926;padding:7px;display:grid;grid-template-columns:32px 1fr;align-items:center;gap:6px}.summaryCell i{font-style:normal;color:#25ceff;font-size:20px;text-align:center}.summaryCell b{display:block;color:#eaf8ff;font-size:15px}.summaryCell span{display:block;color:#8fb0c1;font-size:7px;margin-top:2px}.summaryCell.good b{color:#35e9a8}
+@media(max-width:1380px){.statsApp{grid-template-columns:240px minmax(0,1fr)}.statsMain{padding:10px}.statsIntro{grid-template-columns:minmax(0,1fr) 470px}.statsIntro h1{font-size:32px}.statsGridTop>.statsPanel{min-height:330px}.cexMapStage{height:265px}.engineStage{height:272px}.exchangeNode{min-width:104px;padding:6px 7px}.engineNode{min-width:96px}.platformCards{gap:6px}.oracleCards{gap:6px}.statsCardHead h2{font-size:15px}.statsCardHead.compact h2{font-size:14px}}
+@media(max-width:1180px){.statsApp{grid-template-columns:205px minmax(0,1fr)}.statsSideTitle{padding:0 15px}.statsSideNav>a,.statsGroupTitle{padding-left:11px;font-size:11px}.statsSideGroup>a{padding-left:35px}.statsIntro{grid-template-columns:1fr 390px}.statsGridTop,.statsGridMid{grid-template-columns:1fr}.statsGridBottom{grid-template-columns:1fr}.cexMapStage,.engineStage{height:300px}.platformCards{grid-template-columns:repeat(5,minmax(118px,1fr));overflow-x:auto}.oracleCards{grid-template-columns:repeat(4,minmax(130px,1fr));overflow-x:auto}.summaryPanel{min-height:auto!important}}
+@media(max-width:820px){.statsApp{display:block}.statsSide{position:relative}.statsSideTitle{height:58px}.statsSideNav{display:grid;grid-template-columns:1fr 1fr;gap:5px}.statsSideNav>a,.statsGroupTitle{min-height:42px;border:1px solid #103448;border-radius:6px}.statsSideGroup{display:contents}.statsSideGroup>a{display:none}.statsIntro{grid-template-columns:1fr}.statsGlobalBanner{height:100px}.statsMain{padding:8px}.statsIntro h1{font-size:28px}.cexMapStage{height:290px}.exchangeNode{transform:scale(.88);transform-origin:center}.engineStage{height:360px}.engineNode{transform:scale(.86)}.eMarket,.ePortfolio{transform:translateX(-50%) scale(.86)}.statsCardHead{flex-wrap:wrap}.chartLegend{order:3;width:100%;flex-wrap:wrap}.summaryGrid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.statsSideNav{grid-template-columns:1fr}.statsIntro{padding:12px}.statsIntro p{font-size:12px}.statsGlobalBanner>a{display:none}.cexMapStage{height:330px}.nodeCoinbase{left:1%;top:14%}.nodeBinance{left:37%;top:3%}.nodeOkx{right:1%;top:16%}.nodeKraken{left:1%;bottom:12%}.nodeGmx{right:1%;bottom:10%}.engineStage{height:430px}.engineHub{width:92px;height:92px}.engineNode{min-width:90px}.eRouter{left:17%}.eIndicator{right:8%}.eStrategy{right:0;top:35%}.eTrading{right:0;top:58%}.eRisk{right:2%;bottom:4%}.eFundamental{left:2%;bottom:4%}.eSupervisor{left:0}.summaryGrid{grid-template-columns:1fr}.adoptionChart{height:170px}}
+
+
+/* v2.0 DEBUG — harmonise les pictogrammes de la barre latérale */
+.statsSideNav .iaIconBox,
+.statsSideNav .statsBarsIcon,
+.statsSideNav .statsHelpIcon{
+  width:22px!important;
+  height:22px!important;
+  min-width:22px!important;
+  flex:0 0 22px!important;
+}
+.statsSideNav .iaIconBox{
+  display:grid!important;
+  place-items:center!important;
+  font-size:21px!important;
+  line-height:1!important;
+  color:#1dccff!important;
+}
+.statsSideNav .iaIconBox svg{
+  width:22px!important;
+  height:22px!important;
+}
+.statsSideNav .statsBarsIcon{
+  align-items:flex-end!important;
+  justify-content:center!important;
+}
+.statsSideNav .statsHelpIcon{
+  font-size:13px!important;
+}
+.statsSideNav>a,
+.statsSideNav .statsGroupTitle,
+.statsSideNav .statsSideGroup>a{
+  gap:13px!important;
+}
+
+
+/* v2.0 DEBUG — visual polish from 1280px Firefox review */
+.statsCardHead>div,
+.platformCardTop>div,
+.oracleCardTop>div,
+.exchangeNode>span:last-child{
+  min-width:0;
+}
+.statsCardHead h2,
+.statsCardHead p,
+.platformCard b,
+.oracleCard b,
+.exchangeNode b,
+.summaryCell b,
+.summaryCell span{
+  overflow-wrap:anywhere;
+}
+.statusPill,
+.ghostLink{
+  flex:0 0 auto;
+}
+.platformCard,
+.oracleCard{
+  overflow:hidden;
+}
+.platformCardTop,
+.oracleCardTop{
+  min-width:0;
+}
+.platformCard b,
+.oracleCard b{
+  display:block;
+  line-height:1.12;
+}
+.platformMeta strong{
+  line-height:1.15;
+}
+.oracleCardTop b{
+  white-space:normal!important;
+  min-height:22px;
+  display:flex;
+  align-items:center;
+}
+.oracleCardTop .miniState{
+  margin-top:2px;
+}
+.oracleCard .miniLatency{
+  margin-top:3px;
+}
+.exchangeNode b{
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+.exchangeNode{
+  max-width:150px;
+}
+.engineNode{
+  overflow:hidden;
+}
+.engineNode>b{
+  min-width:0;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+.statsCardHead.compact .ghostLink{
+  max-width:160px;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+
+/* Avoid Router / Market Data / Indicator collisions on 1280-ish layouts. */
+@media(min-width:1181px) and (max-width:1380px){
+  .engineStage{
+    height:278px!important;
+  }
+  .eRouter{left:18%!important;top:8%!important}
+  .eMarket{left:50%!important;top:0!important}
+  .eIndicator{right:14%!important;top:8%!important}
+  .eStrategy{right:0!important;top:31%!important}
+  .eTrading{right:0!important;top:58%!important}
+  .eRisk{right:8%!important;bottom:1%!important}
+  .ePortfolio{left:50%!important;bottom:0!important}
+  .eFundamental{left:16%!important;bottom:1%!important}
+  .eSupervisor{left:0!important;top:58%!important}
+  .eUi{left:0!important;top:31%!important}
+  .engineNode{
+    min-width:90px!important;
+    max-width:112px!important;
+    padding:5px 6px!important;
+    grid-template-columns:24px minmax(0,1fr)!important;
+  }
+  .engineNode>span{font-size:17px!important}
+  .engineNode>b{font-size:8.6px!important}
+  .engineNode>em{
+    font-size:7.2px!important;
+    padding:2px 5px!important;
+  }
+}
+
+/* Dense cards: preserve names without overflowing their modules. */
+@media(min-width:981px) and (max-width:1380px){
+  .platformCards{
+    padding:0 7px 9px!important;
+    gap:5px!important;
+  }
+  .oracleCards{
+    padding:0 7px 9px!important;
+    gap:5px!important;
+  }
+  .platformCard,
+  .oracleCard{
+    padding:6px!important;
+  }
+  .platformCard .brandIcon,
+  .oracleCard .brandIcon{
+    width:26px!important;
+    height:26px!important;
+    min-width:26px!important;
+    flex-basis:26px!important;
+    font-size:12px!important;
+  }
+  .platformCardTop,
+  .oracleCardTop{
+    gap:5px!important;
+  }
+  .platformCard b,
+  .oracleCard b{
+    font-size:8.6px!important;
+  }
+  .miniState,
+  .miniLatency,
+  .platformMeta span{
+    font-size:7.2px!important;
+  }
+  .platformMeta strong,
+  .oracleMeta strong{
+    font-size:8.4px!important;
+  }
+  .oracleCard{
+    grid-template-columns:minmax(0,1fr) 40px!important;
+  }
+  .uptimeRing{
+    width:38px!important;
+    height:38px!important;
+  }
+  .uptimeRing:after{
+    inset:5px!important;
+  }
+}
+
+/* Long oracle/bridge names use two tidy lines rather than clipping. */
+@media(min-width:981px){
+  .oracleCardTop>div{
+    min-width:0;
+  }
+  .oracleCardTop b{
+    max-width:100%;
+    min-height:20px;
+    line-height:1.05;
+  }
+}
+
+/* Small layout cleanup for the CEX map labels. */
+@media(min-width:1181px) and (max-width:1380px){
+  .exchangeNode{
+    min-width:98px!important;
+    max-width:118px!important;
+    padding:5px 6px!important;
+    gap:5px!important;
+  }
+  .exchangeNode .brandIcon{
+    width:27px!important;
+    height:27px!important;
+    flex-basis:27px!important;
+    font-size:13px!important;
+  }
+  .exchangeNode b{font-size:8.7px!important}
+  .exchangeNode small{font-size:7.4px!important}
+  .nodeCoinbase{left:8%!important}
+  .nodeBinance{left:39%!important}
+  .nodeOkx{right:7%!important}
+  .nodeKraken{left:7%!important}
+  .nodeGmx{right:5%!important}
+}
+
+
+/* =========================================================
+   Statistics sections v1.1 — Server / CeFi / DeFi
+   ========================================================= */
+.statsSection{display:none}
+.statsSection.active{display:block}
+.statsSideHeroIcon{
+ width:30px;height:30px;min-width:30px;display:grid;place-items:center;
+ border:1px solid #16bcea;border-radius:8px;background:#08263a;color:#27d2ff;
+ font-size:19px;box-shadow:0 0 12px rgba(23,198,255,.18)
+}
+.statsSideSvgIcon{
+ width:22px;height:22px;min-width:22px;display:grid;place-items:center;
+ color:#25d0ff;font-size:16px
+}
+
+/* Section heading */
+.statsSectionIntro{
+ min-height:102px;margin-bottom:11px;padding:13px 17px;
+ display:flex;align-items:center;justify-content:space-between;gap:18px
+}
+.statsSectionIntro h1{margin:4px 0 5px;font-size:29px;line-height:1.04}
+.statsSectionIntro p{margin:0;color:#91b1c2;font-size:11px}
+.statsSectionKicker{
+ color:#48cfff;font-size:8px;font-weight:900;letter-spacing:.11em
+}
+.statsSectionKicker.defi{color:#45e7c2}
+.statsSectionBadge{
+ width:105px;min-width:105px;height:72px;border:1px solid #145b7b;border-radius:10px;
+ display:grid;grid-template-columns:38px 1fr;grid-template-rows:1fr 1fr;
+ align-items:center;padding:8px;background:linear-gradient(135deg,#08263a,#06131e)
+}
+.statsSectionBadge>span{
+ grid-row:1/3;width:34px;height:34px;display:grid;place-items:center;border-radius:50%;
+ background:#0a314b;color:#35ceff;font-size:20px
+}
+.statsSectionBadge>b{font-size:14px;color:#eefaff}
+.statsSectionBadge>small{font-size:7px;color:#789dac}
+.statsSectionBadge.defi>span{color:#46e4bd;background:#07352f}
+
+/* Top financial KPI cards */
+.marketKpiGrid{
+ display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:10px
+}
+.marketKpi{
+ min-height:104px;position:relative;overflow:hidden;padding:12px 13px;border-radius:10px;
+ border:1px solid #164f6a;background:linear-gradient(150deg,#071925,#05111a)
+}
+.marketKpi:before{
+ content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#2ac9ff
+}
+.marketKpi.violet:before{background:#ae55ff}
+.marketKpi.green:before{background:#34dfad}
+.marketKpi.amber:before{background:#f0b74b}
+.marketKpi>span{display:block;color:#789bac;font-size:8px;text-transform:uppercase;letter-spacing:.05em}
+.marketKpi>b{display:inline-block;margin-top:7px;color:#f2fbff;font-size:26px;line-height:1}
+.marketKpi>em{
+ display:inline-block;margin-left:8px;color:#39e8aa;font-size:10px;font-style:normal;font-weight:800
+}
+.marketKpi>small{display:block;margin-top:8px;color:#658797;font-size:8px}
+
+/* Hero chart + donut */
+.financeHeroGrid{
+ display:grid;grid-template-columns:minmax(0,1.65fr) minmax(310px,.65fr);gap:10px;margin-bottom:10px
+}
+.financeChartPanel,.financeSharePanel{min-height:292px}
+.financeRanges{
+ display:flex;border:1px solid #15516e;border-radius:6px;overflow:hidden
+}
+.financeRanges button{
+ min-width:42px;height:27px;border:0;border-right:1px solid #15516e;
+ background:#061925;color:#87aabb;font-size:8px;cursor:pointer
+}
+.financeRanges button:last-child{border-right:0}
+.financeRanges button.active{background:#138fd1;color:#fff}
+.financeChart{height:224px;padding:0 10px 10px}
+.financeChart svg{width:100%;height:100%;display:block}
+.financeGrid line{stroke:#143549;stroke-width:1}
+.financeBars rect{opacity:.9}
+.financeBars.cefi rect{fill:url(#none)}
+.financeBars.cefi rect{fill:#a94ff2}
+.financeBars.defi rect{fill:#18cfc2}
+.financeDonutWrap{
+ min-height:220px;display:flex;align-items:center;justify-content:center;gap:22px;padding:8px 14px 14px
+}
+.financeDonut{
+ width:154px;height:154px;min-width:154px;border-radius:50%;position:relative;display:grid;place-items:center;
+ background:conic-gradient(#178df3 0 34%,#6f5be7 34% 56%,#e759e3 56% 74%,#42d7b0 74% 88%,#45627a 88% 100%);
+ box-shadow:0 0 22px rgba(18,144,231,.08)
+}
+.financeDonut.defiDonut{
+ background:conic-gradient(#17b9e8 0 29%,#2bd9aa 29% 53%,#7665f0 53% 72%,#d754d9 72% 85%,#42667b 85% 100%)
+}
+.financeDonut:after{
+ content:"";position:absolute;inset:32px;border-radius:50%;background:#061521;border:1px solid #13445d
+}
+.financeDonut>span{position:relative;z-index:2;text-align:center}
+.financeDonut b{display:block;font-size:18px}
+.financeDonut small{display:block;margin-top:3px;color:#789cab;font-size:8px}
+.financeLegend{min-width:125px}
+.financeLegendRow{
+ display:grid;grid-template-columns:9px minmax(0,1fr) auto;gap:6px;align-items:center;
+ min-height:25px;color:#9db9c7;font-size:9px
+}
+.financeLegendRow b{color:#e7f5fb;font-size:9px}
+.legendDot{width:7px;height:7px;border-radius:50%;background:#178df3}
+.legendDot.d1{background:#6f5be7}.legendDot.d2{background:#e759e3}.legendDot.d3{background:#42d7b0}.legendDot.d4{background:#45627a}
+
+/* Bottom modules */
+.financeBottomGrid{grid-template-columns:minmax(0,1.25fr) minmax(0,.85fr) minmax(0,.8fr)}
+.financeBottomGrid>.statsPanel{min-height:220px}
+.financeExchangeTable{padding:0 10px 10px}
+.financeTableRow{
+ min-height:40px;display:grid;grid-template-columns:minmax(120px,1.2fr) .8fr .55fr .9fr;
+ gap:7px;align-items:center;border-top:1px solid #113247;color:#a9c4d0;font-size:8.5px
+}
+.financeTableRow:first-child{border-top:0}
+.financeTableRow>div b{display:block;color:#eef9ff;font-size:9.5px}
+.financeTableRow>div small{display:block;margin-top:2px;color:#2fe3a1;font-size:7px}
+.financeTableRow>span{text-align:right;white-space:nowrap}
+.assetVolumeList{padding:2px 11px 11px}
+.assetBarRow{margin:8px 0}
+.assetBarRow>div:first-child{display:flex;justify-content:space-between;gap:8px;font-size:8px}
+.assetBarRow b{color:#e8f6fc}.assetBarRow span{color:#7698a9}
+.assetBar{height:6px;margin-top:5px;border-radius:5px;background:#102c3a;overflow:hidden}
+.assetBar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#167ee6,#31c8ff)}
+.assetBar i.defi{background:linear-gradient(90deg,#0e9f7c,#32e2b5)}
+.marketHealthGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:4px 10px 10px}
+.marketHealthCell{
+ min-height:65px;padding:9px;border:1px solid #16445a;border-radius:8px;background:#071925
+}
+.marketHealthCell span{display:block;color:#7799a9;font-size:7px}
+.marketHealthCell b{display:block;margin-top:7px;color:#f0f8fb;font-size:13px}
+.marketHealthCell.good b{color:#38e6aa}.marketHealthCell.warn b{color:#f0c765}
+
+/* Stablecoin flow chart */
+.stableFlowChart{height:165px;padding:5px 10px 10px}
+.stableFlowChart svg{width:100%;height:120px;display:block}
+.stableAxis{stroke:#27536a;stroke-width:1}
+.stableIn{fill:#22d9a5}.stableOut{fill:#ec5464}
+.stableLegend{display:flex;justify-content:center;gap:18px;color:#8eaeba;font-size:8px}
+.stableLegend i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.stableLegend i.in{background:#22d9a5}.stableLegend i.out{background:#ec5464}
+
+/* 1280 target */
+@media(max-width:1380px){
+ .statsSectionIntro{min-height:88px;padding:10px 14px}
+ .statsSectionIntro h1{font-size:25px}
+ .marketKpi{min-height:92px;padding:10px 11px}
+ .marketKpi>b{font-size:22px}
+ .financeHeroGrid{grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr)}
+ .financeChartPanel,.financeSharePanel{min-height:265px}
+ .financeChart{height:198px}
+ .financeDonut{width:135px;height:135px;min-width:135px}
+ .financeDonut:after{inset:29px}
+ .financeBottomGrid{grid-template-columns:minmax(0,1.15fr) minmax(0,.9fr) minmax(0,.9fr)}
+}
+@media(max-width:1050px){
+ .marketKpiGrid{grid-template-columns:1fr 1fr}
+ .financeHeroGrid,.financeBottomGrid{grid-template-columns:1fr}
+}
+@media(max-width:680px){
+ .marketKpiGrid{grid-template-columns:1fr}
+ .statsSectionIntro{align-items:flex-start}
+ .statsSectionBadge{display:none}
+ .financeDonutWrap{flex-direction:column}
+ .financeTableRow{grid-template-columns:minmax(100px,1fr) auto auto}
+ .financeTableRow>span:last-child{display:none}
+}
+
+
+/* DeFi statistics reliability + responsive readability fixes */
+.financeSharePanel{overflow:hidden}
+.financeDonutWrap{align-items:center;justify-content:flex-start}
+.financeLegend{min-width:0;flex:1;max-width:190px;overflow:hidden}
+.financeLegendRow{grid-template-columns:9px minmax(0,1fr) 42px;gap:6px;min-height:22px}
+.financeLegendRow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.financeLegendRow b{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.financeChartEmpty,.stableFlowEmpty{
+ height:100%;min-height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ text-align:center;padding:18px;color:#7fa5b6
+}
+.financeChartEmpty b,.stableFlowEmpty b{color:#d9f2fb;font-size:12px}
+.financeChartEmpty span,.stableFlowEmpty span{display:block;max-width:360px;margin-top:6px;font-size:9px;line-height:1.45}
+.stableFlowEmpty{min-height:145px}
+.marketKpi>em{max-width:92px;vertical-align:middle;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html{scroll-padding-top:82px}
+.statsSection{scroll-margin-top:82px}
+
+@media(max-width:1380px){
+ .financeDonutWrap{gap:12px;padding-left:10px;padding-right:10px}
+ .financeLegend{max-width:155px}
+ .financeLegendRow{grid-template-columns:8px minmax(0,1fr) 38px;font-size:8px}
+ .financeLegendRow b{font-size:8px}
+}
+@media(max-width:1180px){
+ .financeDonutWrap{justify-content:center}
+ .financeLegend{max-width:220px}
+}
+
+
+/* DeFi advanced modules */
+.defiInsightGrid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:10px;margin:10px 0}
+.topPoolsPanel,.executionCostPanel{min-height:276px}
+.topPoolsGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:4px 11px 12px}
+.poolLeaderCard{position:relative;min-height:92px;padding:10px 11px;border:1px solid #164a63;border-radius:10px;background:linear-gradient(145deg,#071a27,#05121b);overflow:hidden}
+.poolLeaderCard:after{content:"";position:absolute;inset:auto -18px -28px auto;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(31,207,221,.12),transparent 68%)}
+.poolLeaderCard.empty{display:flex;flex-direction:column;justify-content:center;color:#789dad}
+.poolLeaderTop{display:flex;align-items:center;gap:9px;min-width:0}
+.poolLeaderTop>div{min-width:0}
+.poolThumb{position:relative;width:36px;height:36px;min-width:36px;border:1px solid #19769a;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,#0b3550,#062234);overflow:hidden;color:#6fe9ff;font-weight:900}
+.poolThumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#071925}
+.poolThumb i{font-style:normal;z-index:1;font-size:14px}
+.poolMetricTag{display:block;color:#52cfee;font-size:7px;font-weight:900;letter-spacing:.1em}
+.poolLeaderCard b{display:block;margin-top:2px;max-width:170px;color:#eefbff;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poolLeaderCard small{display:block;margin-top:2px;color:#7397a8;font-size:7.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.poolLeaderCard strong{display:inline-block;margin-top:9px;color:#47e5bd;font-size:16px}
+.poolLeaderCard em{float:right;margin-top:10px;padding:3px 6px;border-radius:9px;background:#0a2b3d;color:#65c9e8;font-size:7px;font-style:normal;font-weight:900}
+
+.execAmountControl{display:flex;align-items:center;gap:7px;color:#7fa2b2;font-size:8px}
+.execAmountControl select{height:28px;border:1px solid #1a5873;border-radius:6px;background:#061925;color:#eaf8fd;padding:0 7px;font-size:8px}
+.executionCostBody{display:grid;grid-template-columns:145px minmax(0,1fr);gap:14px;padding:4px 12px 13px}
+.execVisual{display:flex;align-items:flex-end;justify-content:center;gap:13px;min-height:188px;padding:10px;border:1px solid #133d52;border-radius:10px;background:radial-gradient(circle at 50% 40%,rgba(20,117,145,.12),transparent 60%)}
+.execTotal{align-self:center;min-width:70px;text-align:right}
+.execTotal span{display:block;color:#6c92a5;font-size:7px;font-weight:800}
+.execTotal b{display:block;margin-top:5px;color:#eafaff;font-size:16px}
+.execTotal small{display:block;margin-top:5px;color:#6e93a4;font-size:7px;line-height:1.35}
+.execStack{width:42px;height:150px;border:1px solid #20556d;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;background:#071621;box-shadow:0 0 16px rgba(26,204,218,.08)}
+.execStack i{display:block;width:100%;min-height:12px;border-bottom:1px solid rgba(3,14,22,.55)}
+.execStack i:last-child{border-bottom:0}
+.execGas{background:repeating-linear-gradient(45deg,#3f5865,#3f5865 5px,#2c414c 5px,#2c414c 10px)}
+.execFee{background:linear-gradient(180deg,#2e9ee8,#237ac8)}
+.execSlip{background:linear-gradient(180deg,#33deb5,#139e7f)}
+.execDetails{min-width:0}
+.execCostRow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:9px;align-items:center;min-height:48px;border-bottom:1px solid #113346}
+.execCostRow:last-of-type{border-bottom:0}
+.costMini{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#0a293b;border:1px solid #17536e;font-size:15px}
+.execCostRow.gas .costMini{color:#a5bcc7}.execCostRow.fee .costMini{color:#55bfff}.execCostRow.slip .costMini{color:#44e0b5}
+.execCostRow b{display:block;color:#eaf8fe;font-size:9.5px}.execCostRow small{display:block;margin-top:2px;color:#7296a7;font-size:7.5px;line-height:1.25}
+.execCostRow strong{color:#e9faff;font-size:11px;white-space:nowrap}
+.execPoolRef{margin-top:8px;padding:8px 9px;border:1px solid #143e52;border-radius:8px;background:#061721}
+.execPoolRef span{display:block;color:#668b9c;font-size:7px;text-transform:uppercase}.execPoolRef b{display:block;margin-top:3px;color:#dff8ff;font-size:9px}.execPoolRef small{display:block;margin-top:2px;color:#7196a7;font-size:7.5px}
+.modulePlaceholder{grid-column:1/-1;min-height:130px;display:grid;place-items:center;color:#789bab;font-size:9px}
+
+/* DeFi total volume time-series */
+.defiVolumeSvg text{fill:#6e91a1;font-size:8px}
+.defiVolumeArea{fill:url(#defiVolArea)}
+.defiVolumeLine{fill:none;stroke:#29d5c6;stroke-width:2.3;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 3px rgba(41,213,198,.28))}
+.defiVolumeLast{fill:#dffffa;stroke:#29d5c6;stroke-width:2;vector-effect:non-scaling-stroke}
+.defiGrid line{stroke:#153848}
+.defiVolumeAxis text{fill:#789dac;font-size:8px}
+
+@media(max-width:1380px){
+ .defiInsightGrid{grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr)}
+ .topPoolsGrid{gap:7px;padding-left:8px;padding-right:8px}
+ .poolLeaderCard{padding:8px;min-height:86px}
+ .executionCostBody{grid-template-columns:125px minmax(0,1fr);gap:9px;padding-left:9px;padding-right:9px}
+ .execVisual{padding:7px}
+}
+@media(max-width:1050px){
+ .defiInsightGrid{grid-template-columns:1fr}
+ .executionCostBody{grid-template-columns:160px minmax(0,1fr)}
+}
+@media(max-width:680px){
+ .topPoolsGrid{grid-template-columns:1fr}
+ .executionCostBody{grid-template-columns:1fr}
+ .execVisual{min-height:165px}
+}
+
+
+/* CEX data-state fixes: never leave an apparently functional module visually blank. */
+.financeDataEmpty{
+ min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ padding:16px;text-align:center;color:#789eaf
+}
+.financeDataEmpty b{color:#d8eef7;font-size:11px}
+.financeDataEmpty span{display:block;margin-top:5px;max-width:250px;font-size:8px;line-height:1.4}
+.financeLegend .financeDataEmpty{min-height:90px;padding:8px}
+.financeDonut.unavailable{
+ background:#163447!important;
+ box-shadow:none
+}
+.financeDonut.unavailable:before{
+ content:"";position:absolute;inset:0;border-radius:50%;
+ border:1px dashed #2b586c;opacity:.75
+}
+
+
+/* Expandable DEX/CEX + Oracles/Bridges rows */
+.statsGridMid{align-items:start}
+.platformPanel,.oraclePanel{height:auto;transition:min-height .18s ease,box-shadow .18s ease}
+.platformCards,.oracleCards{align-items:stretch}
+.platformCards.expanded{grid-template-columns:repeat(5,minmax(0,1fr))}
+.oracleCards.expanded{grid-template-columns:repeat(4,minmax(0,1fr))}
+.platformCards.expanded .extendedCard,
+.oracleCards.expanded .extendedCard{animation:statsCardReveal .18s ease both}
+.platformCard.extendedCard,.oracleCard.extendedCard{border-color:#1a6385;background:linear-gradient(180deg,#08202f,#06151f)}
+.uptimeRing.unavailable{background:#153646}
+.uptimeRing.unavailable:after{background:#071926}
+.uptimeRing.unavailable span{color:#6f91a2}
+.ghostLink[aria-expanded="true"]{border-color:#24a4d3;background:#0a2b3f;color:#d9f7ff}
+@keyframes statsCardReveal{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+@media(min-width:1181px){
+ .platformPanel:has(.platformCards.expanded),
+ .oraclePanel:has(.oracleCards.expanded){min-height:286px}
+}
+@media(max-width:1180px){
+ .platformCards.expanded{grid-template-columns:repeat(5,minmax(118px,1fr));overflow-x:auto}
+ .oracleCards.expanded{grid-template-columns:repeat(4,minmax(130px,1fr));overflow-x:auto}
+}
+
+
+/* v2.0 DEBUG — slightly larger detail text across Server / CeFi / DeFi.
+   Titles (h1/h2, main KPI values) intentionally unchanged. */
+body[data-stats-view="server"] .statsCardHead p,
+body[data-stats-view="cefi"] .statsCardHead p,
+body[data-stats-view="defi"] .statsCardHead p{font-size:11px}
+
+body[data-stats-view="server"] .statsSectionIntro p,
+body[data-stats-view="cefi"] .statsSectionIntro p,
+body[data-stats-view="defi"] .statsSectionIntro p{font-size:12px}
+
+body[data-stats-view="server"] .marketKpi>span,
+body[data-stats-view="cefi"] .marketKpi>span,
+body[data-stats-view="defi"] .marketKpi>span{font-size:9px}
+
+body[data-stats-view="server"] .marketKpi>small,
+body[data-stats-view="cefi"] .marketKpi>small,
+body[data-stats-view="defi"] .marketKpi>small{font-size:9px}
+
+body[data-stats-view="server"] .platformMeta span,
+body[data-stats-view="cefi"] .platformMeta span,
+body[data-stats-view="defi"] .platformMeta span,
+body[data-stats-view="server"] .oracleMeta span,
+body[data-stats-view="cefi"] .oracleMeta span,
+body[data-stats-view="defi"] .oracleMeta span{font-size:9px}
+
+body[data-stats-view="server"] .platformMeta strong,
+body[data-stats-view="cefi"] .platformMeta strong,
+body[data-stats-view="defi"] .platformMeta strong,
+body[data-stats-view="server"] .oracleMeta strong,
+body[data-stats-view="cefi"] .oracleMeta strong,
+body[data-stats-view="defi"] .oracleMeta strong{font-size:10px}
+
+body[data-stats-view="server"] .miniState,
+body[data-stats-view="cefi"] .miniState,
+body[data-stats-view="defi"] .miniState,
+body[data-stats-view="server"] .miniLatency,
+body[data-stats-view="cefi"] .miniLatency,
+body[data-stats-view="defi"] .miniLatency{font-size:9px}
+
+body[data-stats-view="server"] .summaryCell span,
+body[data-stats-view="cefi"] .summaryCell span,
+body[data-stats-view="defi"] .summaryCell span{font-size:8px}
+
+body[data-stats-view="server"] .financeLegendRow,
+body[data-stats-view="cefi"] .financeLegendRow,
+body[data-stats-view="defi"] .financeLegendRow{font-size:10px}
+
+body[data-stats-view="server"] .financeTableRow,
+body[data-stats-view="cefi"] .financeTableRow,
+body[data-stats-view="defi"] .financeTableRow{font-size:9.5px}
+
+body[data-stats-view="server"] .financeTableRow>div small,
+body[data-stats-view="cefi"] .financeTableRow>div small,
+body[data-stats-view="defi"] .financeTableRow>div small{font-size:8px}
+
+body[data-stats-view="server"] .assetBarRow>div:first-child,
+body[data-stats-view="cefi"] .assetBarRow>div:first-child,
+body[data-stats-view="defi"] .assetBarRow>div:first-child{font-size:9px}
+
+body[data-stats-view="server"] .execCostRow small,
+body[data-stats-view="cefi"] .execCostRow small,
+body[data-stats-view="defi"] .execCostRow small,
+body[data-stats-view="server"] .execPoolRef small,
+body[data-stats-view="cefi"] .execPoolRef small,
+body[data-stats-view="defi"] .execPoolRef small{font-size:8.5px}
+
+body[data-stats-view="server"] .modulePlaceholder,
+body[data-stats-view="cefi"] .modulePlaceholder,
+body[data-stats-view="defi"] .modulePlaceholder{font-size:10px}
+
+body[data-stats-view="server"] .financeDataEmpty span,
+body[data-stats-view="cefi"] .financeDataEmpty span,
+body[data-stats-view="defi"] .financeDataEmpty span{font-size:9px}
+
+
+/* v2.0 DEBUG — readability pass 2
+   Increase small text and miniature readability across Server / CeFi / DeFi
+   without changing main titles and without breaking containers. */
+
+body[data-stats-view="server"] .statsCardHead p,
+body[data-stats-view="cefi"] .statsCardHead p,
+body[data-stats-view="defi"] .statsCardHead p{
+  font-size:12px;
+  line-height:1.35;
+}
+
+body[data-stats-view="server"] .statsSectionIntro p,
+body[data-stats-view="cefi"] .statsSectionIntro p,
+body[data-stats-view="defi"] .statsSectionIntro p{
+  font-size:13px;
+  line-height:1.4;
+}
+
+body[data-stats-view="server"] .statsSectionKicker,
+body[data-stats-view="cefi"] .statsSectionKicker,
+body[data-stats-view="defi"] .statsSectionKicker{
+  font-size:9px;
+}
+
+body[data-stats-view="server"] .statsSectionBadge>small,
+body[data-stats-view="cefi"] .statsSectionBadge>small,
+body[data-stats-view="defi"] .statsSectionBadge>small{
+  font-size:8px;
+  line-height:1.3;
+}
+
+body[data-stats-view="server"] .marketKpi>span,
+body[data-stats-view="cefi"] .marketKpi>span,
+body[data-stats-view="defi"] .marketKpi>span{
+  font-size:9px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .marketKpi>small,
+body[data-stats-view="cefi"] .marketKpi>small,
+body[data-stats-view="defi"] .marketKpi>small{
+  font-size:9px;
+  line-height:1.35;
+}
+
+body[data-stats-view="server"] .ghostLink,
+body[data-stats-view="cefi"] .ghostLink,
+body[data-stats-view="defi"] .ghostLink{
+  font-size:10px;
+  line-height:1.2;
+  padding:6px 10px;
+}
+
+body[data-stats-view="server"] .statusPill,
+body[data-stats-view="cefi"] .statusPill,
+body[data-stats-view="defi"] .statusPill{
+  font-size:10px;
+}
+
+body[data-stats-view="server"] .exchangeNode b,
+body[data-stats-view="cefi"] .exchangeNode b,
+body[data-stats-view="defi"] .exchangeNode b{
+  font-size:12px;
+  line-height:1.15;
+}
+
+body[data-stats-view="server"] .exchangeNode small,
+body[data-stats-view="cefi"] .exchangeNode small,
+body[data-stats-view="defi"] .exchangeNode small{
+  font-size:10px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .engineNode>b,
+body[data-stats-view="cefi"] .engineNode>b,
+body[data-stats-view="defi"] .engineNode>b{
+  font-size:10px;
+  line-height:1.15;
+}
+
+body[data-stats-view="server"] .engineNode>em,
+body[data-stats-view="cefi"] .engineNode>em,
+body[data-stats-view="defi"] .engineNode>em{
+  font-size:8px;
+}
+
+body[data-stats-view="server"] .platformCard b,
+body[data-stats-view="cefi"] .platformCard b,
+body[data-stats-view="defi"] .platformCard b,
+body[data-stats-view="server"] .oracleCard b,
+body[data-stats-view="cefi"] .oracleCard b,
+body[data-stats-view="defi"] .oracleCard b{
+  font-size:11px;
+  line-height:1.15;
+  white-space:normal;
+}
+
+body[data-stats-view="server"] .miniState,
+body[data-stats-view="cefi"] .miniState,
+body[data-stats-view="defi"] .miniState,
+body[data-stats-view="server"] .miniLatency,
+body[data-stats-view="cefi"] .miniLatency,
+body[data-stats-view="defi"] .miniLatency{
+  font-size:9px;
+  line-height:1.2;
+}
+
+body[data-stats-view="server"] .platformMeta span,
+body[data-stats-view="cefi"] .platformMeta span,
+body[data-stats-view="defi"] .platformMeta span,
+body[data-stats-view="server"] .oracleMeta span,
+body[data-stats-view="cefi"] .oracleMeta span,
+body[data-stats-view="defi"] .oracleMeta span{
+  font-size:9px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .platformMeta strong,
+body[data-stats-view="cefi"] .platformMeta strong,
+body[data-stats-view="defi"] .platformMeta strong,
+body[data-stats-view="server"] .oracleMeta strong,
+body[data-stats-view="cefi"] .oracleMeta strong,
+body[data-stats-view="defi"] .oracleMeta strong{
+  font-size:10px;
+  line-height:1.2;
+}
+
+body[data-stats-view="server"] .uptimeRing span,
+body[data-stats-view="cefi"] .uptimeRing span,
+body[data-stats-view="defi"] .uptimeRing span{
+  font-size:8px;
+}
+
+body[data-stats-view="server"] .chartLegend,
+body[data-stats-view="cefi"] .chartLegend,
+body[data-stats-view="defi"] .chartLegend{
+  font-size:9px;
+}
+
+body[data-stats-view="server"] .rangeBtns button,
+body[data-stats-view="cefi"] .rangeBtns button,
+body[data-stats-view="defi"] .rangeBtns button,
+body[data-stats-view="server"] .financeRanges button,
+body[data-stats-view="cefi"] .financeRanges button,
+body[data-stats-view="defi"] .financeRanges button{
+  font-size:9px;
+}
+
+body[data-stats-view="server"] .financeLegendRow,
+body[data-stats-view="cefi"] .financeLegendRow,
+body[data-stats-view="defi"] .financeLegendRow{
+  font-size:10px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .financeLegendRow b,
+body[data-stats-view="cefi"] .financeLegendRow b,
+body[data-stats-view="defi"] .financeLegendRow b{
+  font-size:10px;
+}
+
+body[data-stats-view="server"] .financeTableRow,
+body[data-stats-view="cefi"] .financeTableRow,
+body[data-stats-view="defi"] .financeTableRow{
+  font-size:9.5px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .financeTableRow>div b,
+body[data-stats-view="cefi"] .financeTableRow>div b,
+body[data-stats-view="defi"] .financeTableRow>div b{
+  font-size:10px;
+  line-height:1.15;
+}
+
+body[data-stats-view="server"] .financeTableRow>div small,
+body[data-stats-view="cefi"] .financeTableRow>div small,
+body[data-stats-view="defi"] .financeTableRow>div small{
+  font-size:8px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .assetBarRow>div:first-child,
+body[data-stats-view="cefi"] .assetBarRow>div:first-child,
+body[data-stats-view="defi"] .assetBarRow>div:first-child{
+  font-size:9px;
+  line-height:1.2;
+}
+
+body[data-stats-view="server"] .summaryCell b,
+body[data-stats-view="cefi"] .summaryCell b,
+body[data-stats-view="defi"] .summaryCell b{
+  font-size:16px;
+}
+
+body[data-stats-view="server"] .summaryCell span,
+body[data-stats-view="cefi"] .summaryCell span,
+body[data-stats-view="defi"] .summaryCell span{
+  font-size:8.5px;
+  line-height:1.25;
+}
+
+body[data-stats-view="server"] .modulePlaceholder,
+body[data-stats-view="cefi"] .modulePlaceholder,
+body[data-stats-view="defi"] .modulePlaceholder{
+  font-size:10px;
+  line-height:1.35;
+}
+
+body[data-stats-view="server"] .execCostRow b,
+body[data-stats-view="cefi"] .execCostRow b,
+body[data-stats-view="defi"] .execCostRow b{
+  font-size:10px;
+}
+
+body[data-stats-view="server"] .execCostRow small,
+body[data-stats-view="cefi"] .execCostRow small,
+body[data-stats-view="defi"] .execCostRow small{
+  font-size:8.5px;
+  line-height:1.3;
+}
+
+body[data-stats-view="server"] .execCostRow strong,
+body[data-stats-view="cefi"] .execCostRow strong,
+body[data-stats-view="defi"] .execCostRow strong{
+  font-size:11.5px;
+}
+
+body[data-stats-view="server"] .execPoolRef span,
+body[data-stats-view="cefi"] .execPoolRef span,
+body[data-stats-view="defi"] .execPoolRef span{
+  font-size:8px;
+}
+
+body[data-stats-view="server"] .execPoolRef b,
+body[data-stats-view="cefi"] .execPoolRef b,
+body[data-stats-view="defi"] .execPoolRef b{
+  font-size:10px;
+}
+
+body[data-stats-view="server"] .execPoolRef small,
+body[data-stats-view="cefi"] .execPoolRef small,
+body[data-stats-view="defi"] .execPoolRef small{
+  font-size:8.5px;
+  line-height:1.3;
+}
+
+body[data-stats-view="server"] .financeDataEmpty b,
+body[data-stats-view="cefi"] .financeDataEmpty b,
+body[data-stats-view="defi"] .financeDataEmpty b{
+  font-size:12px;
+}
+
+body[data-stats-view="server"] .financeDataEmpty span,
+body[data-stats-view="cefi"] .financeDataEmpty span,
+body[data-stats-view="defi"] .financeDataEmpty span{
+  font-size:9px;
+  line-height:1.35;
+}
+
+@media (max-width:1380px){
+  body[data-stats-view="server"] .platformCard b,
+  body[data-stats-view="cefi"] .platformCard b,
+  body[data-stats-view="defi"] .platformCard b,
+  body[data-stats-view="server"] .oracleCard b,
+  body[data-stats-view="cefi"] .oracleCard b,
+  body[data-stats-view="defi"] .oracleCard b{
+    font-size:10.5px;
+  }
+
+  body[data-stats-view="server"] .exchangeNode b,
+  body[data-stats-view="cefi"] .exchangeNode b,
+  body[data-stats-view="defi"] .exchangeNode b{
+    font-size:11px;
+  }
+
+  body[data-stats-view="server"] .exchangeNode small,
+  body[data-stats-view="cefi"] .exchangeNode small,
+  body[data-stats-view="defi"] .exchangeNode small{
+    font-size:9px;
+  }
+}
+
+.adoptionEmpty{height:100%;min-height:126px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:18px;border:1px dashed #164c68;border-radius:8px;background:#05131d;color:#8fb0c1}
+.adoptionEmpty b{color:#d9f3ff;font-size:12px;margin-bottom:6px}.adoptionEmpty span{max-width:520px;font-size:9px;line-height:1.45}
+.rangeBtns button{cursor:pointer}.rangeBtns button:hover{background:#0c3650;color:#e8f8ff}
+
+/* Statistics step 3: pool lists and financial module readability. */
+.statsSection .financeLoadStatus{margin:10px 0;color:#a2c7d6;font-size:12px;line-height:1.5;overflow-wrap:anywhere}
+.statsSection .metricNote{color:#98bacb;font-size:11px;line-height:1.5;margin:10px 0 0;overflow-wrap:anywhere}
+.statsSection .defiInsightGrid{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);align-items:start}
+.statsSection .topPoolsGrid{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));padding:10px;gap:12px}
+.topPoolsGrid .poolRankGroup{min-width:0;border:1px solid #1a4c62;border-radius:8px;background:#061923;padding:10px}
+.topPoolsGrid .poolRankGroup h3{font-size:12px;line-height:1.4;color:#65d8ed;margin:0 0 8px}
+.topPoolsGrid .poolRankGroup ol{list-style:none;margin:0;padding:0}
+.topPoolsGrid .poolRankRow{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;padding:10px 0;border-bottom:1px solid #164152;align-items:start;font-size:12px;line-height:1.5;min-width:0}
+.topPoolsGrid .poolRankRow:last-child{border-bottom:0}
+.topPoolsGrid .poolRankNumber{color:#7fb2c5;border:1px solid #24586f;border-radius:50%;width:23px;height:23px;text-align:center;font-size:12px;font-variant-numeric:tabular-nums}
+.topPoolsGrid .poolRankIdentity{min-width:0;overflow-wrap:anywhere}
+.topPoolsGrid .poolRankIdentity b{display:block;color:#effaff;font-size:13px;line-height:1.5}
+.topPoolsGrid .poolRankIdentity span{display:block;color:#9ebdcc;font-size:11px;line-height:1.5}
+.topPoolsGrid .poolRankValue{grid-column:2;display:flex;gap:5px 12px;justify-content:space-between;align-items:baseline;flex-wrap:wrap;min-width:0}
+.topPoolsGrid .poolRankValue strong{font-size:14px;line-height:1.5;color:#46dfba;font-variant-numeric:tabular-nums}
+.topPoolsGrid .poolRankValue small{font-size:11px;line-height:1.5;color:#8cc5db;overflow-wrap:anywhere}
+.topPoolsGrid .modulePlaceholder{padding:12px 0;min-height:0;font-size:12px!important;line-height:1.6!important;text-align:left}
+.statsSection .executionCostBody{grid-template-columns:1fr;padding:10px 14px;gap:10px}
+.statsSection .execVisual{min-height:0;padding:14px;align-items:center;justify-content:flex-start}
+.statsSection .execTotal{text-align:left;min-width:0}
+.statsSection .execTotal span{font-size:11px}
+.statsSection .execTotal b{font-size:21px;color:#edc378}
+.statsSection .execTotal small{font-size:12px;line-height:1.5}
+.statsSection .execCostRow{grid-template-columns:24px minmax(0,1fr) auto;gap:8px;padding:10px 0}
+body[data-stats-view] .execCostRow b{font-size:12px;line-height:1.5}
+body[data-stats-view] .execCostRow small,body[data-stats-view] .execPoolRef small{font-size:11px;line-height:1.5;overflow-wrap:anywhere}
+body[data-stats-view] .execPoolRef b{font-size:13px;line-height:1.5}
+.statsSection .execPoolRef{min-width:0;overflow-wrap:anywhere}
+.statsSection .stableFlowChart{height:auto;min-height:165px;padding-bottom:12px}
+.statsSection .stableFlowChart svg{height:160px}
+.statsSection .stableLegend{display:flex;flex-wrap:wrap;gap:8px 12px;font-size:11px}
+.cefiVolumeSvg .defiVolumeLine{stroke:#37b4f0}
+.cefiVolumeSvg .defiVolumeLast{stroke:#37b4f0}
+@media(max-width:1180px){.statsSection .defiInsightGrid{grid-template-columns:1fr}}
+@media(max-width:560px){
+ .statsSection .topPoolsGrid{grid-template-columns:minmax(0,1fr)}
+ .statsSection .marketKpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .statsSection .financeHeroGrid,.statsSection .financeBottomGrid{grid-template-columns:minmax(0,1fr)}
+ .statsSection .financeDonutWrap{flex-wrap:wrap}
+ .statsSection .execCostRow{grid-template-columns:22px minmax(0,1fr)}
+ .statsSection .execCostRow>strong{grid-column:2;white-space:normal}
+ .statsSection .financeTableRow{grid-template-columns:minmax(0,1.3fr) repeat(3,minmax(0,1fr));gap:6px;overflow-wrap:anywhere}
+ .statsSection .financeTableRow>span{white-space:normal}
+}
+
+/* Execution estimator: network/DEX selectors drawn from validated pool snapshot. */
+.execSelectors{display:flex;flex-wrap:wrap;gap:10px;padding:10px 0 13px;min-width:0}
+.execSelectors label{display:flex;align-items:center;gap:8px;font-size:12px;color:#8db2c6;min-width:0;flex:1 1 190px}
+.execSelectors select{min-width:0;flex:1;max-width:100%;padding:8px 10px;border:1px solid #23516a;border-radius:7px;color:#e3f5ff;background:#071b29;font:inherit}
+.execSelectors select:disabled{opacity:.65}

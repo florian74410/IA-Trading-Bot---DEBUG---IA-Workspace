@@ -1,0 +1,198 @@
+/* IA-TB v2.0 DEBUG — Bank / Mes Portefeuilles visual matching approved mockup */
+.servicePlaceholder.walletMode{padding:0!important;border:0!important;background:transparent!important;min-height:760px}
+.servicePlaceholder.walletMode>#closeService,.servicePlaceholder.walletMode>#serviceEyebrow,.servicePlaceholder.walletMode>#serviceTitle,.servicePlaceholder.walletMode>#serviceText{display:none!important}
+.walletV2{--wv-bg:#020b13;--wv-panel:#071521;--wv-panel2:#091a28;--wv-line:#17384c;--wv-blue:#138cff;--wv-cyan:#39c8ff;--wv-green:#29e99b;--wv-red:#ff5964;display:grid;grid-template-columns:minmax(0,1fr) 292px;gap:14px;color:#edf8ff;padding:16px 4px 24px}
+.walletV2 *{box-sizing:border-box}.wvMain{min-width:0}.wvHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}.wvHead h2{font-size:30px;margin:0 0 4px}.wvHead p{margin:0;color:#9db4c5;font-size:13px}.wvFilters{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.wvFilters button,.wvTools button{border:1px solid #183b51;background:#081621;color:#d9eaf5;border-radius:8px;padding:8px 12px;font-size:11px}.wvFilters .active{border-color:#168cff;background:#0b4f9d;color:#fff}.wvTools{display:flex;gap:8px;justify-content:flex-end;margin:8px 0 12px}.wvSearch{width:220px;background:#06131e;border:1px solid #1b3c50;color:#dff4ff;border-radius:8px;padding:9px 11px}
+.wvCards{display:flex;flex-direction:column;gap:8px}
+.wvCard{position:relative;min-height:94px;width:100%;display:grid;grid-template-columns:minmax(190px,1.25fr) minmax(220px,1.6fr) minmax(105px,.75fr) minmax(150px,1fr) minmax(145px,.9fr) 20px;align-items:center;gap:14px;border:1px solid #17384b;border-radius:10px;background:linear-gradient(90deg,#091a28,#06111b);padding:10px 12px;text-align:left;color:#eef9ff;cursor:pointer;overflow:hidden}
+.wvCard:hover{border-color:#269ce5;background:linear-gradient(90deg,#0a2030,#071722);box-shadow:0 0 12px #087ee82e}
+.wvCard.active{border-color:#2aaeff;background:linear-gradient(90deg,#0b2740,#081824);box-shadow:inset 3px 0 #2aaeff,0 0 15px #087ee83c}
+.wvCardIdentity{display:flex;gap:10px;align-items:center;min-width:0}
+.wvCoin{width:42px;height:42px;min-width:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:21px;font-weight:800;background:linear-gradient(145deg,#3c8cff,#3858e8);box-shadow:0 0 14px #1877ff55}
+.wvCoin.bnb{background:linear-gradient(145deg,#ffcb48,#d48a08)}.wvCoin.poly{background:linear-gradient(145deg,#9b4cff,#6329ca)}
+.wvCardName{min-width:0}.wvCardName b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wvCardName small{display:block;margin-top:4px;font-size:8px;color:#86a8bb;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wvCardPublic,.wvCardAmount,.wvCardNetworks,.wvMiniChart{min-width:0}
+.wvCardPublic small,.wvCardAmount small,.wvCardNetworks small,.wvMiniChart small{display:block;margin-bottom:4px;color:#68899b;font-size:7px;text-transform:uppercase;letter-spacing:.05em}
+.wvCardPublic b{display:block;color:#b8d4e2;font-size:8.5px;font-family:Menlo,Monaco,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wvCardAmount b{display:block;font-size:16px;color:#f2fbff}.wvCardAmount span{display:block;margin-top:3px;font-size:8px;color:var(--wv-green)}
+.wvCardNetworks b{display:block;font-size:8.5px;color:#d8edf7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wvCardNetworks span{display:block;margin-top:3px;font-size:8px;color:#789aaa}
+.wvMiniChart{height:58px;display:grid;grid-template-rows:auto 1fr;margin:0}.wvMiniChart svg{width:100%;height:36px;overflow:visible;align-self:end}.wvMiniChart polyline{fill:none;stroke:#28a4ff;stroke-width:2}.wvCard:nth-child(2n) .wvMiniChart polyline{stroke:#2ee39a}.wvCard:nth-child(3n) .wvMiniChart polyline{stroke:#b65cff}
+.wvCardChevron{font-size:25px;color:#3dbef5;justify-self:end;opacity:.75}
+.wvSelectionHint{margin-top:12px;border:1px dashed #21485f;border-radius:9px;background:#06131db8;color:#6f93a7;padding:14px;text-align:center;font-size:10px}
+.wvDetailLabel{margin:-2px 0 10px;color:#3fcfff;font-size:8px;font-weight:800;letter-spacing:.08em}
+
+.wvDetail{margin-top:16px;border:1px solid #168fe3;border-radius:13px;background:#06131e;padding:14px}.wvDetailHead{display:flex;align-items:center;justify-content:space-between;gap:10px}.wvIdentity{display:flex;align-items:center;gap:11px}.wvIdentity .wvCoin{width:58px;height:58px;font-size:28px}.wvIdentity h3{font-size:19px;margin:0 0 5px}.wvIdentity small{color:#9ab2c2}.wvActions{display:flex;gap:8px}.wvActions button{border:1px solid #207bc0;background:#0c62bd;color:#fff;border-radius:8px;padding:9px 17px}.wvStats{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid #193a4d;border-radius:9px;margin:13px 0 10px;overflow:hidden}.wvStats div{padding:10px 12px;border-right:1px solid #193a4d}.wvStats div:last-child{border:0}.wvStats small{display:block;color:#9bb2c1;font-size:9px}.wvStats b{display:block;margin-top:5px;font-size:15px}.positive{color:var(--wv-green)!important}.negative{color:var(--wv-red)!important}
+.wvCharts{display:grid;grid-template-columns:1.45fr 1fr;gap:10px}.wvPanel{border:1px solid #18394c;border-radius:9px;background:#071521;padding:11px}.wvPanel h4{margin:0 0 8px;font-size:11px}.wvBigChart{height:140px;position:relative;background:repeating-linear-gradient(0deg,transparent 0 34px,#153145 35px),repeating-linear-gradient(90deg,transparent 0 80px,#153145 81px);border-radius:5px;overflow:hidden}.wvBigChart svg{width:100%;height:100%}.wvBigChart polyline{fill:none;stroke:#248fff;stroke-width:2}.wvBigChart polygon{fill:#117de82c}.wvAllocation{display:flex;align-items:center;justify-content:center;gap:22px;height:140px}.wvDonut{width:105px;height:105px;border-radius:50%;background:conic-gradient(#2e82ff 0 60%,#27c99a 60% 82%,#ffc33d 82% 92%,#9e54ed 92%);position:relative}.wvDonut:after{content:"";position:absolute;inset:22px;border-radius:50%;background:#071521}.wvDonut span{position:absolute;z-index:2;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}.wvLegend{font-size:10px;line-height:2;color:#bdd0db}
+.wvTx{margin-top:10px}.wvTx table{width:100%;border-collapse:collapse;font-size:10px}.wvTx th{text-align:left;color:#a8bfcd;background:#0a1c29;padding:8px}.wvTx td{padding:8px;border-top:1px solid #17364a}.wvEmpty{text-align:center!important;color:#7797aa;padding:20px!important}
+.wvRight{display:flex;flex-direction:column;gap:12px}.wvSideBox{border:1px solid #19394d;border-radius:11px;background:#071521;padding:15px}.wvSideBox h3{font-size:15px;margin:0 0 14px}.wvSideBox label{display:block;font-size:10px;margin:9px 0;color:#d5e6ef}.wvSideBox select,.wvSideBox input{display:block;width:100%;margin-top:6px;background:#07131d;border:1px solid #29475a;color:#e6f5fc;border-radius:7px;padding:9px}.wvPrimary{width:100%;border:0;border-radius:7px;background:#0d82ed;color:white;font-weight:700;padding:10px;margin-top:10px}.wvNotice{border:1px solid #21455a;border-radius:7px;background:#0a1b27;padding:9px;color:#a9c0cd;font-size:9px;line-height:1.45;margin-top:10px}.wvOk{color:#38e6a3}.wvSideBox .step{display:inline-flex;width:23px;height:23px;border-radius:50%;align-items:center;justify-content:center;background:#167fff;margin-right:7px}
+@media(max-width:1250px){
+ .walletV2{grid-template-columns:1fr}.wvRight{display:grid;grid-template-columns:1fr 1fr}
+ .wvCard{grid-template-columns:minmax(170px,1.15fr) minmax(190px,1.4fr) 95px minmax(130px,1fr) 125px 16px;gap:10px}
+}
+@media(max-width:950px){
+ .wvCard{grid-template-columns:minmax(165px,1.2fr) minmax(200px,1.5fr) 90px 125px 16px}
+ .wvCardNetworks{display:none}
+}
+@media(max-width:850px){
+ .wvCard{grid-template-columns:minmax(150px,1.2fr) minmax(170px,1.3fr) 85px 16px;min-height:88px}
+ .wvCardNetworks,.wvMiniChart{display:none}
+ .wvStats{grid-template-columns:1fr 1fr}.wvCharts,.wvRight{grid-template-columns:1fr}.wvHead{display:block}.wvFilters{justify-content:flex-start;margin-top:10px}
+}
+@media(max-width:620px){
+ .wvCard{grid-template-columns:minmax(0,1fr) 80px 16px;padding:9px}
+ .wvCardPublic,.wvCardNetworks,.wvMiniChart{display:none}
+ .wvCoin{width:38px;height:38px;min-width:38px}
+ .wvCardAmount b{font-size:14px}
+}
+/* multi-chain wallet controls */
+.iaAccountReveal{display:block;width:100%;margin:7px 0;padding:9px 11px;text-align:left;border:1px solid #1d6388;border-radius:7px;background:#071b2a;color:#dff6ff;font-size:11px;font-weight:700;cursor:pointer}
+.iaAccountReveal:hover{border-color:#28bfff;background:#0a2940}
+.wvNetwork{display:block;max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Wallet creation modal */
+.wvCreateLayer{position:fixed;inset:0;z-index:99970;display:flex;align-items:center;justify-content:center;padding:28px;background:rgba(0,7,13,.72);backdrop-filter:blur(5px)}
+.wvCreateFrame{width:620px;max-width:calc(100vw - 30px);border:1px solid #168fe3;border-radius:14px;background:linear-gradient(145deg,#081a28,#030d16);box-shadow:0 24px 80px #000b,0 0 34px #087ee833;color:#edf8ff;overflow:hidden}
+.wvCreateFrame header{display:flex;justify-content:space-between;gap:16px;padding:18px 20px;border-bottom:1px solid #17384c}.wvCreateFrame header small{color:#39c8ff;font-size:9px;font-weight:800;letter-spacing:.08em}.wvCreateFrame h2{margin:4px 0;font-size:22px}.wvCreateFrame header p{margin:0;color:#8faabd;font-size:10px}.wvCreateClose{border:0;background:transparent;color:#9cc8dc;font-size:24px;cursor:pointer}
+.wvCreateGrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;padding:18px 20px}.wvCreateGrid label{font-size:10px;font-weight:700;color:#d8ebf5}.wvCreateGrid input,.wvCreateGrid select{display:block;width:100%;margin-top:6px;padding:10px;border:1px solid #294b60;border-radius:7px;background:#06131e;color:#eaf8ff;outline:none}.wvCreateGrid input:focus,.wvCreateGrid select:focus{border-color:#28bfff;box-shadow:0 0 0 2px #168fe322}.wvCreateGrid input[readonly]{color:#69d7ff;background:#071b29;font-family:Menlo,monospace}.wvCreateWide{grid-column:1/-1}.wvHuman{display:flex;align-items:center;gap:9px;padding:11px;border:1px solid #21475c;border-radius:8px;background:#081a27}.wvHuman input{display:inline-block;width:auto;margin:0;accent-color:#138cff}.wvHuman span{font-size:11px}
+.wvCreateInfo{margin:0 20px 16px;padding:10px;border:1px solid #20495e;border-radius:8px;background:#071824;color:#91adbd;font-size:9px;line-height:1.5}.wvCreateFrame footer{display:flex;justify-content:flex-end;gap:8px;padding:13px 20px;border-top:1px solid #17384c}.wvCreateFrame footer button{border:1px solid #23516a;border-radius:7px;background:#071a28;color:#dff5ff;padding:9px 18px;font-weight:700;cursor:pointer}.wvCreateFrame footer .wvCreateSubmit{border-color:#1aa8ff;background:#087de8;color:#fff}.wvCreateFrame footer .wvCreateSubmit:disabled{opacity:.55;cursor:wait}
+.wvResult{padding:11px;border-radius:8px;line-height:1.7}.wvResult.success{border:1px solid #23996f;background:#07332655}.wvResult.error{border:1px solid #b84b59;background:#3a111955}.wvResult b{font-size:12px}.wvResult span{color:#8fb0c0;font-size:9px}
+@media(max-width:650px){.wvCreateGrid{grid-template-columns:1fr}.wvCreateWide{grid-column:auto}}
+
+.wvCreateOwner{margin:14px 20px 0;padding:10px 12px;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;border:1px solid #1e5f7f;border-radius:8px;background:linear-gradient(135deg,#08253a,#071925);box-shadow:inset 0 1px rgba(255,255,255,.03)}
+.wvCreateOwner span{color:#7898aa;font-size:9px;text-transform:uppercase;letter-spacing:.05em}
+.wvCreateOwner b{color:#5bd7ff;font-size:12px}
+.wvCreateOwner small{color:#8db0bf;font-size:8px;font-family:Menlo,Monaco,monospace}
+
+/* v2.0 DEBUG — wallet creation mode selector */
+.wvCreateMode{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:14px 20px 0;padding:5px;border:1px solid #1d465d;border-radius:9px;background:#061722}
+.wvCreateMode button{border:1px solid transparent;border-radius:6px;background:transparent;color:#86a9ba;padding:8px 12px;font-size:10px;font-weight:800;cursor:pointer}
+.wvCreateMode button:hover{color:#dff6ff;border-color:#1c607f}
+.wvCreateMode button.active{border-color:#1aa8ff;background:linear-gradient(180deg,#0b77d5,#075aa8);color:#fff;box-shadow:0 0 12px rgba(18,158,255,.15)}
+.wvImportOnly[hidden]{display:none!important}
+.wvCreateGrid .wvImportOnly input{font-family:Menlo,Monaco,monospace;font-size:9px;letter-spacing:.02em}
+
+
+/* Secure direct crypto transfer */
+.wvTransferAddresses{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);align-items:center;gap:6px;margin:8px 0}
+.wvTransferAddresses>div{min-width:0;padding:6px 7px;border:1px solid #173e52;border-radius:7px;background:#06141e}
+.wvTransferAddresses small{display:block;color:#718fa0;font-size:7px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.wvTransferAddresses code{display:block;color:#b9d8e7;font:8px/1.25 Menlo,Monaco,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wvTransferAddresses strong{display:grid;place-items:center;color:#32dcb0;font-size:17px}
+.wvTransferEstimate{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:7px 0}
+.wvTransferEstimate span{padding:6px 7px;border:1px solid #16435a;border-radius:6px;background:#071723;color:#7d9daf;font-size:8px}
+.wvTransferEstimate b{display:block;margin-top:2px;color:#e8f8ff;font-size:9px}
+.wvTransferChecks{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:7px 0;padding:7px;border:1px solid #214356;border-radius:7px;background:#06131c}
+.wvTransferChecks span{font-size:7.5px;color:#86a4b3;line-height:1.3}
+.wvTransferChecks.ok{border-color:#1c6f59;background:rgba(13,79,61,.14)}
+.wvTransferChecks.ok span{color:#58e2b3}
+.wvTransferChecks.bad{border-color:#71333a;background:rgba(102,28,36,.14)}
+.wvTransferChecks.bad span{color:#ff9aa5}
+.wvTransferChecks.wait span{color:#64cfff}
+#wvSend:disabled{cursor:not-allowed!important;opacity:.42!important;filter:saturate(.35)}
+.wvTransferConfirm{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wvTransferConfirm>div,.wvTransferConfirm>label{padding:9px;border:1px solid #18445a;border-radius:7px;background:#06141e;min-width:0}
+.wvTransferConfirm .wide{grid-column:1/-1}
+.wvTransferConfirm small{display:block;color:#7194a6;font-size:8px;margin-bottom:4px}
+.wvTransferConfirm b{color:#edfaff;font-size:11px}
+.wvTransferConfirm code{display:block;color:#bce1ef;font:9px/1.35 Menlo,Monaco,monospace;word-break:break-all}
+.wvTransferConfirm input{width:100%;margin-top:6px;padding:8px;border:1px solid #20546d;border-radius:6px;background:#031019;color:#fff}
+.wvHelpBubble{position:fixed;z-index:2147483600;width:260px;max-width:calc(100vw - 16px);padding:8px 10px;border:1px solid #27759a;border-radius:7px;background:rgba(4,20,31,.97);box-shadow:0 10px 28px rgba(0,0,0,.42),0 0 14px rgba(24,171,233,.13);color:#cde7f2;font-size:9px;line-height:1.4;pointer-events:none;animation:wvHelpIn .12s ease-out}
+@keyframes wvHelpIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(max-width:620px){.wvTransferAddresses,.wvTransferEstimate,.wvTransferChecks,.wvTransferConfirm{grid-template-columns:1fr}.wvTransferAddresses strong{transform:rotate(90deg)}.wvTransferConfirm .wide{grid-column:1}}
+
+
+/* Wallet identity clarity: internal ID + blockchain address + public key */
+.wvCardPublic{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-width:0;
+}
+.wvCardPublic>b{
+  font-size:9px!important;
+}
+.wvPublicKeyMini{
+  display:block;
+  min-width:0;
+  margin-top:5px;
+}
+.wvPublicKeyMini small{
+  display:block;
+  margin-bottom:2px!important;
+  color:#55788d!important;
+  font-size:6.5px!important;
+}
+.wvPublicKeyMini em{
+  display:block;
+  min-width:0;
+  color:#78a7bc;
+  font:normal 7.5px/1.15 Menlo,Monaco,monospace;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.wvIdentityMeta{
+  display:grid;
+  grid-template-columns:110px minmax(0,1fr) minmax(0,1.35fr);
+  gap:8px;
+  margin:10px 0;
+}
+.wvIdentityMeta>div{
+  min-width:0;
+  padding:8px 10px;
+  border:1px solid #193d51;
+  border-radius:8px;
+  background:#071722;
+}
+.wvIdentityMeta small{
+  display:block;
+  margin-bottom:4px;
+  color:#6f91a3;
+  font-size:7px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.wvIdentityMeta code{
+  display:block;
+  min-width:0;
+  color:#c7e5f2;
+  font:8.5px/1.3 Menlo,Monaco,monospace;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.wvIdentityMeta>div:first-child code{
+  color:#4bd3ff;
+  font-weight:800;
+  font-size:10px;
+}
+@media(max-width:900px){
+  .wvIdentityMeta{grid-template-columns:1fr}
+}
+
+
+/* Compact transfer panel v2 */
+.wvTransferCompact{padding:11px!important}
+.wvTransferCompact h3{margin-bottom:9px!important}
+.wvTransferCompact label{display:block;margin:7px 0;color:#89a4b4;font-size:8px}
+.wvTransferCompact select,.wvTransferCompact>label>input{width:100%;height:34px;margin-top:4px;padding:0 8px;border:1px solid #1c4d66;border-radius:6px;background:#06141e;color:#e8f6fd;font-size:10px}
+.wvNetworkDetect{min-height:48px;display:grid;grid-template-columns:32px minmax(0,1fr);align-items:center;gap:9px;margin:8px 0;padding:7px 8px;border:1px solid #1c4358;border-radius:7px;background:#06141d}
+.wvNetworkDetect>svg{width:30px;height:30px;display:block}
+.wvNetworkDetect span{min-width:0}.wvNetworkDetect small,.wvNetworkDetect b,.wvNetworkDetect em{display:block}
+.wvNetworkDetect small{font-size:6.5px;text-transform:uppercase;color:#607f91}.wvNetworkDetect b{font-size:10px;color:#eef9ff}.wvNetworkDetect em{margin-top:2px;font-size:7px;font-style:normal;color:#7f9cac}
+.wvNetworkDetect.ok{border-color:#17694f;background:rgba(8,60,45,.18)}.wvNetworkDetect.ok em{color:#4edfa8}.wvNetworkDetect.bad{border-color:#78353d;background:rgba(88,23,31,.16)}.wvNetworkDetect.bad em{color:#ff96a2}
+.wvTransferSectionLabel{margin:8px 0 5px;color:#6f8d9e;font-size:7px;text-transform:uppercase;letter-spacing:.05em}
+.wvCryptoList{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.wvCryptoList button{min-width:0;height:44px;display:flex;align-items:center;gap:7px;padding:5px 7px;border:1px solid #173e52;border-radius:7px;background:#06141e;color:#d8e8f0;text-align:left;cursor:pointer}
+.wvCryptoList button:hover{border-color:#267ba5}.wvCryptoList button.active{border-color:#21a4db;background:#09253a;box-shadow:inset 0 -2px #1da8e8}
+.wvCryptoList svg{width:26px;height:26px;min-width:26px}.wvCryptoList span{min-width:0}.wvCryptoList b,.wvCryptoList small{display:block}.wvCryptoList b{font-size:10px}.wvCryptoList small{font-size:7px;color:#728fa0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wvAmountBox{height:36px;margin-top:4px;display:grid;grid-template-columns:minmax(55px,.7fr) minmax(0,1.3fr);align-items:center;border:1px solid #1c4d66;border-radius:6px;background:#06141e;overflow:hidden}
+.wvAmountBox input{width:100%;height:100%;min-width:0;padding:0 7px;border:0!important;outline:0;background:transparent!important;color:#fff;font-size:11px}
+.wvAmountBox span{min-width:0;padding:0 7px;border-left:1px solid #173a4d;color:#8eb4c5;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
+.wvTransferCompactStatus{margin:7px 0;padding:7px 8px;border:1px solid #1c4256;border-radius:6px;background:#06131c;color:#7393a5;font-size:8px;line-height:1.3}
+.wvTransferCompactStatus small{display:block;margin-top:3px;font-size:7px;color:#718d9d}
+.wvTransferCompactStatus.ok{border-color:#166249;color:#4ee0a8}.wvTransferCompactStatus.bad{border-color:#75343d;color:#ff96a2}.wvTransferCompactStatus.wait{color:#56cfff}
+.wvHumanCompact{display:flex!important;align-items:center;gap:7px;margin:8px 0!important;padding:7px 8px;border:1px solid #183f53;border-radius:6px;background:#06141e}
+.wvHumanCompact input{width:14px!important;height:14px!important;margin:0!important;accent-color:#1da8e8}.wvHumanCompact span{font-size:8px;color:#b7d1dd}
+.wvTransferCompact #wvSend{width:100%;height:34px;margin-top:3px;padding:0 9px!important;font-size:9px!important}
+.wvTransferCompact #wvSend:disabled{opacity:.42!important;cursor:not-allowed!important;filter:saturate(.3)}

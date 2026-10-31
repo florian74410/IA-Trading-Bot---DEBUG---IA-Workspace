@@ -1,0 +1,334 @@
+{
+  "id": "indicator",
+  "label": "Indicator Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8012,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "indicator.custom.delete",
+        "arguments": {
+          "allowed": [
+            "id"
+          ],
+          "required": [
+            "id"
+          ]
+        },
+        "description": "Delete a Custom indicator definition. Built-ins remain protected."
+      },
+      {
+        "name": "indicator.registry.reload",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Reload Indicator Engine registry and reconcile settings."
+      },
+      {
+        "name": "indicator.registry.status",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Indicator Registry counts, quarantine state and current items."
+      },
+      {
+        "name": "indicator.settings.set",
+        "arguments": {
+          "allowed": [
+            "settings",
+            "refreshMs",
+            "enabled"
+          ]
+        },
+        "description": "Update Indicator Engine settings through CP/1."
+      },
+      {
+        "name": "indicator.settings.get",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Indicator Engine settings through CP/1."
+      },
+      {
+        "name": "indicator.language.info",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "indicator.language.compile",
+        "arguments": {
+          "allowed": [
+            "source"
+          ],
+          "required": [
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "indicator.language.validate",
+        "arguments": {
+          "allowed": [
+            "source"
+          ],
+          "required": [
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "indicator.language.create",
+        "arguments": {
+          "allowed": [
+            "source",
+            "overwrite"
+          ],
+          "required": [
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "indicator.definition.validate",
+        "arguments": {
+          "allowed": [
+            "definition"
+          ],
+          "required": [
+            "definition"
+          ]
+        }
+      },
+      {
+        "name": "indicator.definition.create",
+        "arguments": {
+          "allowed": [
+            "definition",
+            "overwrite"
+          ],
+          "required": [
+            "definition"
+          ]
+        }
+      },
+      {
+        "name": "indicator.compute_batch_data",
+        "arguments": {
+          "allowed": [
+            "candles",
+            "requests",
+            "symbol",
+            "timeframe",
+            "source"
+          ],
+          "required": [
+            "candles",
+            "requests"
+          ]
+        }
+      },
+      {
+        "name": "indicator.compute_data",
+        "arguments": {
+          "allowed": [
+            "id",
+            "candles",
+            "params",
+            "symbol",
+            "timeframe",
+            "source"
+          ],
+          "required": [
+            "id",
+            "candles"
+          ]
+        }
+      },
+      {
+        "name": "indicator.financial_context",
+        "arguments": {
+          "allowed": [
+            "scope"
+          ]
+        },
+        "description": "Read-only current CeFi/DeFi financial context from Market Data Collector via Router."
+      },
+      {
+        "name": "indicator.financial_series",
+        "arguments": {
+          "allowed": [
+            "family",
+            "metric",
+            "limit",
+            "since"
+          ],
+          "required": [
+            "metric"
+          ]
+        },
+        "description": "Read-only numeric financial time series extracted from persisted Market Data snapshots."
+      },
+      {
+        "name": "indicator.financial_analyze",
+        "arguments": {
+          "allowed": [
+            "family",
+            "metric",
+            "limit",
+            "since",
+            "period"
+          ],
+          "required": [
+            "metric"
+          ]
+        },
+        "description": "Calculate change, min/max, mean, SMA and EMA from persisted Market Data financial series."
+      },
+      {
+        "name": "indicator.definition.get",
+        "arguments": {
+          "allowed": [
+            "id"
+          ],
+          "required": [
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "indicator.compute",
+        "arguments": {
+          "allowed": [
+            "id",
+            "symbol",
+            "timeframe",
+            "params",
+            "force"
+          ],
+          "required": [
+            "id",
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "indicator.compute_batch",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "requests",
+            "force"
+          ],
+          "required": [
+            "symbol",
+            "timeframe",
+            "requests"
+          ]
+        }
+      },
+      {
+        "name": "indicator.analyze",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "force"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "indicator.get_state",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "indicator.get_levels",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "indicator.get_signals",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "indicator.list_capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "indicator.list_indicators",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "indicator.user.compute",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ],
+          "required": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Core authorized per-user indicator computation with current-session revalidation."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "indicator.analysis",
+        "direction": "PRODUCE",
+        "schema": "indicator.analysis/1.0"
+      },
+      {
+        "name": "market.candles",
+        "direction": "CONSUME"
+      }
+    ],
+    "events": [
+      {
+        "name": "indicator.analysis.updated"
+      }
+    ]
+  },
+  "registration": {
+    "dynamic": true
+  }
+}

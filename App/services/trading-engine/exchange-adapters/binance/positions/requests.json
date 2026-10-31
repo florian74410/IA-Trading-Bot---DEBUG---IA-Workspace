@@ -1,0 +1,10 @@
+{
+  "set_leverage": {
+    "method": "POST",
+    "path": "/fapi/v1/leverage"
+  },
+  "position_risk": {
+    "method": "GET",
+    "path": "/fapi/v3/positionRisk"
+  }
+}

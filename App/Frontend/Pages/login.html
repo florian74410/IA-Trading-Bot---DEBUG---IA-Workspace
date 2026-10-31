@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#031428"><title>IA-TB · Connexion</title>
+<link rel="stylesheet" href="/assets/user_login.css"><script defer src="/assets/user_login.js"></script>
+</head><body><main class="login-layout"><section class="login-card" aria-labelledby="loginTitle">
+<header class="login-header">
+<div class="login-mark" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M31 11c-5-7-16-4-16 5-8 1-10 10-4 15-6 5-4 14 4 16 1 10 13 12 16 5V11Zm2 0v42m-18-30h8m-9 14h10m-2-21v31"/><path d="M34 17h11l5-6m-16 16h18m-18 10h13l6 6m-19 4h10l4 6"/><circle cx="52" cy="11" r="3"/><circle cx="54" cy="27" r="3"/><circle cx="55" cy="43" r="3"/><circle cx="50" cy="53" r="3"/></svg></div>
+<h1 id="loginTitle"><span class="brand">IA-TB</span> · Connexion</h1>
+<p>Accédez à votre environnement en toute sécurité</p>
+</header>
+<form id="loginForm">
+<div class="login-field"><label for="email">Email</label><div class="input-wrap"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></svg><input id="email" name="email" type="email" autocomplete="username" inputmode="email" placeholder="votre@email.com" required maxlength="254"></div></div>
+<div class="login-field"><label for="password">Mot de passe</label><div class="input-wrap"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="12" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="1024"><button id="togglePassword" class="eye-toggle" type="button" aria-pressed="false" aria-label="Afficher le mot de passe" title="Afficher le mot de passe"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button></div></div>
+<label class="show-password" for="showPassword"><input id="showPassword" type="checkbox">Afficher le mot de passe</label>
+<button class="login-submit" type="submit"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l5-5-5-5m5 5H3m10-9h7v18h-7"/></svg>Se connecter</button>
+<p id="loginMessage" role="status" aria-live="polite"></p></form>
+<footer class="login-footer"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5v6c0 6 4 9 8 11 4-2 8-5 8-11V5l-8-3Z"/><path d="M9 12l2 2 4-4"/></svg>Connexion sécurisée à IA-TB</footer>
+</section></main></body></html>

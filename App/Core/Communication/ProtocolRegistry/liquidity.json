@@ -1,0 +1,276 @@
+{
+  "id": "liquidity",
+  "label": "Liquidity Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8014,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "liquidity.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "liquidity.zones",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "limit"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "liquidity.realtime",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth",
+            "liquidationWindowMs",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "liquidity.snapshot",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth",
+            "liquidationWindowMs",
+            "timeframe",
+            "limit",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "liquidity.financial",
+        "arguments": {
+          "allowed": [
+            "scope"
+          ]
+        },
+        "description": "Read-only liquidity-oriented financial context derived from Market Data Collector via Router."
+      },
+      {
+        "name": "liquidity.liquidations",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "windowMs"
+          ],
+          "required": [
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "liquidity.capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "liquidity.raw",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Firewall-validated raw liquidity data received only from Market Data through Router CP/1."
+      },
+      {
+        "name": "liquidity.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Long-term liquidity history read from Market Data SQLite storage."
+      },
+      {
+        "name": "liquidity.context",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth",
+            "liquidationWindowMs",
+            "timeframe",
+            "limit"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Compact READ_ONLY liquidity context prepared for Supervisor/LLM."
+      },
+      {
+        "name": "liquidity.cache.clear",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "liquidity.open_interest",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "sources"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Covered aggregate perpetual Open Interest from Market Data across connected venues."
+      },
+      {
+        "name": "liquidity.open_interest.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Read covered aggregate Open Interest history stored by Market Data."
+      },
+      {
+        "name": "liquidity.dex_liquidity",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "DEX pool liquidity snapshot from Market Data/DEX Screener; distinct from executable order-book depth."
+      },
+      {
+        "name": "liquidity.dex_liquidity.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Historical DEX pool liquidity stored by Market Data."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "liquidity.snapshot",
+        "direction": "PRODUCE",
+        "schema": "iatb.liquidity.snapshot/2.0"
+      },
+      {
+        "name": "liquidity.zones",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "liquidity.orderbook",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "liquidity.open_interest",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "liquidity.liquidations",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "liquidity.defi",
+        "direction": "PRODUCE",
+        "schema": "iatb.financial.data/1.0"
+      },
+      {
+        "name": "liquidity.context",
+        "direction": "PRODUCE",
+        "schema": "iatb.liquidity.context/1.0"
+      },
+      {
+        "name": "liquidity.raw",
+        "direction": "PRODUCE",
+        "schema": "marketdata.liquidity.raw/1.0"
+      },
+      {
+        "name": "liquidity.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.liquidity.history/1.0"
+      },
+      {
+        "name": "liquidity.depth_bands",
+        "direction": "PRODUCE",
+        "schema": "iatb.liquidity.analysis/2.0"
+      },
+      {
+        "name": "liquidity.execution_impact",
+        "direction": "PRODUCE",
+        "schema": "iatb.liquidity.analysis/2.0"
+      },
+      {
+        "name": "liquidity.score",
+        "direction": "PRODUCE",
+        "schema": "iatb.liquidity.analysis/2.0"
+      },
+      {
+        "name": "liquidity.open_interest.aggregate",
+        "direction": "PRODUCE",
+        "schema": "marketdata.open_interest.aggregate/1.0"
+      },
+      {
+        "name": "liquidity.open_interest.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.open_interest.history/1.0"
+      },
+      {
+        "name": "liquidity.dex_pool_liquidity",
+        "direction": "PRODUCE",
+        "schema": "marketdata.dex.liquidity/1.0"
+      },
+      {
+        "name": "liquidity.dex_pool_liquidity.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.dex.liquidity.history/1.0"
+      }
+    ],
+    "events": []
+  },
+  "registration": {
+    "dynamic": true
+  }
+}

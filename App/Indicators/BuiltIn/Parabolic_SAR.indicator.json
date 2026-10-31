@@ -1,0 +1,80 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "parabolic_sar",
+  "name": "Parabolic SAR",
+  "version": "2.1",
+  "category": "trend",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "step": {
+      "type": "number",
+      "default": 0.02,
+      "min": 0.001,
+      "max": 1
+    },
+    "maximum": {
+      "type": "number",
+      "default": 0.2,
+      "min": 0.01,
+      "max": 1
+    }
+  },
+  "engine": {
+    "operation": "parabolic_sar"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      },
+      "render": "points"
+    },
+    "direction": {
+      "type": "number",
+      "strategy": true,
+      "chart": false,
+      "visual": {
+        "color": "#fcaf57",
+        "width": 2
+      },
+      "render": "points"
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  }
+}

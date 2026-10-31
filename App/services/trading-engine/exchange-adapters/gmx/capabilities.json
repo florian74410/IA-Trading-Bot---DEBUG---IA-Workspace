@@ -1,0 +1,32 @@
+{
+  "exchange": "GMX",
+  "market_types": [
+    "PERP",
+    "SWAP"
+  ],
+  "chains": [
+    "arbitrum",
+    "avalanche",
+    "megaeth"
+  ],
+  "operations": [
+    "PREPARE_ORDER",
+    "SUBMIT_SIGNED_ORDER",
+    "ORDER_STATUS",
+    "PREPARE_CANCEL",
+    "READ_POSITIONS",
+    "READ_ORDERS",
+    "READ_BALANCES"
+  ],
+  "order_types": [
+    "MARKET_INCREASE",
+    "LIMIT_INCREASE",
+    "MARKET_DECREASE",
+    "LIMIT_DECREASE",
+    "SWAP"
+  ],
+  "client_order_id": false,
+  "reduce_only": true,
+  "auth": "WALLET_EIP712_OR_CLASSIC_TX",
+  "execution_model": "TWO_PHASE_ORACLE_KEEPER"
+}

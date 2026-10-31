@@ -1,0 +1,731 @@
+{
+  "id": "fundamental",
+  "label": "Fundamental Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8015,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "fundamental.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.status",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.fedwatch.get",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.fedwatch.history",
+        "arguments": {
+          "allowed": [
+            "limit"
+          ]
+        },
+        "description": "Read persisted FedWatch snapshot history."
+      },
+      {
+        "name": "fundamental.calendar.cme",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.calendar.cme.expirations",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.calendar.fed",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.calendar.upcoming",
+        "arguments": {
+          "allowed": [
+            "days",
+            "country",
+            "impact",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.news.search",
+        "arguments": {
+          "allowed": [
+            "query",
+            "asset",
+            "category",
+            "source",
+            "feed",
+            "minGrade",
+            "minReliability",
+            "minImportance",
+            "since",
+            "until",
+            "sort",
+            "limit",
+            "lang"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.news.get",
+        "arguments": {
+          "allowed": [
+            "id",
+            "newsId"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.events.search",
+        "arguments": {
+          "allowed": [
+            "asset",
+            "status",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.event.get",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.event.evidence",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.sources.search",
+        "arguments": {
+          "allowed": [
+            "query",
+            "domain",
+            "enabled",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.collect",
+        "arguments": {
+          "allowed": [
+            "all",
+            "eventLimit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.synthesis.news",
+        "arguments": {
+          "allowed": [
+            "newsIds",
+            "query",
+            "source",
+            "feed",
+            "since",
+            "limit",
+            "language",
+            "window"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.synthesis.event",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id",
+            "language",
+            "window"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.synthesis.market",
+        "arguments": {
+          "allowed": [
+            "asset",
+            "query",
+            "since",
+            "limit",
+            "language",
+            "window"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.synthesis.history",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id",
+            "scope",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.logs.purge",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.logs.stats",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.logs.history",
+        "arguments": {
+          "allowed": [
+            "level",
+            "component",
+            "source",
+            "query",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.logs.recent",
+        "arguments": {
+          "allowed": [
+            "level",
+            "component",
+            "source",
+            "query",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.summary",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.context",
+        "arguments": {
+          "allowed": [
+            "query"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.sources",
+        "arguments": {
+          "allowed": [
+            "query",
+            "domain",
+            "enabled",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.events",
+        "arguments": {
+          "allowed": [
+            "limit",
+            "asset",
+            "status"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.get_state",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.get_events",
+        "arguments": {
+          "allowed": [
+            "asset",
+            "status",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.get_sources",
+        "arguments": {
+          "allowed": [
+            "query",
+            "domain",
+            "enabled",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.get_context",
+        "arguments": {
+          "allowed": [
+            "query"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.get_evidence",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.list_capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.latest_news",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.event_process",
+        "arguments": {
+          "allowed": [
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.source.get",
+        "arguments": {
+          "allowed": [
+            "code",
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.feeds.search",
+        "arguments": {
+          "allowed": [
+            "source",
+            "provider",
+            "enabled",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.providers.status",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "fundamental.diagnostic.feed",
+        "arguments": {
+          "allowed": [
+            "feedId",
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.diagnostic.draft",
+        "arguments": {
+          "allowed": [
+            "source_code",
+            "sourceCode",
+            "label",
+            "provider_type",
+            "providerType",
+            "endpoint",
+            "platform",
+            "account_identifier",
+            "enabled",
+            "poll_interval_sec",
+            "base_importance",
+            "content_role",
+            "content_class",
+            "provider_config",
+            "config"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.timeline.get",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id",
+            "id",
+            "since",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.timeline.context",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id",
+            "id",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.timeline.rebuild",
+        "arguments": {
+          "allowed": [
+            "eventId",
+            "event_id",
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.discovery.inspect",
+        "arguments": {
+          "allowed": [
+            "candidate",
+            "name",
+            "code",
+            "url",
+            "endpoint",
+            "type",
+            "format",
+            "categories",
+            "language",
+            "authentication",
+            "label",
+            "poll_interval_sec",
+            "provider_config"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.discovery.prepare",
+        "arguments": {
+          "allowed": [
+            "candidate",
+            "name",
+            "code",
+            "url",
+            "endpoint",
+            "type",
+            "format",
+            "categories",
+            "language",
+            "authentication",
+            "label",
+            "poll_interval_sec",
+            "provider_config"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.discovery.test",
+        "arguments": {
+          "allowed": [
+            "candidate",
+            "name",
+            "code",
+            "url",
+            "endpoint",
+            "type",
+            "format",
+            "categories",
+            "language",
+            "authentication",
+            "label",
+            "poll_interval_sec",
+            "provider_config"
+          ]
+        }
+      },
+      {
+        "name": "fundamental.synthesis.import",
+        "arguments": {
+          "allowed": [
+            "scope",
+            "eventId",
+            "event_id",
+            "query",
+            "inputHash",
+            "model",
+            "result",
+            "evidenceCount"
+          ]
+        },
+        "description": "Persist a validated synthesis through Fundamental Engine storage."
+      },
+      {
+        "name": "fundamental.translation.get",
+        "arguments": {
+          "allowed": [
+            "itemId",
+            "raw_item_id",
+            "id",
+            "lang",
+            "target_lang"
+          ]
+        },
+        "description": "Read a cached translation from Fundamental storage."
+      },
+      {
+        "name": "fundamental.translation.pending",
+        "arguments": {
+          "allowed": [
+            "lang",
+            "target_lang",
+            "limit"
+          ]
+        },
+        "description": "List untranslated Fundamental items for a target language."
+      },
+      {
+        "name": "fundamental.translation.save",
+        "arguments": {
+          "allowed": [
+            "raw_item_id",
+            "itemId",
+            "target_lang",
+            "lang",
+            "translated_title",
+            "translated_summary",
+            "provider"
+          ]
+        },
+        "description": "Persist a Fundamental item translation."
+      },
+      {
+        "name": "fundamental.provider.test",
+        "arguments": {
+          "allowed": [
+            "feedId",
+            "id"
+          ],
+          "required": [
+            "feedId"
+          ]
+        },
+        "description": "Test a configured Fundamental provider/feed through the real collector path."
+      },
+      {
+        "name": "fundamental.feed.test_draft",
+        "arguments": {
+          "allowed": [
+            "feed"
+          ],
+          "required": [
+            "feed"
+          ]
+        },
+        "description": "Test a feed draft without persisting it."
+      },
+      {
+        "name": "fundamental.feed.create",
+        "arguments": {
+          "allowed": [
+            "feed"
+          ],
+          "required": [
+            "feed"
+          ]
+        },
+        "description": "Create and persist a Fundamental feed."
+      },
+      {
+        "name": "fundamental.feed.update",
+        "arguments": {
+          "allowed": [
+            "feedId",
+            "feed"
+          ],
+          "required": [
+            "feedId",
+            "feed"
+          ]
+        },
+        "description": "Update a persisted Fundamental feed."
+      },
+      {
+        "name": "fundamental.feed.toggle",
+        "arguments": {
+          "allowed": [
+            "feedId",
+            "enabled"
+          ],
+          "required": [
+            "feedId"
+          ]
+        },
+        "description": "Enable or disable a persisted Fundamental feed."
+      },
+      {
+        "name": "fundamental.feed.delete",
+        "arguments": {
+          "allowed": [
+            "feedId"
+          ],
+          "required": [
+            "feedId"
+          ]
+        },
+        "description": "Delete a Fundamental feed and its associated publications."
+      },
+      {
+        "name": "fundamental.news.purge",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Purge Fundamental publications and cached translations."
+      },
+      {
+        "name": "fundamental.fedwatch.refresh",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Force a FedWatch refresh."
+      },
+      {
+        "name": "fundamental.ai_summary.state",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read the current Fundamental AI summary state/cache."
+      },
+      {
+        "name": "fundamental.ai_summary.generate",
+        "arguments": {
+          "allowed": [
+            "force"
+          ]
+        },
+        "description": "Generate or refresh the Fundamental AI market summary."
+      },
+      {
+        "name": "fundamental.translate",
+        "arguments": {
+          "allowed": [
+            "itemId",
+            "id",
+            "lang"
+          ],
+          "required": [
+            "itemId"
+          ]
+        },
+        "description": "Translate one Fundamental raw item using the Fundamental-owned translation service."
+      },
+      {
+        "name": "fundamental.operator.request",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Authenticated Core ADMIN capability; exact operator action, payload, owner and current ADMIN session verified before effects. Never a human UI authority."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "fundamental.analysis",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.news",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.event",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.evidence",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.sentiment",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.synthesis",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.observability",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.timeline",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "fundamental.calendar",
+        "direction": "PRODUCE"
+      }
+    ],
+    "events": [
+      {
+        "name": "fundamental.event.promoted"
+      },
+      {
+        "name": "fundamental.event.confirmed"
+      },
+      {
+        "name": "fundamental.bias.changed"
+      },
+      {
+        "name": "fundamental.data_quality.changed"
+      }
+    ]
+  },
+  "description": "Canonical Fundamental Engine V3: collection, event normalization, evidence, temporal memory/event timelines with novelty scoring, on-demand AI synthesis and rich private observability. INFORMATION_ONLY. Business consumer: Supervisor; management/diagnostics: Admin via Router/CP1.",
+  "registration": {
+    "dynamic": true
+  }
+}

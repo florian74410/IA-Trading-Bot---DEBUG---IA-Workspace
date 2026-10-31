@@ -1,0 +1,36 @@
+/* IA-TB v2.2.5 · Globe agrandi — isolated styles */
+.iatb-globe-expanded{position:fixed;z-index:2000;inset:2vh 1.5vw;background:#031728;color:#d9ecff;border:1px solid #087aad;border-radius:18px;box-shadow:0 12px 60px #000c;display:flex;flex-direction:column;overflow:hidden;font:14px/1.45 system-ui,sans-serif}
+.iatb-ge-head{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;border-bottom:1px solid #0d4864}.iatb-ge-heading small{color:#52bcff;letter-spacing:1.6px}.iatb-ge-heading h2{margin:2px 0;font-size:24px}.iatb-ge-close{font-size:28px!important;min-width:42px;min-height:42px}
+.iatb-globe-expanded button{color:#d9ecff;background:#031d33;border:1px solid #136181;border-radius:10px;padding:8px 14px;cursor:pointer}
+.iatb-globe-expanded button:hover,.iatb-globe-expanded button:focus-visible{border-color:#00cfff;outline:2px solid #009cff;outline-offset:1px}.iatb-globe-expanded .iatb-ge-active{background:#00629d;border-color:#00ceff;color:white}
+.iatb-ge-filters{padding:10px 18px;display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #0d4864}.iatb-ge-body{display:grid;grid-template-columns:minmax(180px,23%) minmax(250px,1fr) minmax(260px,31%);gap:12px;padding:12px;min-height:0;flex:1}
+.iatb-ge-stats,.iatb-ge-news{border:1px solid #115878;background:#031b2c;border-radius:12px;padding:14px;overflow-y:auto}.iatb-ge-stats h3,.iatb-ge-news h3{font-size:16px;margin:0 0 12px}.iatb-ge-total{font-size:28px;font-weight:700}.iatb-ge-stat{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #12435a}
+.iatb-ge-globe{display:flex;flex-direction:column;min-width:0;min-height:0;align-items:stretch}.iatb-ge-renderer{flex:1;min-height:220px;position:relative}.iatb-ge-renderer canvas,.iatb-ge-renderer svg{max-width:100%}.iatb-ge-renderer-status{color:#68a4be;text-align:center}.iatb-ge-legend{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;padding:10px}.iatb-ge-event{display:flex;flex-direction:column;text-align:left;width:100%;gap:5px;margin:6px 0}.iatb-ge-event span{font-size:12px;color:#a5cfe6}.iatb-ge-event small{font-size:11px;color:#73a4c5}.iatb-ge-selected{border-color:#00cfff!important}.iatb-ge-empty{color:#72a9c2}
+@media(max-width:950px){.iatb-ge-body{grid-template-columns:1fr;overflow-y:auto}.iatb-ge-renderer{min-height:320px}.iatb-ge-stats,.iatb-ge-news{overflow:visible}.iatb-globe-expanded{inset:1vh 1vw}}
+@media(prefers-reduced-motion:reduce){.iatb-globe-expanded *{animation:none!important;transition:none!important}}
+
+/* Fixed IA-TB chrome remains visible while exploring the enlarged globe. */
+.iatb-globe-expanded{inset:calc(var(--iatb-nav-h,68px) + 14px) 1.5vw 62px!important;max-height:calc(100dvh - var(--iatb-nav-h,68px) - 82px)!important;z-index:94!important}
+.iatb-ge-renderer{overflow:hidden;border-radius:12px;isolation:isolate;background:radial-gradient(circle at center,#071d36 0%,#03111f 73%)}
+.iatb-ge-renderer canvas{display:block;max-height:100%;object-fit:contain}
+@media(max-width:950px){.iatb-globe-expanded{inset:calc(var(--iatb-nav-h,68px) + 10px) 1vw 59px!important;max-height:calc(100dvh - var(--iatb-nav-h,68px) - 69px)!important}}
+
+.iatb-ge-detail{margin-top:14px;padding:14px;border:1px solid #1576a0;border-radius:12px;background:#071d31}
+.iatb-ge-detail strong{display:block;margin-bottom:8px;color:#dcf1ff}
+.iatb-ge-detail p{line-height:1.5;color:#a9cfe7}
+.iatb-ge-detail small{display:block;color:#83adc8}
+.iatb-ge-source{display:inline-block;margin-top:9px;padding:7px 11px;color:#c6f5ff;border:1px solid #1786b3;border-radius:7px;text-decoration:none}
+
+.iatb-ge-zoom{position:absolute;right:15px;bottom:36px;display:grid;gap:3px;z-index:4}
+.iatb-ge-globe{position:relative}
+.iatb-ge-zoom button{font-size:19px;min-width:40px;padding:5px;border-radius:7px;background:rgba(3,28,48,.9)}
+
+/* R1: square close control, independent of generic dialog button padding. */
+.iatb-globe-expanded .iatb-ge-close{flex:0 0 40px;box-sizing:border-box;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important;display:grid;place-items:center;padding:0!important;line-height:1!important;font-size:23px!important;border-radius:9px!important;aspect-ratio:1/1}
+
+/* R1: scannable, source-labelled real news events. */
+.iatb-ge-news .iatb-ge-event{background:#061d30;border:1px solid #15526e;border-radius:10px;padding:12px 14px;line-height:1.45}
+.iatb-ge-news .iatb-ge-event strong{font-size:13px;line-height:1.4;color:#e0f5ff}
+.iatb-ge-news .iatb-ge-event .iatb-ge-event-domain{display:block;color:#28d0ff;font-weight:650;letter-spacing:.04em;text-transform:uppercase;font-size:10px}
+.iatb-ge-news .iatb-ge-event:hover{background:#09304b;border-color:#00caff}
+.iatb-ge-renderer-status{min-height:1.4em;margin:0;padding:4px 8px;font-size:11px}

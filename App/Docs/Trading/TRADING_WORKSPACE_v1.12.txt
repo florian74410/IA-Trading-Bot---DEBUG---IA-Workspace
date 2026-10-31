@@ -1,0 +1,10 @@
+Trading IA Workspace v1.12 DEBUG
+
+Architecture UI:
+- The right Exchange/Market rail is the page-wide market reference. Selecting an available exchange drives the existing exchangeSelect and therefore the chart symbol catalogue and Market Data requests.
+- The center contains a market-reference header, native IA-TB chart, an external indicator dock, then a horizontally scrollable module mosaic for pair/trade data.
+- OHLCV remains owned by Market Data Collector and is published to UI as read-only state. UI/AI visual commands may change symbol, timeframe, viewport, indicator overlays, levels, markers and mosaic layout; they must never mutate candle OHLCV.
+- Existing data route remains /ui-data/market/candles and existing Firewall validation is preserved. No direct provider-to-chart shortcut is introduced.
+- Existing native chart engine is kept deliberately: it already supports old Firefox/High Sierra, indicator panes/series, markers, levels, zoom/pan and avoids an external chart dependency.
+
+Runtime validation is still required on the user's machine.

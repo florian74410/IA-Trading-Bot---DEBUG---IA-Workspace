@@ -1,0 +1,12 @@
+'use strict';
+var assert=require('assert'),CP=require('../communication_protocol_v1');
+var allowed={'indicator.analyze':1};
+var q=CP.makeRequest('indicator','indicator.analyze',{symbol:'BTCUSD',timeframe:'4h'},'analysis'),v=CP.validateRequest(q,allowed);
+assert.equal(v.ok,true);
+var r=CP.makeResponse(q,'OK',{schema:'indicator.analysis/1.0',summary:{bias:'BULLISH'}},{engine:'indicator',action:q.action,schema:'indicator.analysis/1.0'});
+assert.equal(CP.validateResponse(r,q).ok,true);
+var changed=JSON.parse(JSON.stringify(r));changed.data.summary.bias='BEARISH';assert.equal(CP.validateResponse(changed,q).ok,false);
+var bad=JSON.parse(JSON.stringify(q));bad.action='shell.exec';assert.equal(CP.validateRequest(bad,allowed).ok,false);
+var stale=JSON.parse(JSON.stringify(q));stale.timestamp=Date.now()-600000;assert.equal(CP.validateRequest(stale,allowed).ok,false);
+var ev=CP.makeEvent('indicator','indicator.analysis.updated',{symbol:'BTCUSD',summary:{bias:'BULLISH'}},{schema:'indicator.event/1.0',severity:'NOTICE'});assert.equal(CP.validateEvent(ev,{'indicator.analysis.updated':1}).ok,true);var tampered=JSON.parse(JSON.stringify(ev));tampered.data.summary.bias='BEARISH';assert.equal(CP.validateEvent(tampered,{'indicator.analysis.updated':1}).ok,false);
+console.log('Communication Protocol CP/1: OK · request/response + event hash integrity / whitelist / timestamp');

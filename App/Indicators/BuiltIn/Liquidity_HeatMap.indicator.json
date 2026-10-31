@@ -1,0 +1,52 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "liquidity_heatmap",
+  "name": "Liquidity HeatMap",
+  "version": "2.1",
+  "category": "liquidity",
+  "inputs": {
+    "strength": {
+      "type": "number",
+      "default": 0.2,
+      "min": 0.05,
+      "max": 0.9
+    },
+    "max_zones": {
+      "type": "integer",
+      "default": 10,
+      "min": 2,
+      "max": 12
+    }
+  },
+  "engine": {
+    "operation": "liquidity_heatmap",
+    "external_service": "LIQUIDITY"
+  },
+  "outputs": {
+    "strength": {
+      "type": "number",
+      "strategy": true,
+      "chart": false,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      ">",
+      ">=",
+      "<",
+      "<="
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "render": "zones",
+    "mode": "ESTIMATED",
+    "visual": {
+      "layers": []
+    }
+  }
+}

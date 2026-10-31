@@ -1,0 +1,528 @@
+{
+  "base": "189e9c09f1549dd8f2f73bb62c62fc19d6f31d15",
+  "branch": "2.4.2-R1",
+  "from_version": "2.4.1",
+  "to_version": "2.4.2",
+  "revision": "R1",
+  "stage": "PASS_2_FROZEN_BEFORE_CLEANUP",
+  "deleteRules": {
+    "Builds/": "D01",
+    "Archives/": "D02",
+    "Versions/": "D02",
+    "Patches/": "D03",
+    "Docs/": "D04",
+    "App/Docs/wiki/": "D04"
+  },
+  "deleteExact": {
+    "App/Reports/BUILD_VARIANT.txt": "D05",
+    "App/Reports/CORE_INTEGRITY.txt": "D05",
+    "App/Reports/CORE_ROUTER_INTEGRITY.txt": "D05",
+    "App/Reports/ROUTER_ARCHITECTURE.txt": "D05",
+    "Assets/IA-TB_Auth_v1.7.9.png": "D05",
+    "Assets/auth21_login_mockup_v2.2.1.png": "D05",
+    ".github/workflows/release-v22.yml": "D06",
+    "Tools/CI/verify_v22_release.js": "D06",
+    "compose.v2.2.gen1-test.yml": "D06",
+    "Tools/gen1_c3_http_preview.sh": "D06",
+    "App/Updates/update_history.dat": "D07",
+    "Documentation/DEXSCREENER_STEP2_DEBUG_2.0.1.md": "D04",
+    "Documentation/FINAL_STEP4_DEBUG_2.0.1.md": "D04",
+    "Documentation/STATISTICS_STEP3_DEBUG_2.0.1.md": "D04",
+    "Documentation/INDICATORS_DEBUG_2.0.4.md": "D04",
+    "Documentation/GEN1_TEST_2.2.0.md": "D04",
+    "Documentation/GEN1_TEST_2.2.1.md": "D04",
+    "Documentation/RELEASE_2.2.0.md": "D04",
+    "Documentation/RELEASE_2.2.1.md": "D04",
+    "Documentation/Deploy/IA_TB_V2_1_GEN1_FULL_ROLLOUT.md": "D04",
+    "Documentation/wiki/Release-2.2.1.md": "D04",
+    "Documentation/wiki/Validation-v1.7.9.md": "D04"
+  },
+  "deleteCount": 1301,
+  "deleteBytes": 17147765,
+  "ghostOperations": [
+    {
+      "file": "App/Core/Server/server.js",
+      "unit": "file",
+      "name": "ACTION_TO_PERMISSION",
+      "line": 92,
+      "kind": "ObjectExpression",
+      "proof": "no-lexical-read",
+      "removedChars": 28
+    },
+    {
+      "file": "App/Core/Updates/update_manager_v1.0.js",
+      "unit": "file",
+      "name": "copyTree",
+      "line": 19,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 129
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "demos",
+      "line": 23,
+      "kind": "ArrayExpression",
+      "proof": "no-lexical-read",
+      "removedChars": 145
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "bindWallets",
+      "line": 9,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 2037
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "walletRows",
+      "line": 6,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 1783
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "walletDemo",
+      "line": 1,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 667
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "confirmWallet",
+      "line": 7,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 347
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "walletDetail",
+      "line": 3,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 2091
+    },
+    {
+      "file": "App/Frontend/JS/bank_controller_v1.0.js",
+      "unit": "file",
+      "name": "perm",
+      "line": 4,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 196
+    },
+    {
+      "file": "App/Frontend/JS/bank_transfer_compact_v1.js",
+      "unit": "file",
+      "name": "sourceAddress",
+      "line": 22,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 164
+    },
+    {
+      "file": "App/Frontend/JS/bank_wallets_v2.0.js",
+      "unit": "file",
+      "name": "cryptoChoices",
+      "line": 28,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 501
+    },
+    {
+      "file": "App/Frontend/JS/bank_wallets_v2.0.js",
+      "unit": "file",
+      "name": "transferSourceOptions",
+      "line": 24,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 334
+    },
+    {
+      "file": "App/Frontend/JS/bank_wallets_v2.0.js",
+      "unit": "file",
+      "name": "walletAddress",
+      "line": 19,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 77
+    },
+    {
+      "file": "App/Frontend/JS/bank_wallets_v2.0.js",
+      "unit": "file",
+      "name": "cryptoLogo",
+      "line": 21,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 506
+    },
+    {
+      "file": "App/Frontend/JS/bank_wallets_v2.0.js",
+      "unit": "file",
+      "name": "walletAccount",
+      "line": 18,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 167
+    },
+    {
+      "file": "App/Frontend/JS/chart_economic_events_v2_2_5.js",
+      "unit": "file",
+      "name": "normalize",
+      "line": 7,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 828
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "removeLegacyDiagnosticObservabilityViews",
+      "line": 218,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 463
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "watchLegacySchedulerRemoval",
+      "line": 211,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 280
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "normalizeFundamentalNavigation",
+      "line": 186,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 1127
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "IATB_CAL_ROWS",
+      "line": 103,
+      "kind": "write-only-assignment",
+      "proof": "no-consumer",
+      "removedChars": 19
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "IATB_CAL_ROWS",
+      "line": 99,
+      "kind": "ArrayExpression",
+      "proof": "no-lexical-read",
+      "removedChars": 160
+    },
+    {
+      "file": "App/Frontend/JS/fundamental_controller_v3.js",
+      "unit": "file",
+      "name": "removeLegacySchedulerBlocks",
+      "line": 187,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 687
+    },
+    {
+      "file": "App/Frontend/JS/indicator_ui_v2.0.js",
+      "unit": "file",
+      "name": "evidenceBatch",
+      "line": 36,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 880
+    },
+    {
+      "file": "App/Frontend/JS/indicator_ui_v2.0.js",
+      "unit": "file",
+      "name": "lastFinite",
+      "line": 26,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 142
+    },
+    {
+      "file": "App/Frontend/JS/portfolio_controller_v1.0.js",
+      "unit": "file",
+      "name": "healthClass",
+      "line": 16,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 110
+    },
+    {
+      "file": "App/Frontend/JS/statistiques_v1.0.js",
+      "unit": "file",
+      "name": "leaderCard",
+      "line": 232,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 555
+    },
+    {
+      "file": "App/Frontend/JS/statistiques_v1.0.js",
+      "unit": "file",
+      "name": "barChart",
+      "line": 160,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 1007
+    },
+    {
+      "file": "App/Frontend/JS/statistiques_v1.0.js",
+      "unit": "file",
+      "name": "poolThumb",
+      "line": 224,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 290
+    },
+    {
+      "file": "App/Frontend/JS/trading_dashboard_v2.0.js",
+      "unit": "file",
+      "name": "syncIndicatorDock",
+      "line": 288,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 331
+    },
+    {
+      "file": "App/Frontend/JS/trading_dashboard_v2.0.js",
+      "unit": "file",
+      "name": "chatShell",
+      "line": 149,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 792
+    },
+    {
+      "file": "App/Frontend/JS/trading_dashboard_v2.0.js",
+      "unit": "file",
+      "name": "indicatorDock",
+      "line": 16,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 60
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "drawLine",
+      "line": 164,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 298
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "strategyError",
+      "line": 130,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 85
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "strategyCatalogItem",
+      "line": 123,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 172
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "strategyRuntimeLabel",
+      "line": 122,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 154
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "authScreen",
+      "line": 116,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 51
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "changePassword",
+      "line": 110,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 561
+    },
+    {
+      "file": "App/Frontend/Pages/app_v1.0.html",
+      "unit": "inline-script-13",
+      "name": "strategyError",
+      "line": 134,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 186
+    },
+    {
+      "file": "App/Frontend/Pages/chart_viewer_v1.0.html",
+      "unit": "inline-script-3",
+      "name": "setTheme",
+      "line": 16,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 87
+    },
+    {
+      "file": "App/Fundamental/Providers/calendar_provider.js",
+      "unit": "file",
+      "name": "collectCme",
+      "line": 103,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 642
+    },
+    {
+      "file": "App/Fundamental/Providers/calendar_provider.js",
+      "unit": "file",
+      "name": "collectCmeExpirations",
+      "line": 91,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 813
+    },
+    {
+      "file": "App/Fundamental/Providers/calendar_provider.js",
+      "unit": "file",
+      "name": "diagnostics",
+      "line": 86,
+      "kind": "function",
+      "proof": "only-consumers-removed-earlier",
+      "removedChars": 148
+    },
+    {
+      "file": "App/Fundamental/Providers/calendar_provider.js",
+      "unit": "file",
+      "name": "WEB import",
+      "kind": "import",
+      "proof": "obsolete collectors removed; Fedwatch/Finance retain own transport"
+    },
+    {
+      "file": "App/MarketData/Financial/financial_collector.js",
+      "unit": "file",
+      "name": "top",
+      "line": 6,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 63
+    },
+    {
+      "file": "App/MarketData/Financial/financial_quality_v2.js",
+      "unit": "file",
+      "name": "pct",
+      "line": 6,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 64
+    },
+    {
+      "file": "App/Portfolio/Engine/portfolio_service.js",
+      "unit": "file",
+      "name": "body",
+      "line": 15,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 303
+    },
+    {
+      "file": "App/Strategy/Engine/strategy_v2_core.js",
+      "unit": "file",
+      "name": "stale",
+      "line": 22,
+      "kind": "function",
+      "proof": "no-lexical-read",
+      "removedChars": 249
+    }
+  ],
+  "modifyGroups": [
+    {
+      "id": "M01",
+      "files": [
+        "App/Core/Server/server.js",
+        "App/Core/Updates/update_manager_v1.0.js",
+        "App/Frontend/JS/bank_controller_v1.0.js",
+        "App/Frontend/JS/bank_transfer_compact_v1.js",
+        "App/Frontend/JS/bank_wallets_v2.0.js",
+        "App/Frontend/JS/chart_economic_events_v2_2_5.js",
+        "App/Frontend/JS/fundamental_controller_v3.js",
+        "App/Frontend/JS/indicator_ui_v2.0.js",
+        "App/Frontend/JS/portfolio_controller_v1.0.js",
+        "App/Frontend/JS/statistiques_v1.0.js",
+        "App/Frontend/JS/trading_dashboard_v2.0.js",
+        "App/Frontend/Pages/app_v1.0.html",
+        "App/Frontend/Pages/chart_viewer_v1.0.html",
+        "App/Fundamental/Providers/calendar_provider.js",
+        "App/MarketData/Financial/financial_collector.js",
+        "App/MarketData/Financial/financial_quality_v2.js",
+        "App/Portfolio/Engine/portfolio_service.js",
+        "App/Strategy/Engine/strategy_v2_core.js"
+      ],
+      "process": "Apply AST-reviewed unused declarations and their now-unreferenced helpers; retain all exports, CP contracts and live handlers. UTF-16 ranges applied using Node strings."
+    },
+    {
+      "id": "M02",
+      "files": [
+        "App/VERSION",
+        "App/Frontend/Settings/VERSION",
+        "App/manifest.json",
+        "App/package.json",
+        "App/package-lock.json",
+        "App/Updates/current_release.dat"
+      ],
+      "process": "Align numeric version 2.4.2 and revision R1; preserve semantic-version compatibility and existing account data."
+    },
+    {
+      "id": "M03",
+      "files": [
+        "README.md",
+        "App/README_ARCHITECTURE.md",
+        "Infrastructure/README.md",
+        "ROADMAP.md",
+        "App/CHANGELOG.md",
+        "Documentation/wiki/Home.md",
+        "Documentation/wiki/_Sidebar.md",
+        "Documentation/wiki/Changelog.md",
+        "Documentation/wiki/Versioning-and-Releases.md"
+      ],
+      "process": "Document maintained source tree, DEV scope and shallow clone; rewrite Markdown links to removed historical files to immutable base-commit URLs."
+    },
+    {
+      "id": "M04",
+      "files": [
+        ".gitignore",
+        ".github/workflows/v24-finance-trading-logs.yml",
+        "Tools/CI/audit_source_v242.cjs",
+        "Tools/CI/source_integrity_v242.py"
+      ],
+      "process": "Prevent archived build/state reintroduction; reproducible parse/scope/import/asset inventory; CI gate plus existing full regressions. Audit dependencies installed outside runtime."
+    }
+  ]
+}

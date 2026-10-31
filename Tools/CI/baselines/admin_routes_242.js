@@ -1,0 +1,35 @@
+'use strict';
+// Explicit global operator surface. Never accounts administration.
+const ADMIN_ONLY=new Set([
+  "GET /api/admin/bank/vaults",
+  "POST /api/admin/bank/vaults",
+  "GET /api/admin/session",
+  "GET /api/admin/status",
+  "GET /api/admin/firewall/status",
+  "GET /api/admin/console/catalog",
+  "POST /api/admin/console/execute",
+  "GET /api/admin/logs",
+  "POST /api/admin/logs/clear",
+  "POST /api/admin/service/restart",
+  "POST /api/admin/process/toggle",
+  "POST /api/admin/firewall/thread/stop",
+  "POST /api/admin/firewall/thread/restart",
+  "POST /api/admin/firewall/toggle",
+  "POST /api/admin/indicators/reload",
+  "POST /api/admin/cache/clear",
+  "POST /api/admin/core/restart",
+  "POST /api/admin/system/restart",
+  "POST /api/admin/system/stop-total",
+  "POST /api/shutdown",
+  "GET /api/updates",
+  "POST /api/updates/upload",
+  "POST /api/updates/fetch",
+  "POST /api/updates/install",
+  "GET /api/ai-updates/settings",
+  "POST /api/ai-updates/settings",
+  "GET /api/ai-updates",
+  "GET /api/ai-updates/package",
+  "POST /api/ai-updates/execute",
+  "GET /api/logs"
+]);
+module.exports={ADMIN_ONLY};

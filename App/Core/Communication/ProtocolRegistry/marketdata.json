@@ -1,0 +1,511 @@
+{
+  "id": "marketdata",
+  "label": "Market Data Collector V2.2",
+  "type": "SERVICE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8013,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "marketdata.audit",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Market Data Collector V2.0 integrity, freshness, quality and routing audit."
+      },
+      {
+        "name": "marketdata.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "marketdata.candles",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "limit",
+            "force",
+            "exchange",
+            "source"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        }
+      },
+      {
+        "name": "marketdata.symbols",
+        "arguments": {
+          "allowed": [
+            "source",
+            "exchange",
+            "query",
+            "q",
+            "limit"
+          ]
+        },
+        "description": "Generic symbol catalogue resolved by the selected Market Data provider. Dynamic when supported by the provider, configured fallback otherwise."
+      },
+      {
+        "name": "marketdata.providers",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "marketdata.provider.test",
+        "arguments": {
+          "allowed": [
+            "provider",
+            "source",
+            "exchange"
+          ]
+        },
+        "description": "Run a bounded public connectivity/data probe against one Market Data provider."
+      },
+      {
+        "name": "marketdata.financial.capabilities",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read-only catalogue of normalized financial data capabilities."
+      },
+      {
+        "name": "marketdata.registry.status",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "marketdata.registry.asset",
+        "arguments": {
+          "allowed": [
+            "id",
+            "symbol",
+            "name",
+            "term",
+            "detail"
+          ]
+        }
+      },
+      {
+        "name": "marketdata.registry.search",
+        "arguments": {
+          "allowed": [
+            "term",
+            "query",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "marketdata.registry.list",
+        "arguments": {
+          "allowed": [
+            "offset",
+            "limit",
+            "term"
+          ]
+        }
+      },
+      {
+        "name": "marketdata.registry.query",
+        "arguments": {
+          "allowed": [
+            "action",
+            "arguments",
+            "args"
+          ]
+        }
+      },
+      {
+        "name": "marketdata.financial.snapshot",
+        "arguments": {
+          "allowed": [
+            "force",
+            "staleWhileRevalidate"
+          ]
+        },
+        "description": "Current firewall-validated CeFi/DeFi financial snapshot."
+      },
+      {
+        "name": "marketdata.financial.history",
+        "arguments": {
+          "allowed": [
+            "family",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Persisted financial snapshot history."
+      },
+      {
+        "name": "marketdata.financial.ai_context",
+        "arguments": {
+          "allowed": [
+            "scope"
+          ]
+        },
+        "description": "Read-only compact financial context for Supervisor/LLM."
+      },
+      {
+        "name": "marketdata.financial.storage",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Financial cache/persistence status."
+      },
+      {
+        "name": "marketdata.financial.status",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Market Data financial collector runtime status."
+      },
+      {
+        "name": "marketdata.financial.refresh",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Internal refresh of financial provider data."
+      },
+      {
+        "name": "marketdata.derivatives.open_interest",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "sources"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Aggregated covered perpetual Open Interest in USD across connected CEX/DEX venues, with explicit coverage."
+      },
+      {
+        "name": "marketdata.liquidations.recent",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "windowMs",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Recent firewall-validated liquidation events from connected streams."
+      },
+      {
+        "name": "marketdata.liquidations.stats",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "windowMs"
+          ]
+        },
+        "description": "Aggregated liquidation flow statistics for a time window."
+      },
+      {
+        "name": "marketdata.microstructure.capabilities",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Canonical Market Data microstructure capabilities; same Market Data Collector service."
+      },
+      {
+        "name": "marketdata.microstructure.snapshot",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Firewall-validated order book/open-interest snapshot from the Market Data Collector."
+      },
+      {
+        "name": "marketdata.microstructure.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "SQLite microstructure history owned by Market Data."
+      },
+      {
+        "name": "marketdata.microstructure.storage",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Market Data microstructure cache and SQLite status."
+      },
+      {
+        "name": "marketdata.microstructure.refresh",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "source",
+            "depth"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Force a microstructure provider refresh through the Data Firewall."
+      },
+      {
+        "name": "marketdata.liquidations.streams",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Status of the per-provider real-time liquidation worker threads owned by Market Data Collector."
+      },
+      {
+        "name": "marketdata.derivatives.open_interest.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Persisted covered Open Interest history from the unified Market Data Collector."
+      },
+      {
+        "name": "marketdata.dex.liquidity.capabilities",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "DEX pair pool-liquidity capability from DEX Screener; pool liquidity is not executable order-book depth."
+      },
+      {
+        "name": "marketdata.dex.liquidity.snapshot",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "force"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Firewall-validated DEX pool liquidity, volume and top pools for a pair."
+      },
+      {
+        "name": "marketdata.dex.liquidity.history",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Persisted DEX pair liquidity history from Market Data SQLite."
+      },
+      {
+        "name": "marketdata.ticker",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "exchange",
+            "source"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Generic ticker routed through the Market Data provider catalogue and Data Firewall."
+      },
+      {
+        "name": "marketdata.refresh",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "limit",
+            "exchange",
+            "source"
+          ],
+          "required": [
+            "symbol",
+            "timeframe"
+          ]
+        },
+        "description": "Force a candle refresh for any registered CEX/DEX provider."
+      },
+      {
+        "name": "marketdata.active",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "List active candle contexts currently maintained by Market Data."
+      },
+      {
+        "name": "marketdata.cache.clear",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Clear Market Data in-memory caches."
+      },
+      {
+        "name": "marketdata.settings.get",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read sanitized Market Data provider settings."
+      },
+      {
+        "name": "marketdata.settings.set",
+        "arguments": {
+          "allowed": [
+            "settings"
+          ],
+          "allowUnknown": true
+        },
+        "description": "Update Market Data provider settings. Provider IDs come from the provider catalogue."
+      },
+      {
+        "name": "marketdata.registry.refresh",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Force the CoinGecko-backed market registry refresh."
+      },
+      {
+        "name": "marketdata.asset.price",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "currency"
+          ],
+          "required": [
+            "symbol"
+          ]
+        },
+        "description": "Read a CoinGecko-backed asset price through Market Data."
+      },
+      {
+        "name": "marketdata.catalog",
+        "arguments": {
+          "allowed": [
+            "query",
+            "page",
+            "perPage"
+          ]
+        },
+        "description": "Browse/search the CoinGecko asset catalog through Market Data."
+      },
+      {
+        "name": "marketdata.asset.resolve",
+        "arguments": {
+          "allowed": [
+            "id",
+            "network"
+          ],
+          "required": [
+            "id",
+            "network"
+          ]
+        },
+        "description": "Resolve asset metadata and network transferability through CoinGecko metadata."
+      },
+      {
+        "name": "marketdata.operator.request",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Authenticated Core ADMIN capability; exact operator action, payload, owner and current ADMIN session verified before effects. Never a human UI authority."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "market.ticker",
+        "direction": "PRODUCE",
+        "schema": "market.ticker/1.0"
+      },
+      {
+        "name": "market.candles",
+        "direction": "PRODUCE",
+        "schema": "market.candles/1.0"
+      },
+      {
+        "name": "market.registry",
+        "direction": "PRODUCE",
+        "schema": "market.registry/1.0"
+      },
+      {
+        "name": "defi.position",
+        "direction": "PRODUCE",
+        "schema": "iatb.financial.data/1.0"
+      },
+      {
+        "name": "onchain.read",
+        "direction": "PRODUCE",
+        "schema": "iatb.financial.data/1.0"
+      },
+      {
+        "name": "market.open_interest.aggregate",
+        "direction": "PRODUCE",
+        "schema": "marketdata.open_interest.aggregate/1.0"
+      },
+      {
+        "name": "market.liquidations",
+        "direction": "PRODUCE",
+        "schema": "marketdata.liquidations/1.0"
+      },
+      {
+        "name": "market.liquidations.stats",
+        "direction": "PRODUCE",
+        "schema": "marketdata.liquidations.stats/1.1"
+      },
+      {
+        "name": "market.microstructure.raw",
+        "direction": "PRODUCE",
+        "schema": "marketdata.microstructure.raw/1.0"
+      },
+      {
+        "name": "market.microstructure.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.microstructure.history/1.0"
+      },
+      {
+        "name": "market.open_interest.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.open_interest.history/1.0"
+      },
+      {
+        "name": "market.dex.liquidity",
+        "direction": "PRODUCE",
+        "schema": "marketdata.dex.liquidity/1.0"
+      },
+      {
+        "name": "market.dex.liquidity.history",
+        "direction": "PRODUCE",
+        "schema": "marketdata.dex.liquidity.history/1.0"
+      }
+    ],
+    "events": []
+  },
+  "registration": {
+    "dynamic": true
+  }
+}

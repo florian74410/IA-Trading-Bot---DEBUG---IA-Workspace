@@ -1,0 +1,44 @@
+{
+  "id": "firewall",
+  "label": "Firewall",
+  "type": "FIREWALL",
+  "order": 30,
+  "port": 8017,
+  "healthPath": "/health",
+  "marker": "IA-TB Firewall Service",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Core/Firewall/firewall_service.js",
+  "log": ".runtime/logs/firewall.log",
+  "env": {
+    "IATB_FIREWALL_PORT": "8017",
+    "IATB_TRADING_ENGINE_PORT": "8016",
+    "ROUTER_PORT": "8021"
+  },
+  "workers": [
+    {
+      "id": "router",
+      "thread": 0,
+      "label": "Router Firewall",
+      "toggleable": false
+    },
+    {
+      "id": "trading",
+      "thread": 1,
+      "label": "Trading Engine Protection",
+      "toggleable": true,
+      "securityFolder": "Core/Firewall/Config/Trading"
+    },
+    {
+      "id": "data",
+      "thread": 2,
+      "label": "Market Data Collector Protection",
+      "toggleable": true,
+      "securityFolder": "Core/Firewall/Config/MarketData"
+    }
+  ],
+  "versionSource": "RUNTIME_HEALTH",
+  "dependencies": [
+    "router"
+  ]
+}

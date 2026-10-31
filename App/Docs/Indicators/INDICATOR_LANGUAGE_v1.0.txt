@@ -1,0 +1,36 @@
+IA-TB INDICATOR LANGUAGE - IIL v1.0
+====================================
+IIL (IA-TB Indicator Language) appartient a l'Indicator Engine.
+
+Architecture:
+Utilisateur / Chat IA / futur Builder
+        -> IIL (langage public de l'Indicator Engine)
+        -> Parser + Validator de l'Indicator Engine
+        -> IR prive
+        -> Runtime de calcul
+        -> resultat CP/1
+
+Le Chat IA n'est ni le proprietaire ni l'interpreteur du langage. Il peut demander la specification avec indicator.language.info, ecrire de l'IIL, demander sa validation/compilation, puis sa creation.
+
+Exemple:
+indicator overflow_cross "Overflow Cross"
+input price = close
+param fast = 7 min=2 max=100
+param slow = 25 min=3 max=200
+use fast_ema = ema(source=close,period=$param.fast).value
+use slow_ema = ema(source=close,period=$param.slow).value
+calc spread = sub(a=fast_ema,b=slow_ema)
+output value = spread
+
+CP/1:
+ indicator.language.info
+ indicator.language.compile
+ indicator.language.validate
+ indicator.language.create
+
+Securite:
+IIL est declaratif. Aucun eval, JavaScript utilisateur, shell, reseau ou acces filesystem n'est disponible dans le langage.
+Le compilateur produit une definition iatb.indicator.v1 contenant un IR prive, ensuite validee par le Registry.
+
+Evolution:
+La syntaxe USE est reservee aux primitives/operations supportees en v1.0. Une future resolution de dependances permettra USE d'un autre indicateur du Registry avec detection de cycles.

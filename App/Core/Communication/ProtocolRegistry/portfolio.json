@@ -1,0 +1,247 @@
+{
+  "id": "portfolio",
+  "label": "Portfolio Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8020,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "portfolio.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "portfolio.overview",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Aggregated read-only Portfolio UI overview through CP/1."
+      },
+      {
+        "name": "portfolio.settings.get",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Portfolio Engine runtime settings."
+      },
+      {
+        "name": "portfolio.settings.set",
+        "arguments": {
+          "allowed": [
+            "settings",
+            "snapshotRefreshSec",
+            "pnlRefreshSec",
+            "exchangeSyncSec",
+            "equityChangeTriggerPct",
+            "baseCurrency",
+            "snapshotRetention"
+          ]
+        },
+        "description": "Update Portfolio Engine runtime settings through CP/1."
+      },
+      {
+        "name": "portfolio.event.record",
+        "arguments": {
+          "allowed": [
+            "event",
+            "event_id",
+            "event_type",
+            "timestamp",
+            "request_id",
+            "execution_id",
+            "risk_approval_id",
+            "exchange",
+            "symbol",
+            "side",
+            "position_side",
+            "order_type",
+            "reduce_only",
+            "quantity",
+            "filled_quantity",
+            "price",
+            "average_price",
+            "fee",
+            "fees",
+            "funding",
+            "exchange_order_id",
+            "status",
+            "ok",
+            "source",
+            "metadata",
+            "balance"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.balance.record",
+        "arguments": {
+          "allowed": [
+            "balance",
+            "venue",
+            "asset",
+            "amount",
+            "value_base",
+            "updated_at"
+          ],
+          "required": []
+        }
+      },
+      {
+        "name": "portfolio.snapshot",
+        "arguments": {
+          "allowed": [
+            "force"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.positions",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "portfolio.balances",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "portfolio.history",
+        "arguments": {
+          "allowed": [
+            "range"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.statistics",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "portfolio.events",
+        "arguments": {
+          "allowed": [
+            "limit",
+            "since"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.sync",
+        "arguments": {
+          "allowed": [
+            "since"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.cost.summary",
+        "arguments": {
+          "allowed": [
+            "since",
+            "engine",
+            "category",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.cost.history",
+        "arguments": {
+          "allowed": [
+            "since",
+            "engine",
+            "category",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.position.health",
+        "arguments": {
+          "allowed": [
+            "tradeId",
+            "walletId",
+            "symbol",
+            "exchange"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.trades",
+        "arguments": {
+          "allowed": [
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.trade.detail",
+        "arguments": {
+          "allowed": [
+            "tradeId",
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "portfolio.user.request",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ],
+          "required": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Core-bound owner capability with live session revalidation; no browser identity authority"
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "portfolio.execution.event",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "portfolio.snapshot",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "portfolio.positions",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "portfolio.cost.summary",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "canon.ai.usage",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "portfolio.position.health",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "portfolio.trade",
+        "direction": "PRODUCE"
+      }
+    ],
+    "events": []
+  },
+  "registration": {
+    "dynamic": true
+  }
+}

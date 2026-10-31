@@ -1,0 +1,25 @@
+{
+  "exchange": "BINANCE",
+  "market_types": [
+    "SPOT",
+    "FUTURES_USDM"
+  ],
+  "operations": [
+    "CREATE_ORDER",
+    "CANCEL_ORDER",
+    "GET_ORDER",
+    "OPEN_ORDERS",
+    "SET_LEVERAGE"
+  ],
+  "order_types": [
+    "MARKET",
+    "LIMIT",
+    "STOP",
+    "STOP_MARKET",
+    "TAKE_PROFIT",
+    "TAKE_PROFIT_MARKET"
+  ],
+  "client_order_id": true,
+  "reduce_only": true,
+  "auth": "HMAC_SHA256"
+}

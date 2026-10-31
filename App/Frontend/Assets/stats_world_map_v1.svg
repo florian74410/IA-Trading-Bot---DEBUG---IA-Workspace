@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520">
+<defs>
+ <filter id="g"><feGaussianBlur stdDeviation="3"/></filter>
+ <linearGradient id="fade" x1="0" x2="1"><stop stop-color="#0dd3ff" stop-opacity=".18"/><stop offset=".5" stop-color="#2da9ff" stop-opacity=".52"/><stop offset="1" stop-color="#0dd3ff" stop-opacity=".14"/></linearGradient>
+ <pattern id="dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="2.2" cy="2.2" r="1.35" fill="#25b9ff" opacity=".62"/></pattern>
+ <clipPath id="continents">
+  <path d="M109 130l39-44 78-23 78 10 42 34-13 38-60 18-13 26-52 3-21 32-49-7-22-45zm216 133 32-16 38 17 27 41-3 56-20 47-25 13-17-28-8-49-30-45zm146-180 70-24 113 4 58 30 55 5 24 31-33 27-86 2-31 25-63-9-38-31-70-10zm167 120 41 7 28 37 51 9 37 38-7 64-35 51-38 6-25-35-26-17-25-42-8-47zm179-126 93 4 64 29 36 38-23 37-53 5-35 30-39-4-37-31-38-17-7-33zm89 211 53 1 42 25 16 42-29 25-69 4-37-21 1-37z"/>
+ </clipPath>
+</defs>
+<rect width="1200" height="520" fill="none"/>
+<g clip-path="url(#continents)"><rect x="55" y="42" width="1050" height="390" fill="url(#dots)"/></g>
+<path d="M109 130l39-44 78-23 78 10 42 34M471 83l70-24 113 4 58 30M817 77l93 4 64 29" fill="none" stroke="url(#fade)" stroke-width="2"/>
+<g fill="#42d6ff" opacity=".8">
+ <circle cx="195" cy="142" r="2.4"/><circle cx="280" cy="112" r="2.6"/><circle cx="421" cy="279" r="2.2"/><circle cx="581" cy="145" r="2.4"/><circle cx="676" cy="120" r="2.1"/><circle cx="779" cy="184" r="2.6"/><circle cx="911" cy="128" r="2.6"/><circle cx="1000" cy="165" r="2.2"/><circle cx="956" cy="330" r="2.3"/>
+</g>
+</svg>

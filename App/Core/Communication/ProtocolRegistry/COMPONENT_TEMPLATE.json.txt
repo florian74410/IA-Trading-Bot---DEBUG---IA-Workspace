@@ -1,0 +1,19 @@
+{
+  "id": "my_component",
+  "label": "My Component",
+  "type": "MODULE",
+  "transport": "CP1",
+  "endpoint": {"host":"127.0.0.1","port":8020,"cpPath":"/cp/v1","healthPath":"/health"},
+  "table": {
+    "commands": [
+      {"name":"my_component.health","arguments":{"allowed":[]}},
+      {"name":"my_component.analyze","arguments":{"allowed":["symbol"],"required":["symbol"]}}
+    ],
+    "dataTypes": [
+      {"name":"my_component.analysis","direction":"PRODUCE","schema":"my_component.analysis/1.0"}
+    ],
+    "events": [
+      {"name":"my_component.updated","schema":"cp.event/1.0"}
+    ]
+  }
+}

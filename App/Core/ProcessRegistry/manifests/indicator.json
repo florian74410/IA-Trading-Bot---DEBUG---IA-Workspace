@@ -1,0 +1,24 @@
+{
+  "id": "indicator",
+  "label": "Indicator Engine",
+  "type": "ENGINE",
+  "order": 60,
+  "port": 8012,
+  "healthPath": "/health",
+  "marker": "IA-TB Indicator Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Indicators/Engine/indicator_service.js",
+  "log": ".runtime/logs/indicator.log",
+  "env": {
+    "IATB_INDICATOR_PORT": "8012",
+    "ROUTER_PORT": "8021"
+  },
+  "versionSource": "RUNTIME_HEALTH",
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": [
+    "marketdata"
+  ]
+}

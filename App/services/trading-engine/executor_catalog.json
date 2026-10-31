@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "version": "2.0",
+  "description": "IA-TB Trading Engine executor catalogue. Add an adapter module and register it here without editing Trading Engine core.",
+  "executors": [
+    {
+      "id": "BINANCE",
+      "module": "./exchange-adapters/binance/executor",
+      "export": "BinanceExecutor",
+      "enabled": true
+    },
+    {
+      "id": "OKX",
+      "module": "./exchange-adapters/okx/executor",
+      "export": "OkxExecutor",
+      "enabled": true
+    },
+    {
+      "id": "KRAKEN",
+      "module": "./exchange-adapters/kraken/executor",
+      "export": "KrakenExecutor",
+      "enabled": true
+    },
+    {
+      "id": "GMX",
+      "module": "./exchange-adapters/gmx/executor",
+      "export": "GmxExecutor",
+      "enabled": true
+    }
+  ]
+}

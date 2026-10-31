@@ -1,0 +1,695 @@
+{
+  "schema": "iatb.user-management.legacy-route-decisions/1",
+  "reference_head": "15181f696e1a1cae8fa2753d12d1f9494f97bc3c",
+  "total": 75,
+  "classification_is_not_acceptance": true,
+  "routes": [
+    {
+      "method": "POST",
+      "path": "/api/setup",
+      "classification": "RETIRED",
+      "reason": "Création publique remplacée par create-first-admin et create en CLI, conformément à la mission.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": "User Management V1: comptes par CLI exclusivement"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/request",
+      "classification": "RETIRED",
+      "reason": "Ancien mécanisme de récupération global incompatible avec les comptes SQLite ; reset-password CLI opérationnel.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": "User Management V1: comptes par CLI exclusivement"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/confirm",
+      "classification": "RETIRED",
+      "reason": "Ancienne récupération globale remplacée par reset-password CLI ; aucune récupération web annoncée.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": "User Management V1: comptes par CLI exclusivement"
+    },
+    {
+      "method": "GET",
+      "path": "/api/bank/vaults",
+      "classification": "MIGRATE",
+      "reason": "Catalogue partagé limité aux contrats ACTIVE publiés ; aucune stratégie privée ni wallet historique adopté.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/bank/vaults",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/bank/vaults: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/bank/vaults",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/bank/vaults: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/session",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/session: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/status",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/status: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/console/catalog",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/console/catalog: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/console/execute",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/console/execute: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/logs",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/logs: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/logs/clear",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/logs/clear: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/service/restart",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/service/restart: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/process/toggle",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/process/toggle: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/stop",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/firewall/thread/stop: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/restart",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/firewall/thread/restart: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/toggle",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/firewall/toggle: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/indicators/reload",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/indicators/reload: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/cache/clear",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/cache/clear: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/core/restart",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/core/restart: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/system/restart",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/system/restart: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/system/stop-total",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/admin/system/stop-total: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/shutdown",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/shutdown: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/updates",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/updates: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/upload",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/updates/upload: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/fetch",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/updates/fetch: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/install",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/updates/install: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates/settings",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/ai-updates/settings: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/ai-updates/settings",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/ai-updates/settings: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/ai-updates: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates/package",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/ai-updates/package: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/ai-updates/execute",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/ai-updates/execute: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/mosaics",
+      "classification": "MIGRATE",
+      "reason": "Dashboard privé : définitions et sélection par propriétaire ; conserver le validateur Mosaic existant.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/mosaics/runtime",
+      "classification": "MIGRATE",
+      "reason": "Dashboard privé : définitions et sélection par propriétaire ; conserver le validateur Mosaic existant.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/mosaics/create",
+      "classification": "MIGRATE",
+      "reason": "Dashboard privé : définitions et sélection par propriétaire ; conserver le validateur Mosaic existant.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/mosaics/delete",
+      "classification": "MIGRATE",
+      "reason": "Dashboard privé : définitions et sélection par propriétaire ; conserver le validateur Mosaic existant.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/firewall/toggle",
+      "classification": "DENIED-SECURITY",
+      "reason": "Désactivation de protection via parcours utilisateur : maintenir une frontière ADMIN forte, décision de produit requise.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/clients/status",
+      "classification": "DENIED-SECURITY",
+      "reason": "Console comptes exclusivement CLI ; diagnostics de schéma disponibles dans la recette opérateur.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": "User Management V1: comptes par CLI exclusivement"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/clients",
+      "classification": "DENIED-SECURITY",
+      "reason": "Administration et consultation des comptes exclusivement CLI ; ne pas rouvrir la liste HTTP.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": "User Management V1: comptes par CLI exclusivement"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/remove-key",
+      "classification": "MIGRATE",
+      "reason": "Alias de gestion wallet privé : session, réauthentification et recherche dans les wallets du seul propriétaire.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/remove",
+      "classification": "MIGRATE",
+      "reason": "Alias de gestion wallet privé : session, réauthentification et recherche dans les wallets du seul propriétaire.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/logs",
+      "classification": "ADMIN-ONLY",
+      "reason": "Commande/diagnostic global de /api/logs: ADMIN validé côté serveur ; réauthentification et audit pour mutation ; jamais une permission USER.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/apis/clear",
+      "classification": "MIGRATE",
+      "reason": "Secret privé : chiffrement par propriétaire, mot de passe courant, jamais de valeur globale en fallback.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-openai",
+      "classification": "MIGRATE",
+      "reason": "Tester uniquement les credentials du propriétaire ; quotas et audit du coût fournisseur.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-zerox",
+      "classification": "MIGRATE",
+      "reason": "Tester uniquement les credentials du propriétaire ; quotas et audit du coût fournisseur.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-x",
+      "classification": "MIGRATE",
+      "reason": "Tester uniquement les credentials du propriétaire ; quotas et audit du coût fournisseur.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/supervisor/brains",
+      "classification": "MIGRATE",
+      "reason": "Réglages privés MOCK/OPENAI_API et fallback privé ; REMOTE_LLM requiert une décision explicite sur ses destinations et credentials.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/modulation",
+      "classification": "MIGRATE",
+      "reason": "Disposition personnelle : conserver validation existante et stockage scoped SQLite.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/app-settings/select",
+      "classification": "MIGRATE",
+      "reason": "Sélection de profil personnel : stockage scoped SQLite, aucun chemin fichier arbitraire.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/transfers/status",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet, accès chaîne borné ; aucune exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/transfers/assets",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet, accès chaîne borné ; aucune exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/transfers/preview",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet, accès chaîne borné ; aucune exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/transfers/execute",
+      "classification": "DENIED-SECURITY",
+      "reason": "Signature et transfert réels : aucune autorisation de trading/transfert réel dans cette mission.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/status",
+      "classification": "MIGRATE",
+      "reason": "Lecture de chaîne : wallet du propriétaire et quota fournisseur ; aucun identifiant navigateur faisant autorité.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/identity",
+      "classification": "MIGRATE",
+      "reason": "Lecture de chaîne : wallet du propriétaire et quota fournisseur ; aucun identifiant navigateur faisant autorité.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/wallet",
+      "classification": "MIGRATE",
+      "reason": "Lecture de chaîne : wallet du propriétaire et quota fournisseur ; aucun identifiant navigateur faisant autorité.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/history",
+      "classification": "MIGRATE",
+      "reason": "Lecture de chaîne : wallet du propriétaire et quota fournisseur ; aucun identifiant navigateur faisant autorité.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/tx",
+      "classification": "MIGRATE",
+      "reason": "Lecture de chaîne : wallet du propriétaire et quota fournisseur ; aucun identifiant navigateur faisant autorité.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/swap-bridge/status",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet et aucune signature/exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/quote",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet et aucune signature/exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/prepare",
+      "classification": "MIGRATE",
+      "reason": "Préparation/lecture privée : session, ownership wallet et aucune signature/exécution réelle.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/execute",
+      "classification": "DENIED-SECURITY",
+      "reason": "Exécution/signature réelle : décision explicite de recette hors trading réel requise.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/submitted",
+      "classification": "DENIED-SECURITY",
+      "reason": "Enregistrement de transaction externe à attribuer et vérifier par propriétaire avant ouverture.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/track",
+      "classification": "DENIED-SECURITY",
+      "reason": "Suivi de transaction externe : vérifier propriété et provenance avant ouverture.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_EXPLICIT_DECISION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/notifications/test",
+      "classification": "MIGRATE",
+      "reason": "Notification privée : générer dans le contexte du propriétaire, aucune diffusion globale.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/credits/usage",
+      "classification": "MIGRATE",
+      "reason": "Consommation privée : ledger rattaché au principal, jamais la consommation globale.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/credits/pricing",
+      "classification": "MIGRATE",
+      "reason": "Tarification personnelle dans api_credits scoped SQLite ; validation numérique bornée ; aucun tarif global modifié.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/token-usage",
+      "classification": "MIGRATE",
+      "reason": "Consommation privée : supprimer le fallback global TOKEN_USAGE et utiliser le ledger du propriétaire.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/change-password",
+      "classification": "MIGRATE",
+      "reason": "Alias historique vers les changements Auth21 du seul compte connecté avec réauthentification.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/change-email",
+      "classification": "MIGRATE",
+      "reason": "Alias historique vers les changements Auth21 du seul compte connecté avec réauthentification.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/test-email",
+      "classification": "MIGRATE",
+      "reason": "Vérification email personnelle : aucun envoi tant que service email réel non configuré ; décision requise.",
+      "implementation": "PENDING",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "GET",
+      "path": "/api/chart-viewer/status",
+      "classification": "MIGRATE",
+      "reason": "État de configuration du propriétaire ; conserver le Renderer et les calculs existants.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/chart-viewer/chat",
+      "classification": "MIGRATE",
+      "reason": "Conversation et secrets IA privés : capacité signée, quotas et ledger du propriétaire.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/companion/chat",
+      "classification": "MIGRATE",
+      "reason": "Conversation et secrets IA privés : même chaîne de contrôle Auth21 et isolation de l’historique.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat",
+      "classification": "MIGRATE",
+      "reason": "Conversation IA privée : identité serveur, réauthentification des secrets et isolation des coûts.",
+      "implementation": "IMPLEMENTED_RECIPE_IN_PROGRESS",
+      "acceptance": "REQUIRES_QUALIFICATION",
+      "decision_source": null
+    }
+  ],
+  "counts": {
+    "MIGRATE": 36,
+    "ADMIN-ONLY": 29,
+    "RETIRED": 3,
+    "DENIED-SECURITY": 7
+  },
+  "qualification_2_2": {
+    "test": "App/Tools/Tests/user_management_route_matrix.test.js",
+    "coverage": "75 live-session TLS authorization boundaries; delegation probe, not exhaustive business acceptance",
+    "business_acceptance": "NOT_CLAIMED_BY_BOUNDARY_TEST",
+    "release_scope": "Documentation/RELEASE_2.2.0.md"
+  }
+}

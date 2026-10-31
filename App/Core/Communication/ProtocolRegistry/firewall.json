@@ -1,0 +1,62 @@
+{
+  "id": "firewall",
+  "label": "Trading Firewall",
+  "type": "FIREWALL",
+  "transport": "CP1_MONITORING",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8017,
+    "healthPath": "/health",
+    "cpPath": "/cp/read/v1"
+  },
+  "registration": {
+    "dynamic": false
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "firewall.status",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Firewall coordinator and protection thread status."
+      },
+      {
+        "name": "firewall.threads",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read Firewall protection thread states."
+      },
+      {
+        "name": "firewall.events",
+        "arguments": {
+          "allowed": [
+            "audience",
+            "limit",
+            "since"
+          ]
+        },
+        "description": "Read bounded Firewall event feed."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "security.command.envelope",
+        "direction": "BOTH"
+      },
+      {
+        "name": "security.marketdata.envelope",
+        "direction": "BOTH"
+      }
+    ],
+    "events": [
+      {
+        "name": "firewall.protection.changed"
+      },
+      {
+        "name": "firewall.request.rejected"
+      }
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+INDICATOR ENGINE v1.12
+======================
+Role
+----
+Moteur de calcul technique. Il ne choisit ni la paire, ni le timeframe, ni les indicateurs a appliquer.
+Le demandeur fournit ces choix via CP/1. L'Engine recupere les bougies normalisees du Market Data Collector, calcule, puis renvoie les resultats.
+
+CP/1
+----
+indicator.compute(id, symbol, timeframe, params [, force])
+indicator.compute_batch(symbol, timeframe, requests[] [, force])
+Les commandes historiques analyze/get_state/get_levels/get_signals/list_* restent compatibles.
+
+Batch
+-----
+Jusqu'a 32 indicateurs par requete. Une seule acquisition Market Data est reutilisee pour tout le batch.
+Chaque requete possede ses propres parametres.
+
+Indicateurs charges par l'utilisateur
+--------------------------------------
+Le registre charge automatiquement BuiltIn/*.indicator.json et Custom/*.indicator.json.
+Les definitions sont declaratives et validees. Un Custom peut reutiliser toute operation native autorisee avec ses propres parametres.
+Aucun JavaScript utilisateur, eval, shell, acces fichier ou reseau arbitraire n'est execute par l'Indicator Engine.
+Les definitions invalides sont placees en Quarantine.
+
+Limite actuelle explicite
+-------------------------
+"Tout indicateur" signifie tout indicateur exprimable avec les operations de calcul supportees par le moteur.
+Un algorithme entierement nouveau ne peut pas etre invente par un simple JSON. Il faudra etendre le catalogue d'operations ou un futur DSL declaratif securise.
+Cette limite est volontaire afin de ne pas transformer un fichier charge par un utilisateur en execution de code arbitraire.
+
+Test
+----
+node Indicators/Tests/test_indicator_engine.js
+node Indicators/Tests/test_indicator_cp1_v112.js
+Le second test exige que Router, Market Data et Indicator Engine soient demarres.

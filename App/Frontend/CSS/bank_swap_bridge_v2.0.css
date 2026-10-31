@@ -1,0 +1,246 @@
+/* IA-TB Bank Swap & Bridge v2.0 — visual prototype, High Sierra/Firefox compatible */
+.swapBridgeV2{color:#eaf7ff;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}.swapBridgeV2 *{box-sizing:border-box}.sbHead{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:14px}.sbHead h2{font-size:31px;margin:0 0 4px}.sbHead p{margin:0;color:#8eb0c4}.sbNetworks{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.sbChip,.sbTabs button,.sbFilter button{background:#071827;border:1px solid #173f5a;color:#dff5ff;border-radius:8px;padding:9px 12px}.sbChip b{margin-right:5px}.sbTabs{display:flex;gap:8px;margin:10px 0 14px}.sbTabs button{min-width:120px;font-weight:700}.sbTabs button.active{background:#0879ee;border-color:#1ca7ff;box-shadow:0 0 18px #0879ee44}.sbTop{display:grid;grid-template-columns:1fr 1fr .86fr .8fr;gap:9px}.sbCard,.sbRoutes,.sbChart,.sbToken,.sbHistory{background:linear-gradient(180deg,#061725,#04101a);border:1px solid #123c58;border-radius:12px;box-shadow:inset 0 1px #ffffff08}.sbCard{padding:14px;min-height:208px}.sbCard h3{margin:0 0 13px;font-size:15px}.sbStep{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#087cf0;margin-right:8px}.sbTokenSelect,.sbNetworkSelect{display:flex;align-items:center;gap:10px;background:#071b2b;border:1px solid #174866;border-radius:9px;padding:11px;margin:8px 0}.sbCoin{width:35px;height:35px;border-radius:50%;display:grid;place-items:center;background:#096be1;font-size:20px;font-weight:800}.sbTokenSelect strong{font-size:18px}.sbAmount{margin-left:auto;font-size:27px;font-weight:800}.sbMuted{font-size:11px;color:#86a9bc}.sbNetworkSelect{justify-content:space-between}.sbNetworkSelect span:first-child{display:flex;gap:8px;align-items:center}.sbParam label{display:block;color:#9bb8c8;font-size:12px;margin:10px 0 6px}.sbChoice{display:flex;gap:5px}.sbChoice button{flex:1;background:#081a29;color:#d7ecf8;border:1px solid #173e58;border-radius:6px;padding:8px 4px}.sbChoice .active{background:#087cf0;border-color:#24a9ff}.sbToggle{display:flex;justify-content:space-between;align-items:center;margin:10px 0;font-size:11px}.sbSwitch{width:28px;height:15px;border-radius:10px;background:#087cf0;position:relative}.sbSwitch:after{content:"";position:absolute;width:11px;height:11px;border-radius:50%;background:white;right:2px;top:2px}.sbRouteVisual{display:flex;align-items:center;justify-content:center;gap:9px;margin:15px 0}.sbRouteVisual .chain{width:50px;height:50px;border:1px solid #175070;border-radius:50%;display:grid;place-items:center;font-size:24px;background:#071d2d}.sbArrow{font-size:26px;color:#23d9b0}.sbRouteProvider{text-align:center;background:#071a29;border:1px solid #164660;padding:9px;border-radius:8px}.sbRouteProvider b{display:block}.sbMain{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:10px;margin-top:10px}.sbRoutes{padding:12px}.sbRoutesHead{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:9px}.sbRoutesHead h3{margin:0}.sbFilter{display:flex;gap:6px}.sbFilter button.active{background:#087cf0}.sbRouteRow{display:grid;grid-template-columns:24px 1.15fr .85fr .75fr .6fr 110px;align-items:center;gap:8px;padding:10px 8px;border-top:1px solid #0c2c40;font-size:12px}.sbRouteRow.selected{border:1px solid #078eff;border-radius:9px;background:#06213a}.sbRadio{width:19px;height:19px;border:1px solid #24617f;border-radius:50%}.selected .sbRadio{border:5px solid #0b8dff}.sbProvider{display:flex;align-items:center;gap:8px}.sbProvider i{width:31px;height:31px;border-radius:8px;background:#10c99d;display:grid;place-items:center;font-style:normal;font-weight:900;color:#04131d}.sbProvider small{background:#153248;padding:4px 6px;border-radius:5px;color:#bdd8e7}.sbSelect{background:#087cf0;border:1px solid #25a7ff;color:white;border-radius:6px;padding:8px}.sbPreview{padding:14px}.sbPreview h3{margin-top:0}.sbKV{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:12px}.sbKV b{text-align:right}.sbLoss{color:#ff5364}.sbLaunch{width:100%;margin-top:13px;padding:14px;border:1px solid #20a8ff;border-radius:8px;background:#087cf0;color:white;font-weight:800;font-size:14px}.sbBottom{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:10px;margin-top:10px}.sbChart{padding:12px}.sbChartHead{display:flex;justify-content:space-between}.sbFakeChart{height:150px;margin-top:10px;border-left:1px solid #183a4d;border-bottom:1px solid #183a4d;background:repeating-linear-gradient(0deg,transparent,transparent 36px,#102d3e 37px),repeating-linear-gradient(90deg,transparent,transparent 80px,#102d3e 81px);position:relative;overflow:hidden}.sbFakeChart svg{width:100%;height:100%}.sbToken{padding:13px}.sbToken h3{margin-top:0}.sbHistory{margin-top:10px;padding:12px}.sbHistory table{width:100%;border-collapse:collapse;font-size:11px}.sbHistory th,.sbHistory td{text-align:left;border-top:1px solid #103044;padding:8px}.sbPrototype{font-size:10px;color:#5f879d;margin-top:7px}@media(max-width:1250px){.sbTop{grid-template-columns:1fr 1fr}.sbMain,.sbBottom{grid-template-columns:1fr}.sbRouteRow{grid-template-columns:22px 1fr .8fr .7fr .6fr 95px}}@media(max-width:800px){.sbTop{grid-template-columns:1fr}.sbHead{display:block}.sbNetworks{justify-content:flex-start;margin-top:10px}.sbRouteRow{grid-template-columns:22px 1fr 1fr}.sbRouteRow>*:nth-child(n+4){display:none}}
+/* compact mode tabs + vertical chain selector */
+.sbHead{display:block}.sbNetworks{display:none}.sbTabs{gap:7px;margin:8px 0 12px}.sbTabs button{min-width:102px;padding:7px 10px;font-size:12px;border-radius:7px}
+.sbWorkspace{display:grid;grid-template-columns:48px minmax(0,1fr);gap:9px;align-items:start}.sbChainRail{display:flex;flex-direction:column;gap:7px;padding-top:2px}.sbChainBtn{width:42px;height:42px;border-radius:11px;border:1px solid #174866;background:#061725;color:#eaf7ff;display:grid;place-items:center;cursor:pointer;box-shadow:inset 0 1px #ffffff0a}.sbChainBtn:hover{border-color:#1ca7ff;background:#08243a}.sbChainBtn.active{border-color:#20a8ff;background:#087cf0;box-shadow:0 0 16px #087cf055}.sbChainIcon{font-size:21px;font-weight:800;line-height:1}.sbChainBtn[data-chain="bitcoin"] .sbChainIcon{color:#f6a61b}.sbChainBtn.active .sbChainIcon{color:white}.sbChainBtn[data-chain="solana"] .sbChainIcon{font-size:24px}.sbChainBtn[data-chain="polygon"] .sbChainIcon{font-size:19px}.sbChainBtn[title]:hover:after{content:attr(title);position:absolute;left:52px;background:#092239;border:1px solid #1b5677;border-radius:6px;padding:5px 8px;color:#dff5ff;font-size:11px;white-space:nowrap;z-index:5}.sbChainBtn{position:relative}.sbTop{grid-template-columns:1fr 1fr .86fr .8fr}.sbWorkspaceBody{min-width:0}
+@media(max-width:1250px){.sbWorkspace{grid-template-columns:44px minmax(0,1fr)}.sbChainBtn{width:38px;height:38px}.sbTabs button{min-width:88px}.sbTop{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.sbWorkspace{display:block}.sbChainRail{flex-direction:row;margin-bottom:8px}.sbChainBtn[title]:hover:after{display:none}}
+
+/* visual refinement: -1pt typography, explanatory microcopy, wallet selectors, colored network artwork */
+.swapBridgeV2{font-size:calc(1em - 1pt)}.sbHead h2{font-size:29px}.sbHead p{font-size:12px}.sbCard h3{font-size:14px}.sbTabs button,.sbFilter button{font-size:11px}.sbMuted{font-size:10px}.sbKV,.sbParam label{font-size:11px}.sbToggle{font-size:10px}.sbRouteRow{font-size:11px}.sbHistory table{font-size:10px}
+.sbChainBtn{padding:6px}.sbChainBtn img{width:27px;height:27px;object-fit:contain;display:block}.sbChainBtn.active img{filter:drop-shadow(0 0 5px rgba(255,255,255,.35))}.sbInlineNet{width:27px;height:27px;object-fit:contain}.sbRouteVisual .chain img{width:31px;height:31px;object-fit:contain}.sbRouteVisual .chain{padding:7px}
+.sbWalletBar{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px}.sbWalletPick{display:grid;grid-template-columns:28px minmax(115px,.65fr) minmax(160px,1.35fr);align-items:center;gap:8px;background:linear-gradient(180deg,#061725,#04101a);border:1px solid #123c58;border-radius:10px;padding:8px 10px}.sbWalletPick label{display:block;font-weight:700;font-size:11px}.sbWalletPick small,.sbHelp,.sbHint{display:block;color:#6f97ad;font-size:9px;font-style:italic;line-height:1.25}.sbWalletPick select{width:100%;min-width:0;background:#071b2b;color:#eaf7ff;border:1px solid #174866;border-radius:7px;padding:7px 26px 7px 8px;font-size:10px}.sbMiniIcon{display:inline-grid;place-items:center;color:#34b7ff;font-size:15px}.sbExplain{display:flex;align-items:center;gap:4px;margin-top:8px}.sbHint{margin-top:2px;font-weight:400}.sbHelp{margin-top:7px}.sbPrototype{font-size:9px}
+@media(max-width:1000px){.sbWalletBar{grid-template-columns:1fr}.sbWalletPick{grid-template-columns:28px 150px 1fr}}
+@media(max-width:650px){.sbWalletPick{grid-template-columns:25px 1fr}.sbWalletPick select{grid-column:1/3}.sbWalletBar{grid-template-columns:1fr}}
+
+/* Swap/Bridge service header cleanup */
+.servicePlaceholder.swapMode{position:relative;padding-top:50px}
+.servicePlaceholder.swapMode>#serviceEyebrow,.servicePlaceholder.swapMode>#serviceTitle,.servicePlaceholder.swapMode>#serviceText{display:none!important}
+.servicePlaceholder.swapMode>#closeService{position:absolute;right:12px;top:10px;left:auto;margin:0;padding:7px 11px;border:1px solid #175070;border-radius:7px;background:#071d2d;color:#bfeaff;font-size:11px;font-weight:700;cursor:pointer}
+.servicePlaceholder.swapMode>#closeService:hover{border-color:#20a8ff;background:#08283d;color:#fff}
+.servicePlaceholder.swapMode .sbHead p{font-size:13px;line-height:1.4}
+@media(max-width:650px){.servicePlaceholder.swapMode{padding-top:48px}.servicePlaceholder.swapMode>#closeService{right:8px;top:8px}}
+
+/* compact top workflow: equal-height cards, denser parameter controls */
+.swapBridgeV2 .sbTop{align-items:stretch}
+.swapBridgeV2 .sbTop>.sbCard{min-height:176px;height:176px;padding:10px 12px;overflow:hidden}
+.swapBridgeV2 .sbTop>.sbCard h3{margin-bottom:8px}
+.swapBridgeV2 .sbTop .sbTokenSelect,.swapBridgeV2 .sbTop .sbNetworkSelect{padding:8px 9px;margin:5px 0}
+.swapBridgeV2 .sbTop .sbCoin{width:30px;height:30px;font-size:17px}
+.swapBridgeV2 .sbTop .sbTokenSelect strong{font-size:16px}
+.swapBridgeV2 .sbTop .sbAmount{font-size:23px}
+.swapBridgeV2 .sbParam label{margin:5px 0 3px;font-size:10px;line-height:1.1}
+.swapBridgeV2 .sbParam .sbHint{display:inline;margin-left:3px;font-size:8px}
+.swapBridgeV2 .sbParam .sbChoice{gap:4px}
+.swapBridgeV2 .sbParam .sbChoice button{padding:5px 3px;font-size:9px;line-height:1}
+.swapBridgeV2 .sbParam .sbToggle{margin:5px 0;font-size:9px;line-height:1.1}
+.swapBridgeV2 .sbParam .sbSwitch{width:24px;height:13px}
+.swapBridgeV2 .sbParam .sbSwitch:after{width:9px;height:9px}
+.swapBridgeV2 .sbRouteVisual{margin:7px 0;gap:7px}
+.swapBridgeV2 .sbRouteVisual .chain{width:39px;height:39px;padding:5px}
+.swapBridgeV2 .sbRouteVisual .chain img{width:25px;height:25px}
+.swapBridgeV2 .sbArrow{font-size:20px}
+.swapBridgeV2 .sbRouteProvider{padding:6px}
+.swapBridgeV2 .sbRouteProvider b{font-size:10px}
+.swapBridgeV2 .sbRouteProvider .sbMuted{font-size:8px}
+.swapBridgeV2 .sbTop .sbHelp{font-size:8px;margin-top:4px}
+.swapBridgeV2 .sbMain{margin-top:8px}
+@media(max-width:1250px){.swapBridgeV2 .sbTop>.sbCard{height:auto;min-height:176px}}
+
+/* FIX after network rail removal: workspace must no longer reserve the old 48px rail column.
+   Keep the compact-card tuning from c8508e6, now applied at full available width. */
+.swapBridgeV2 .sbWorkspace{display:block!important;grid-template-columns:none!important;gap:0!important;width:100%}
+.swapBridgeV2 .sbWorkspaceBody{display:block;width:100%;min-width:0}
+.swapBridgeV2 .sbTop{width:100%;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,.86fr) minmax(0,.8fr);gap:9px}
+@media(max-width:1250px){.swapBridgeV2 .sbWorkspace{display:block!important}.swapBridgeV2 .sbTop{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.swapBridgeV2 .sbTop{grid-template-columns:1fr}}
+
+/* final density pass from Firefox/High Sierra screenshot */
+.servicePlaceholder.swapMode{padding-top:36px!important}
+.servicePlaceholder.swapMode>#closeService{top:8px}
+.servicePlaceholder.swapMode .sbHead{margin-bottom:7px}
+.servicePlaceholder.swapMode .sbHead h2{margin-bottom:1px;font-size:28px;line-height:1.05}
+.servicePlaceholder.swapMode .sbHead p{font-size:12px;line-height:1.25}
+.servicePlaceholder.swapMode .sbHead .sbHelp{margin-top:4px}
+.swapBridgeV2 .sbTabs{margin:6px 0 9px}
+.swapBridgeV2 .sbWalletBar{margin-bottom:7px}
+.swapBridgeV2 .sbTop>.sbCard{height:auto;min-height:168px;padding:9px 11px}
+.swapBridgeV2 .sbTop{grid-auto-rows:1fr}
+.swapBridgeV2 .sbTop>.sbCard{height:100%}
+.swapBridgeV2 .sbFilter{gap:4px}
+.swapBridgeV2 .sbFilter button{padding:6px 8px!important;font-size:9px!important;min-width:0!important;border-radius:6px}
+.swapBridgeV2 .sbRoutesHead{margin-bottom:6px}
+.swapBridgeV2 .sbMain{margin-top:7px}
+@media(min-width:1251px){.swapBridgeV2 .sbTop{grid-auto-rows:minmax(168px,auto)}}
+@media(max-width:1250px){.swapBridgeV2 .sbTop{grid-auto-rows:auto}.swapBridgeV2 .sbTop>.sbCard{min-height:164px;height:auto}}
+@media(max-width:800px){.servicePlaceholder.swapMode{padding-top:34px!important}.swapBridgeV2 .sbTop>.sbCard{min-height:0;height:auto}}
+
+/* network selector inside source/destination cards */
+.swapBridgeV2 .sbNetworkSelect select{max-width:125px;min-width:0;background:#071b2b;color:#eaf7ff;border:1px solid #174866;border-radius:6px;padding:5px 6px;font-size:9px}
+
+
+/* v2.0 — Swap & Bridge breathing room + compact visual banner */
+.servicePlaceholder.swapMode{padding-top:12px!important}
+.swapBridgeV2 .sbHead{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 330px;
+  gap:16px;
+  align-items:stretch;
+  margin:0 0 12px!important;
+  min-width:0
+}
+.swapBridgeV2 .sbHeadCopy{min-width:0;padding:5px 0 2px}
+.swapBridgeV2 .sbHeroBanner{
+  position:relative;
+  min-width:0;
+  height:92px;
+  border:1px solid #175070;
+  border-radius:12px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 72% 22%,rgba(40,190,255,.22),transparent 34%),
+    linear-gradient(135deg,#08243a 0%,#061725 52%,#04101a 100%);
+  box-shadow:inset 0 1px rgba(255,255,255,.05),0 8px 24px rgba(0,0,0,.18)
+}
+.swapBridgeV2 .sbHeroBanner:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.18;
+  background:
+    linear-gradient(90deg,transparent 49%,#20a8ff 50%,transparent 51%),
+    linear-gradient(0deg,transparent 49%,#20a8ff 50%,transparent 51%);
+  background-size:38px 38px
+}
+.swapBridgeV2 .sbHeroGlow{position:absolute;right:-22px;bottom:-36px;width:150px;height:150px;border-radius:50%;background:rgba(8,124,240,.16);filter:blur(10px)}
+.swapBridgeV2 .sbHeroRoute{position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:7px;z-index:2}
+.swapBridgeV2 .sbHeroNode{width:31px;height:31px;border:1px solid #24779d;border-radius:50%;display:grid;place-items:center;background:#061725;box-shadow:0 0 12px rgba(22,153,255,.16)}
+.swapBridgeV2 .sbHeroNode img{width:20px;height:20px;object-fit:contain}
+.swapBridgeV2 .sbHeroLink{color:#2dddb6;font-size:15px;font-weight:800}
+.swapBridgeV2 .sbHeroText{position:absolute;left:16px;top:13px;z-index:2}
+.swapBridgeV2 .sbHeroText b{display:block;font-size:10px;letter-spacing:.09em;color:#67d8ff}
+.swapBridgeV2 .sbHeroText small{display:block;margin-top:3px;font-size:9px;color:#8fb0c2}
+.servicePlaceholder.swapMode>#closeService{
+  top:21px!important;
+  right:23px!important;
+  z-index:12;
+  padding:7px 11px;
+  border-color:#2489b7;
+  background:rgba(3,16,26,.78);
+  backdrop-filter:blur(4px);
+  box-shadow:0 4px 14px rgba(0,0,0,.24)
+}
+
+/* Slightly more air without increasing the overall page width. */
+.swapBridgeV2 .sbTabs{gap:9px;margin:8px 0 12px}
+.swapBridgeV2 .sbWalletBar{gap:12px;margin-bottom:11px}
+.swapBridgeV2 .sbTop{gap:12px}
+.swapBridgeV2 .sbMain{gap:12px;margin-top:12px}
+.swapBridgeV2 .sbBottom{gap:12px;margin-top:12px}
+.swapBridgeV2 .sbHistory{margin-top:12px}
+.swapBridgeV2 .sbTop>*,
+.swapBridgeV2 .sbMain>*,
+.swapBridgeV2 .sbBottom>*,
+.swapBridgeV2 .sbWalletBar>*{min-width:0}
+
+@media(max-width:1250px){
+  .swapBridgeV2 .sbHead{grid-template-columns:minmax(0,1fr) 290px;gap:12px}
+  .swapBridgeV2 .sbHeroBanner{height:86px}
+  .servicePlaceholder.swapMode>#closeService{right:19px;top:19px!important}
+}
+@media(max-width:850px){
+  .servicePlaceholder.swapMode{padding-top:10px!important}
+  .swapBridgeV2 .sbHead{grid-template-columns:1fr}
+  .swapBridgeV2 .sbHeroBanner{height:88px;width:100%}
+  .servicePlaceholder.swapMode>#closeService{top:91px!important;right:18px!important}
+}
+
+
+/* v2.1 — live Swap/Bridge engine states */
+.sbEngineState{
+  margin-top:8px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:6px 8px;
+  border:1px solid #21485d;
+  border-radius:7px;
+  background:#06131e;
+  font-size:9px;
+}
+.sbEngineState b{font-size:9px}
+.sbEngineState span{color:#7e9eae}
+.sbEngineState.ok{border-color:#18755f}
+.sbEngineState.ok b{color:#3ee5ae}
+.sbEngineState.warn{border-color:#795b21}
+.sbEngineState.warn b{color:#ffd064}
+
+.sbAmountInput{
+  margin-left:auto;
+  width:112px;
+  min-width:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#f0fbff;
+  text-align:right;
+  font-size:22px;
+  font-weight:800;
+}
+.sbAmountInput:focus{color:#5bd8ff}
+
+.sbCheckList{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  padding:4px 1px;
+  color:#9fc0cf;
+  font-size:9px;
+  line-height:1.25;
+}
+.sbCheckList span:before{
+  content:"";
+  display:inline-block;
+  width:5px;
+  height:5px;
+  margin:0 6px 1px 0;
+  border-radius:50%;
+  background:#35e2a6;
+  box-shadow:0 0 6px rgba(53,226,166,.38);
+}
+.sbRouteError{
+  margin-top:8px;
+  padding:8px 9px;
+  border:1px solid rgba(255,89,104,.38);
+  border-radius:7px;
+  background:rgba(91,19,31,.22);
+  color:#ff9aa6;
+  font-size:9px;
+}
+.sbRouteRow .sbProvider{
+  min-width:0;
+}
+.sbRouteRow .sbProvider>b{
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sbRouteRow .sbProvider>small{
+  max-width:180px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.sbTxCell{
+  font-family:Menlo,Monaco,monospace;
+  color:#67d8ff;
+}
+.sbPreview .sbLaunch:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+@media(max-width:1250px){
+  .sbRouteRow .sbProvider>small{max-width:130px}
+  .sbAmountInput{width:100px;font-size:20px}
+}

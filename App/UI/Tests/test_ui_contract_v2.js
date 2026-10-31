@@ -1,0 +1,13 @@
+'use strict';
+var assert=require('assert'),fs=require('fs'),path=require('path'),P=require('../Permissions/ui_permissions');
+var ROOT=path.resolve(__dirname,'../..'),app=fs.readFileSync(path.join(ROOT,'Frontend/Pages/app_v1.0.html'),'utf8'),chart=fs.readFileSync(path.join(ROOT,'Frontend/Pages/chart_viewer_v1.0.html'),'utf8'),gateway=fs.readFileSync(path.join(ROOT,'UI/Gateway/ui_service.js'),'utf8');
+assert(P.allowed('USER',P.classify('POST','/api/settings/general')),'USER must be able to write Settings');
+assert(!P.allowed('USER',P.classify('POST','/api/admin/restart')),'USER must not have ADMIN_WRITE');
+assert(P.allowed('ADMIN',P.classify('POST','/api/admin/restart')),'ADMIN must have ADMIN_WRITE');
+assert(app.indexOf('/ui-data/market/candles')>=0,'IA Trading View must use UI Market Data contract');
+assert(app.indexOf('/api/market/klines')<0,'IA Trading View must not use Core market klines');
+assert(app.indexOf('/api/gmx/ticker')<0,'IA Trading View must not use direct GMX ticker');
+assert(app.indexOf('/api/strategy/')<0,'Strategy UI must not call legacy Strategy v1 API');
+assert(chart.indexOf('https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js')>=0,'TradingView widget must remain external');
+assert(gateway.indexOf("'/ui-data/market/candles'")>=0&&gateway.indexOf("'/market-data/candles'")>=0,'UI gateway must route IA chart to Market Data Collector');
+console.log('IA-TB UI contract v1.10: OK');

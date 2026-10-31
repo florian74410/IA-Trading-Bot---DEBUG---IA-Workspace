@@ -1,0 +1,22 @@
+{
+  "id": "fundamental",
+  "label": "Fundamental Engine",
+  "type": "ENGINE",
+  "order": 70,
+  "port": 8015,
+  "healthPath": "/health",
+  "marker": "IA-TB Fundamental Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Fundamental/Engine/fundamental_service.js",
+  "log": ".runtime/logs/fundamental.log",
+  "env": {
+    "IATB_FUNDAMENTAL_PORT": "8015",
+    "ROUTER_PORT": "8021"
+  },
+  "versionSource": "RUNTIME_HEALTH",
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": []
+}

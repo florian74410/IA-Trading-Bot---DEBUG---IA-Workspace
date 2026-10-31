@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IA-TB — Auth21 DEBUG</title>
+<link rel="stylesheet" href="/auth21/ui.css">
+<script src="/auth21/ui.js" defer></script>
+</head>
+<body>
+<main class="shell">
+<header><strong>IA–TB <span class="accent">2.1</span></strong><span class="version">Auth21 · DEBUG isolé</span></header>
+<section class="hero">
+<h1>Centre de session sécurisé</h1>
+<p>Connexion et actions autorisées sur environnement de développement isolé. Aucun ordre LIVE, wallet ou changement GEN-1.</p>
+</section>
+<p id="status" class="status" role="status" aria-live="polite">Vérification de la session…</p>
+<section id="login-panel" class="panel" hidden>
+<h2>Connexion</h2>
+<form id="login-form">
+<label for="clientId">Identifiant client</label>
+<input id="clientId" name="clientId" required autocomplete="username" pattern="CL[A-Za-z0-9_-]{1,64}" maxlength="66">
+<label for="password">Mot de passe</label>
+<input id="password" name="password" type="password" required autocomplete="current-password" maxlength="1024">
+<button type="submit">Se connecter</button>
+</form>
+</section>
+<section id="unlock-panel" class="panel" hidden>
+<h2>Session verrouillée</h2>
+<p>Après cinq minutes sans activité, le serveur demande à nouveau le mot de passe.</p>
+<form id="unlock-form">
+<label for="unlockPassword">Mot de passe actuel</label>
+<input id="unlockPassword" name="password" type="password" required autocomplete="current-password">
+<button type="submit">Déverrouiller</button>
+<button id="locked-logout" type="button" class="secondary">Déconnexion</button>
+</form>
+</section>
+<section id="session-panel" class="panel" hidden>
+<div class="session"><div><h2>Session active</h2><p id="identity"></p></div><button id="lock" type="button" class="secondary">Verrouiller</button><button id="logout" type="button" class="secondary">Déconnexion</button></div>
+<h3>Marchés (lecture autorisée à tous les rôles)</h3>
+<button id="market-read" type="button">Lire les capacités MarketData</button>
+<pre id="market-result" aria-live="polite"></pre>
+<section id="user-writes" hidden>
+<h3>Préférences utilisateur</h3>
+<form id="preference-form">
+<label for="target">Module</label><select id="target"><option value="portfolio">Portfolio</option><option value="strategy">Strategy</option></select>
+<label for="pref-key">Clé</label><input id="pref-key" required maxlength="32" value="chart.zoom">
+<label for="pref-value">Valeur</label><input id="pref-value" required maxlength="2048" value="2">
+<button type="submit">Enregistrer pour mon compte</button>
+</form>
+</section>
+<section id="admin-writes" hidden>
+<h3>Paramètres administrateur (essai DEBUG)</h3>
+<form id="market-form">
+<label for="refresh-ms">Rafraîchissement MarketData (ms)</label>
+<input id="refresh-ms" type="number" min="3000" max="3600000" value="15000" required>
+<button type="submit">Appliquer</button>
+</form>
+<form id="indicator-form">
+<label for="indicator-refresh">Indicateurs (ms)</label>
+<input id="indicator-refresh" type="number" min="1000" max="60000" value="5000" required>
+<label class="inline"><input id="indicator-enabled" type="checkbox" checked> Actif</label>
+<button type="submit">Appliquer</button>
+</form>
+</section>
+<p id="result" aria-live="polite"></p>
+</section>
+<footer>La visibilité des panneaux ne remplace pas l'autorisation serveur. Les accès sensibles restent interdits par défaut.</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,52 @@
+# Host artifacts, mutable state and credentials never belong in the image.
+node_modules
+**/node_modules
+.runtime
+**/.runtime
+.node
+**/.node
+.git
+**/.git
+*.backup
+*.bak
+.env
+.env.*
+**/.env
+**/.env.*
+*.sqlite
+*.sqlite-*
+*.db
+*.db-shm
+*.db-wal
+*.key
+*.pem
+*.log
+# Legacy credentials and private mutable stores
+secrets_v2.dat
+user.dat
+ai_settings_v2.dat
+config_v1.0.dat
+logs.dat
+**/secrets_v2.dat
+**/user.dat
+**/ai_settings_v2.dat
+**/client_master.key
+**/wallet_master.key
+**/Data/*.db
+**/Data/*.sqlite
+
+# This tracked PEM is a public CA trust bundle, not a private key.
+!Core/Certificates/cacert.pem
+
+# GEN-1 clean runtime image: QA scripts stay versioned in Git, never packaged.
+# All engine/unit/integration suites and diagnostic CLI tooling are source-only.
+**/Tests/
+**/tests/
+**/*test*.js
+Tools/*smoke*.js
+Tools/*audit*.js
+Tools/*preflight*.js
+Tools/provider_policy_smoke.js
+Tools/persistence_volume_smoke.js
+# Debug-only isolated launchers and archived report artifacts
+**/Reports/

@@ -1,0 +1,523 @@
+{
+  "literalRoutes": 103,
+  "rows": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "policy": "public-or-login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/bootstrap",
+      "policy": "public-or-login"
+    },
+    {
+      "method": "POST",
+      "path": "/api/setup",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "POST",
+      "path": "/api/login",
+      "policy": "public-or-login"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/request",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "POST",
+      "path": "/api/recovery/confirm",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "POST",
+      "path": "/api/logout",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "GET",
+      "path": "/api/bank/vaults",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/bank/vaults",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/bank/vaults",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/session",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/status",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/console/catalog",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/console/execute",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/logs",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/logs/clear",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/service/restart",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/process/toggle",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/stop",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/restart",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/firewall/toggle",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/indicators/reload",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/cache/clear",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/core/restart",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/system/restart",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/admin/system/stop-total",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/shutdown",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/updates",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/upload",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/fetch",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/updates/install",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates/settings",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ai-updates/settings",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/ai-updates/package",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/ai-updates/execute",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/mosaics",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/mosaics/runtime",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/mosaics/create",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/mosaics/delete",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/firewall/toggle",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/client/me",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/client/me",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/clients/status",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/admin/clients",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/security/wallets",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/security/wallets/networks",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/security/wallets/next-id",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/create",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/import",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/remove-key",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/security/wallets/export",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/reveal",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/security/wallets/remove",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/status",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/logs",
+      "policy": "authenticated-admin-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/settings",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/language",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/general",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/apis",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/apis/clear",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-openai",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-zerox",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/test-x",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/supervisor/brains",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/ai",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/portfolio",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/power",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/settings/modulation",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/app-settings/select",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/transfers/status",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/transfers/assets",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/transfers/preview",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/transfers/execute",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/transfers/history",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/status",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/identity",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/wallet",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/history",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/onchain/tx",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/swap-bridge/status",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/quote",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/prepare",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/execute",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/swap-bridge/history",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/submitted",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "POST",
+      "path": "/api/swap-bridge/track",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications/settings",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/notifications/settings",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/notifications",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/notifications/test",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/notifications/read",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/credits/usage",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/credits/pricing",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "GET",
+      "path": "/api/token-usage",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/profile",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/change-password",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/change-email",
+      "policy": "Auth21 handler"
+    },
+    {
+      "method": "POST",
+      "path": "/api/session/test-email",
+      "policy": "denied-in-authenticated-mode"
+    },
+    {
+      "method": "GET",
+      "path": "/api/chart-viewer/status",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chart-viewer/chat",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/companion/chat",
+      "policy": "authenticated-owner-context"
+    },
+    {
+      "method": "POST",
+      "path": "/api/chat",
+      "policy": "authenticated-owner-context"
+    }
+  ],
+  "unknownPaths": "DENY",
+  "dynamicPrefixes": "DENY unless explicitly matched by Auth21 handler",
+  "warning": "Coverage inventory; denied legacy features are not migrated business features."
+}

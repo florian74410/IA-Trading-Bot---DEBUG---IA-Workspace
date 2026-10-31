@@ -1,0 +1,32 @@
+{
+  "id": "supervisor",
+  "label": "IA Supervisor",
+  "type": "SERVICE",
+  "order": 130,
+  "port": 3000,
+  "healthPath": "/health",
+  "marker": "IA-TB Supervisor",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Supervisor/supervisor_service.js",
+  "log": ".runtime/logs/supervisor.log",
+  "env": {
+    "IATB_SUPERVISOR_PORT": "3000",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": [
+    "marketdata",
+    "indicator",
+    "fundamental",
+    "liquidity",
+    "portfolio",
+    "strategy",
+    "risk",
+    "trading",
+    "firewall"
+  ],
+  "versionSource": "RUNTIME_HEALTH"
+}

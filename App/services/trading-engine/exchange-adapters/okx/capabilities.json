@@ -1,0 +1,29 @@
+{
+  "exchange": "OKX",
+  "market_types": [
+    "SPOT",
+    "MARGIN",
+    "SWAP",
+    "FUTURES"
+  ],
+  "operations": [
+    "CREATE_ORDER",
+    "CANCEL_ORDER",
+    "AMEND_ORDER",
+    "GET_ORDER",
+    "OPEN_ORDERS"
+  ],
+  "order_types": [
+    "MARKET",
+    "LIMIT",
+    "POST_ONLY",
+    "FOK",
+    "IOC",
+    "TRIGGER",
+    "CONDITIONAL",
+    "TRAILING"
+  ],
+  "client_order_id": true,
+  "reduce_only": true,
+  "auth": "HMAC_SHA256_BASE64"
+}

@@ -1,0 +1,8 @@
+'use strict';
+/* IA-TB CP/1 Console - Layer 1/4: parser. Node 16, no dependencies. */
+function words(s){var out=[],re=/(?:[^\s"']+|"[^"]*"|'[^']*')+/g,m;while((m=re.exec(String(s||''))))out.push(m[0]);return out;}
+function unquote(v){v=String(v==null?'':v);if(v.length>=2&&((v[0]==='"'&&v[v.length-1]==='"')||(v[0]==="'"&&v[v.length-1]==="'")))return v.slice(1,-1);return v;}
+function value(v){v=unquote(v);if(v==='true')return true;if(v==='false')return false;if(v==='null')return null;if(/^-?\d+(?:\.\d+)?$/.test(v))return Number(v);return v;}
+function stage(raw){var p=words(raw),name=String(p.shift()||'').trim(),args={};if(name.toLowerCase()==='debug'&&p.length>=2){args.target=unquote(p.shift());name='debug.'+String(unquote(p.shift())).toLowerCase();}if(!/^[a-z][a-z0-9_.-]{0,95}$/i.test(name))throw new Error('CP1_PARSE_COMMAND_INVALID');for(var i=0;i<p.length;i++){var x=p[i],at=x.indexOf('=');if(at<1){if(name==='grep'&&!args.pattern)args.pattern=unquote(x);else if(name==='cat'&&!args.resource)args.resource=unquote(x);else throw new Error('CP1_PARSE_ARGUMENT_EXPECTED:'+x);}else{var k=x.slice(0,at);if(!/^[A-Za-z][A-Za-z0-9_.-]{0,63}$/.test(k))throw new Error('CP1_PARSE_ARGUMENT_KEY_INVALID:'+k);args[k]=value(x.slice(at+1));}}return{name:name,arguments:args,raw:String(raw||'').trim()};}
+function parse(line){line=String(line||'').trim();if(!line||line.length>4096)throw new Error('CP1_PARSE_LINE_INVALID');var parts=line.split('|').map(function(x){return x.trim();}).filter(Boolean);if(!parts.length||parts.length>12)throw new Error('CP1_PARSE_PIPELINE_INVALID');return{line:line,stages:parts.map(stage)};}
+module.exports={parse:parse,stage:stage};

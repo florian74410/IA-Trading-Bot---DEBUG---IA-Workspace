@@ -1,0 +1,70 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "atr",
+  "name": "Average True Range",
+  "version": "2.1",
+  "category": "volatility",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 14,
+      "min": 2,
+      "max": 200
+    }
+  },
+  "engine": {
+    "operation": "atr"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  }
+}

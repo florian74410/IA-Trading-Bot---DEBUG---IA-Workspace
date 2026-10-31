@@ -1,0 +1,99 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "macd",
+  "name": "Moving Average Convergence Divergence",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "source": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "fast_period": {
+      "type": "integer",
+      "default": 12,
+      "min": 2,
+      "max": 500
+    },
+    "slow_period": {
+      "type": "integer",
+      "default": 26,
+      "min": 3,
+      "max": 500
+    },
+    "signal_period": {
+      "type": "integer",
+      "default": 9,
+      "min": 2,
+      "max": 200
+    }
+  },
+  "engine": {
+    "operation": "macd"
+  },
+  "outputs": {
+    "macd": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "render": "line",
+      "visual": {
+        "color": "#43bff7",
+        "width": 2
+      }
+    },
+    "signal": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "render": "line",
+      "visual": {
+        "color": "#ffa658",
+        "width": 2
+      }
+    },
+    "histogram": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "render": "histogram",
+      "visual": {
+        "color": "#22c997",
+        "width": 1.8,
+        "positiveColor": "#22c997",
+        "negativeColor": "#ee6479"
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": null,
+    "max": null,
+    "visual": {
+      "levels": [
+        {
+          "value": 0,
+          "color": "#637c90"
+        }
+      ]
+    }
+  }
+}

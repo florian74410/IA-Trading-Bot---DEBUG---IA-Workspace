@@ -1,0 +1,21 @@
+{
+  "commands": {
+    "enabled": true,
+    "allowed": [
+      "trading.execute",
+      "trading.cancel",
+      "trading.close_position",
+      "trading.health",
+      "trading.capabilities",
+      "trading.history"
+    ]
+  },
+  "pairs": {
+    "enabled": true,
+    "allowed": [
+      "BTC/EUR",
+      "BTC/USDT",
+      "ETH/EUR"
+    ]
+  }
+}

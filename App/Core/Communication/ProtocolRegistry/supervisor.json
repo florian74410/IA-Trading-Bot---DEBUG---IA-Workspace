@@ -1,0 +1,349 @@
+{
+  "id": "supervisor",
+  "label": "IA Supervisor",
+  "type": "IA",
+  "status": "ACTIVE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 3000,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "registration": {
+    "dynamic": true
+  },
+  "policy": {
+    "marketData": "READ_ONLY",
+    "liquidity": "READ_ONLY"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "supervisor.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.status",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.reload",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.extensions",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.llm.health",
+        "arguments": {
+          "allowed": [
+            "provider"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.context",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "source",
+            "limit",
+            "fundamentalLimit",
+            "correlationId",
+            "portfolioTradeLimit",
+            "indicatorRequests",
+            "indicatorCandles",
+            "indicatorSource",
+            "indicatorForce",
+            "liquiditySource",
+            "liquidityDepth",
+            "liquidityWindowMs"
+          ],
+          "required": [
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.analyze",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "source",
+            "limit",
+            "fundamentalLimit",
+            "correlationId",
+            "prompt",
+            "system",
+            "model",
+            "temperature",
+            "maxTokens",
+            "portfolioTradeLimit",
+            "indicatorRequests",
+            "indicatorCandles",
+            "indicatorSource",
+            "indicatorForce",
+            "liquiditySource",
+            "liquidityDepth",
+            "liquidityWindowMs"
+          ],
+          "required": [
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.indicators",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.indicator.language",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.indicator.validate",
+        "arguments": {
+          "allowed": [
+            "source"
+          ],
+          "required": [
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.indicator.create",
+        "arguments": {
+          "allowed": [
+            "source",
+            "overwrite"
+          ],
+          "required": [
+            "source"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.indicator.definition",
+        "arguments": {
+          "allowed": [
+            "id"
+          ],
+          "required": [
+            "id"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.indicators.compute",
+        "arguments": {
+          "allowed": [
+            "id",
+            "params",
+            "requests",
+            "symbol",
+            "timeframe",
+            "force",
+            "candles",
+            "source"
+          ],
+          "required": []
+        }
+      },
+      {
+        "name": "supervisor.risk.evaluate",
+        "arguments": {
+          "allowed": [
+            "intent"
+          ],
+          "required": [
+            "intent"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.reason",
+        "arguments": {
+          "allowed": [
+            "system",
+            "prompt",
+            "model",
+            "temperature",
+            "maxTokens",
+            "metadata"
+          ],
+          "required": [
+            "prompt"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.structured",
+        "arguments": {
+          "allowed": [
+            "instructions",
+            "prompt",
+            "model",
+            "maxTokens",
+            "schema",
+            "name",
+            "reasoningEffort",
+            "verbosity"
+          ],
+          "required": [
+            "prompt",
+            "schema"
+          ]
+        },
+        "description": "Internal structured LLM request through Supervisor and the secure AI Gateway."
+      },
+      {
+        "name": "supervisor.calendar",
+        "arguments": {
+          "allowed": [
+            "days",
+            "country",
+            "impact",
+            "limit"
+          ]
+        }
+      },
+      {
+        "name": "supervisor.calendar.fed",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.calendar.cme",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.fedwatch",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.calendar.cme.expirations",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "supervisor.user.request",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ],
+          "required": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Owner-scoped reasoning and status; session revalidated; credentials remain inside Core"
+      },
+      {
+        "name": "supervisor.data.catalog",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Read-only normalized collector product catalogue."
+      },
+      {
+        "name": "supervisor.data.read",
+        "arguments": {
+          "allowed": [
+            "target",
+            "action",
+            "arguments"
+          ],
+          "required": [
+            "target",
+            "action"
+          ]
+        },
+        "description": "Bounded shared-data read through Router; no operator mutations or private portfolios."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "market.candles",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "market.registry",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "defi.position",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "liquidity.context",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "risk.analysis",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "strategy.analysis",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "supervisor.decision",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "portfolio.position.health",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "portfolio.trade",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "indicator.definition",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "indicator.compute",
+        "direction": "CONSUME"
+      }
+    ],
+    "events": [
+      {
+        "name": "supervisor.reasoning.completed"
+      },
+      {
+        "name": "supervisor.extension.loaded"
+      }
+    ]
+  }
+}

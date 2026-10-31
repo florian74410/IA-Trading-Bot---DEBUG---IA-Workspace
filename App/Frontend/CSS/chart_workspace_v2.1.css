@@ -1,0 +1,92 @@
+.cvToolbar{gap:6px!important;position:relative;flex-wrap:wrap!important;padding:7px!important;overflow:visible!important}.cvToolbar button,.cvToolbar select,.cvDrawingProperties input,.cvDrawingProperties select,.cvStudio input,.cvStudio select,.cvStudio button{border:1px solid #25485e;border-radius:6px;background:#0a1c28;color:#d9eaf4;padding:6px 8px;font:12px system-ui}.cvToolbar button{height:32px;min-width:32px}.cvToolbar button:hover,.cvStudio button:hover{background:#14384b}.cvToolbar button:focus-visible,.cvStudio :focus-visible,.cvDrawingProperties :focus-visible,.iatbDrawDock button:focus-visible{outline:2px solid #45c8ff;outline-offset:2px}.cvToolbar [aria-pressed=true],.cvStudio [aria-current=page]{background:#15526a!important;color:#86f2ff!important}.cvDisplaySettings{position:absolute;right:8px;top:100%;z-index:40;padding:10px;background:#081824;border:1px solid #28526b;box-shadow:0 10px 25px #0008;border-radius:7px}.cvDisplaySettings[hidden]{display:none}.cvDisplaySettings label{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px}.cvToolbar #wsState{font-size:10px!important}
+.cvStudio{color:#d9eaf4;background:#08131f;border:1px solid #2a536c;border-radius:12px;width:min(620px,calc(100vw - 20px));max-height:88dvh;padding:0;box-shadow:0 24px 90px #000b}.cvStudio::backdrop{background:#0008;backdrop-filter:blur(2px)}.cvStudio header{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #234050}.cvStudio h2{font-size:16px;margin:0}.cvStudio nav{display:flex;gap:6px;padding:10px}.cvStudioBody{padding:12px;max-height:52dvh;overflow:auto}.cvStudio .iatbIndStatus{margin:0 12px;padding:8px;border:1px solid #284250;border-radius:5px;font-size:11px}.cvStudio .iatbIndResults{max-height:100px;overflow:auto;padding:5px 12px;font-size:10px;color:#8ba7b7}.cvStudioFilters{display:flex;gap:7px}.cvStudioFilters input{min-width:0;flex:1}.cvStudioSummary{display:flex;justify-content:space-between;align-items:center;margin:10px 0}.cvIndicatorRow{display:flex;align-items:center;gap:6px;padding:8px 0;border-bottom:1px solid #1b3545}.cvIndicatorRow label{display:flex;align-items:center;gap:8px;flex:1;min-width:0}.cvIndicatorRow label span{overflow-wrap:anywhere}.cvBadge{color:#76c9db;border:1px solid #21546b;border-radius:10px;padding:3px 6px;font-size:10px;white-space:nowrap}.cvVisualField{display:flex;justify-content:space-between;gap:10px;margin:8px 0}.cvModelRow{display:flex;gap:5px;flex-wrap:wrap;padding:8px 0}.cvModelRow input{min-width:100px;flex:1}
+#iaChartHost{position:relative}#iatbDrawSurface{position:absolute;inset:0;width:100%;height:100%;z-index:12;touch-action:none}.iatbDrawDock{position:absolute;z-index:18;left:7px;top:58px;display:flex;flex-direction:column;gap:2px;padding:4px;background:#081b29ed;border:1px solid #28536b;border-radius:8px;max-height:calc(100% - 70px);overflow-y:auto}.iatbDrawDock[hidden]{display:none}.iatbDrawDock button{width:28px;height:27px;border:1px solid transparent;border-radius:5px;background:none;color:#9fc4d5;cursor:pointer;font-size:17px;padding:0}.iatbDrawDock button[aria-pressed=true]{background:#18516b;color:#8cf4ff;border-color:#3386a0}.cvDrawingProperties{padding:7px 10px;background:#071521;border-top:1px solid #244152;max-height:200px;overflow:auto}.cvDrawingProperties>div:last-child{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.cvDrawingProperties label{font-size:10px;display:flex;align-items:center;gap:4px}.cvDrawingProperties input[type=number]{width:110px}.cvDrawingProperties input[type=color]{width:34px;padding:1px}.cvDrawingProperties output{color:#9bd8bc;font-size:12px}.cvStatus{color:#7fa8bd;font:10px system-ui;margin-bottom:5px}
+@media(max-width:600px){.cvToolbar .iatbMarketPicker{max-width:100%!important;min-width:150px!important}.cvToolbar #wsState{display:none!important}.cvStudioBody{max-height:55dvh}.cvIndicatorRow{gap:3px}.cvIndicatorRow button{padding:5px}.cvStudioFilters{flex-wrap:wrap}.cvDrawingProperties{max-height:160px}.iatbDrawDock{left:3px}}
+/* Keep the active pair and venue legible; the feed status may wrap below. */
+html.iatb-trading-workspace #chartArea .cvToolbar .iatbMarketPicker{flex:0 0 auto;min-width:255px!important}
+html.iatb-trading-workspace #chartArea .cvToolbar .iatbMarketPickerButton{flex:0 0 auto;white-space:nowrap}
+html.iatb-trading-workspace #chartArea .cvToolbar>button{white-space:nowrap}
+html.iatb-trading-workspace #chartArea .cvToolbar #wsState{flex:1 1 250px;min-width:0;overflow:hidden;text-overflow:ellipsis}
+
+
+/* v2.1.1 — drawing toolbar polish; behavior and tool identifiers unchanged. */
+#chartArea .iatbDrawDock{
+  gap:5px;
+  padding:7px 6px;
+  left:10px;
+  top:60px;
+  background:linear-gradient(180deg,rgba(12,31,46,.98),rgba(6,20,31,.97));
+  border:1px solid #325d73;
+  border-radius:12px;
+  box-shadow:0 12px 30px rgba(0,0,0,.42),inset 0 1px 0 rgba(157,221,251,.08);
+  scrollbar-width:thin;
+  backdrop-filter:blur(8px);
+}
+#chartArea .iatbDrawDock button{
+  display:grid;
+  place-items:center;
+  width:34px;
+  height:34px;
+  flex:none;
+  padding:0;
+  border:1px solid transparent;
+  border-radius:8px;
+  background:transparent;
+  color:#b3d2e3;
+  font:600 18px/1 system-ui,sans-serif;
+  transition:background .14s ease,border-color .14s ease,color .14s ease;
+}
+#chartArea .iatbDrawDock button:hover{
+  background:#173a50;
+  border-color:#386a85;
+  color:#eefbff;
+}
+#chartArea .iatbDrawDock button[aria-pressed="true"]{
+  background:#144a61;
+  border-color:#3cc5da;
+  color:#b4faff;
+  box-shadow:inset 3px 0 0 #46dbe9;
+}
+#chartArea .iatbDrawDock button:focus-visible{
+  outline:2px solid #6fe5ff;
+  outline-offset:2px;
+}
+@media(max-width:600px){
+  #chartArea .iatbDrawDock{left:5px;top:56px;padding:5px;gap:3px}
+  #chartArea .iatbDrawDock button{width:31px;height:31px}
+}
+@media(prefers-reduced-motion:reduce){
+  #chartArea .iatbDrawDock button{transition:none}
+}
+/* Keep native-popover pair/exchange menu above chart drawing canvas. */
+#chartArea .iatbMarketPickerPopover:popover-open{
+  z-index:2147483647;
+  overflow:auto;
+  box-sizing:border-box;
+}
+
+#chartArea .iatbMarketPickerPopover:popover-open{margin:0;inset:auto;}
+
+/* v2.2.4: stable chart selection bar without vertical scrollbar on hover */
+html.iatb-trading-workspace #chartArea>.controls.cvToolbar{
+ box-sizing:border-box!important;height:auto!important;min-height:56px!important;
+ max-height:none!important;display:flex!important;align-items:center!important;
+ align-content:center!important;gap:7px!important;padding:8px 10px!important;
+ margin:5px 7px 8px!important;overflow-x:auto!important;overflow-y:hidden!important;
+ scrollbar-width:none!important;scrollbar-gutter:auto!important;
+}
+html.iatb-trading-workspace #chartArea>.controls.cvToolbar::-webkit-scrollbar{display:none!important}
+html.iatb-trading-workspace #chartArea>.controls.cvToolbar>*{flex-shrink:0;min-height:32px}
+
+/* 2.5.1 DEV: nonblocking event lines; only badges accept pointer input. */
+.iatbEconomicLayer{position:absolute;inset:0;pointer-events:none;z-index:18;overflow:hidden}
+.iatbEconomicBadge{box-sizing:border-box;margin:0;min-width:0;position:absolute;pointer-events:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;height:22px;padding:2px 6px;border:1px solid;border-radius:5px;background:rgba(7,11,16,.9);color:#bdc8d4;font:10px system-ui;cursor:pointer}
+.iatbEconomicBadge span+span:before{content:' / ';color:#bdc8d4}
+.iatbEconomicBadge:focus-visible{outline:2px solid white;outline-offset:1px;z-index:10!important}
+.iatbEconomicTooltip{box-sizing:border-box;width:min(320px,calc(100% - 16px));overflow-wrap:anywhere;position:absolute;z-index:40;max-width:min(320px,85%);max-height:55%;overflow:auto;white-space:pre-line;padding:10px;border:1px solid #637787;border-radius:6px;background:#101b26;color:#e3eaf1;font:12px/1.5 system-ui;box-shadow:0 4px 12px #0008;pointer-events:auto}
+.iatbEconomicTooltip[hidden]{display:none}
+.iatbChartTimeZone{position:absolute;right:72px;bottom:23px;z-index:19;color:#aab8c8;background:#070b10bb;padding:1px 4px;font:9px system-ui;pointer-events:none}
+
+/* Account event preference: persistent and visibly distinct states. */
+html.iatb-trading-workspace #chartArea .controls #iatbEconomicToggle[aria-pressed="true"]{border-color:#5acfff!important;box-shadow:inset 0 -2px #5acfff;font-weight:600}
+html.iatb-trading-workspace #chartArea .controls #iatbEconomicToggle[aria-pressed="false"]{opacity:.65}

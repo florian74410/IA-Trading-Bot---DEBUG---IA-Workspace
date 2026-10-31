@@ -1,0 +1,16 @@
+'use strict';
+const assert=require('node:assert/strict');
+const {TradingHealthMonitor}=require('../trading_health_monitor_v2');
+let t=1000;const m=new TradingHealthMonitor({now:()=>t});
+const end=m.beginRequest();t+=18;
+let x=m.snapshot({lifecycle:{state:'STOPPED',execution_allowed:false},exchanges:['BINANCE'],serviceEnabled:false});
+assert.equal(x.inFlightRequests,1);
+assert.equal(x.orders.open,null);
+assert.equal(x.brokers.BINANCE.api_connection,'NOT_CHECKED');
+assert.equal(x.cp1.remoteAvailability,'NOT_CHECKED');
+end();end();x=m.snapshot({});
+assert.equal(x.inFlightRequests,0);assert.equal(x.lastLatencyMs,18);
+m.recordError('INVALID_SECRET');m.recordExecution({status:'ACCEPTED',ok:true,exchange:'BINANCE',symbol:'BTCUSDT'});
+assert.equal(m.snapshot({}).lastError.code,'INVALID_SECRET');
+assert.equal(m.snapshot({}).lastExecution.exchange,'BINANCE');
+console.log('PASS Trading Health Monitor v2.3 P2');

@@ -1,0 +1,2 @@
+'use strict';
+module.exports=function buildContext(input){input=input||{};return{schema:'supervisor.autonomous-context/1.0',symbol:String(input.symbol||''),marketData:input.marketData||null,indicators:input.indicators||null,fundamental:input.fundamental||null,liquidity:input.liquidity||null,portfolio:input.portfolio||null,strategy:input.strategy||null,risk:input.risk||null,generatedAt:new Date().toISOString()};};

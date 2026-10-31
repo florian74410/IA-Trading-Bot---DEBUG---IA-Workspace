@@ -1,0 +1,30 @@
+# IA-Trading-Bot v2.0 DEBUG - Core compatibility settings
+# Aucun secret API n'est stocke ici. La cle OpenAI reste chiffree dans secrets_v2.dat.
+OPENAI_MODEL=gpt-5.6
+TRADING_MODE=MULTI_EXCHANGE
+
+# Profil MacBook Pro 2011 / 4 Go
+CHART_CANDLES=100
+CHART_MAX=160
+AI_CANDLES=60
+LOG_MAX_KB=2048
+DEFAULT_SYMBOL=BTCUSD
+DEFAULT_INTERVAL=1m
+
+# GMX API / Arbitrum One
+GMX_API_PRIMARY=https://arbitrum.gmxapi.io/v1
+GMX_API_PEER=https://arbitrum.gmxapi.ai/v1
+GMX_ORACLE_PRIMARY=https://arbitrum-api.gmxinfra.io
+GMX_ORACLE_FALLBACK1=https://arbitrum-api-fallback.gmxinfra.io
+GMX_ORACLE_FALLBACK2=https://arbitrum-api-fallback.gmxinfra2.io
+GMX_CHAIN_ID=42161
+GMX_DEFAULT_MARKET=BTC/USD
+GMX_DEFAULT_COLLATERAL=USDC
+GMX_MAX_LEVERAGE=50
+GMX_CHAT_MODE=PREPARE_ONLY
+
+# Market Data Collector is the single internal owner of market providers
+MARKET_SOURCE=MARKETDATA
+MARKET_CATALOG=PROVIDER_REGISTRY
+MARKET_CATALOG_CACHE_SECONDS=60
+# Candles Oracle GMX: 1m,5m,15m,1h,4h,1d. Pas de volume par bougie.

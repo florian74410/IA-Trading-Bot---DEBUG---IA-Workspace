@@ -1,0 +1,199 @@
+# IA-TB GEN-1 DEBUG service split — REVIEW FIRST, do not 'up' without approval.
+# DEBUG Internet test: dedicated bridge network for outbound HTTPS, no published ports.
+# Services still listen on 127.0.0.1 in Router's shared network namespace.
+# No Trading Engine. Market Data remains offline until egress is verified.
+# All non-trading Engines share the Router's network namespace; no individual Docker networks.
+name: iatb-debug-stack
+
+x-iatb-base: &iatb-base
+  image: iatb:node22-app-validation
+  user: "${IATB_UID:?Export IATB_UID}:${IATB_GID:?Export IATB_GID}"
+  read_only: true
+  restart: "no"
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  volumes:
+    - /var/lib/iatb/debug/runtime:/iatb/debug/runtime:rw
+    - /var/lib/iatb/debug/data:/iatb/debug/data:rw
+    - /var/lib/iatb/debug/state:/iatb/debug/state:rw
+    - /var/lib/iatb/debug/annexes:/iatb/debug/annexes:rw
+    - /var/lib/iatb/debug/updates:/iatb/debug/updates:rw
+  environment: &iatb-env
+    IATB_RUNTIME_ROOT: /iatb/debug/runtime
+    IATB_DATA_ROOT: /iatb/debug/data
+    IATB_STATE_ROOT: /iatb/debug/state
+    IATB_ANNEX_ROOT: /iatb/debug/annexes
+    IATB_UPDATES_ROOT: /iatb/debug/updates
+    IATB_TRADING_LIVE: "0"
+    IATB_DEBUG_BOOTSTRAP: "0"
+    IATB_DEBUG_MODE: "0"
+    IATB_AUTH_MODE: disabled
+    ROUTER_PORT: "8021"
+    CORE_PUBLIC_PORT: "8001"
+    IATB_UI_PORT: "8000"
+
+services:
+  router:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    command: ["node", "Core/Router/router.js"]
+    networks:
+      - debug-egress
+
+  core:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Core/Server/server.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  ui:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "UI/Gateway/ui_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+      core:
+        condition: service_started
+
+
+  # DEBUG-only SSH bridge: private Unix socket in runtime volume.
+  # Same Docker network namespace as Router, no published port and no external networking.
+  ssh-ui-bridge:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Tools/ssh_ui_bridge.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+      ui:
+        condition: service_started
+
+  firewall:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Core/Firewall/firewall_service.js"]
+    network_mode: "service:router"
+    environment:
+      <<: *iatb-env
+      IATB_FIREWALL_ENABLED: "1"
+      IATB_FIREWALL_PORT: "8017"
+    depends_on:
+      router:
+        condition: service_started
+
+  marketdata:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "MarketData/market_data_service.js"]
+    network_mode: "service:router"
+    environment:
+      <<: *iatb-env
+      IATB_MARKET_DATA_PORT: "8013"
+      IATB_FIREWALL_PORT: "8017"
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    depends_on:
+      router:
+        condition: service_started
+      firewall:
+        condition: service_started
+
+  indicator:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Indicators/Engine/indicator_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  liquidity:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Liquidity/Engine/liquidity_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+      marketdata:
+        condition: service_started
+
+  strategy:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Strategy/Engine/strategy_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  risk:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Risk/Engine/risk_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  portfolio:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Portfolio/Engine/portfolio_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  supervisor:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Supervisor/supervisor_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  fundamental:
+    <<: *iatb-base
+    profiles: ["manual-stack"]
+    command: ["node", "Fundamental/Engine/fundamental_service.js"]
+    network_mode: "service:router"
+    depends_on:
+      router:
+        condition: service_started
+
+  # Prepared only; excluded from manual-stack and never started by CP/1 smoke.
+  # Explicitly disabled to prevent order execution.
+  trading:
+    <<: *iatb-base
+    profiles: ["trading-staged-do-not-start"]
+    command: ["node", "services/trading-engine/trading_service.js"]
+    network_mode: "service:router"
+    environment:
+      <<: *iatb-env
+      IATB_TRADING_LIVE: "0"
+      IATB_TRADING_ENGINE_ENABLED: "0"
+    depends_on:
+      router:
+        condition: service_started
+      firewall:
+        condition: service_started
+      risk:
+        condition: service_started
+
+# Dedicated bridge for DEBUG outbound provider access; never publish application ports.
+networks:
+  debug-egress:
+    driver: bridge
+    internal: false

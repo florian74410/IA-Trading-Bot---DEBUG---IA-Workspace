@@ -1,0 +1,419 @@
+{
+  "schema": "IA-TB_STRATEGY_DAT_V1",
+  "strategy_id": "TEST_LINK_USDT_MTF_PULLBACK_V1",
+  "strategy_name": "Test LINK/USDT",
+  "file_name": "Test LINK-USDT.dat",
+  "version": "1.0",
+  "status": "TESTNET_FIRST",
+  "created_at": "2026-08-16T02:03:16+02:00",
+  "symbol": {
+    "canonical": "LINKUSDT",
+    "display": "LINK/USDT",
+    "base": "LINK",
+    "quote": "USDT",
+    "allowed_aliases": [
+      "LINKUSDT",
+      "LINK/USDT",
+      "LINK-USDT"
+    ]
+  },
+  "purpose": "Strategie rapide et agressive moderee pour exploiter un pullback dans une tendance haussiere multi-timeframe, ou une rupture baissiere confirmee si le regime haussier est invalide.",
+  "important_warning": "Aucune rentabilite n'est garantie. La strategie doit etre revalidee sur donnees fraiches avant chaque execution et testee en testnet/paper trading avant passage en reel.",
+  "data_policy": {
+    "refresh_before_any_trade": true,
+    "max_market_data_age_seconds": 120,
+    "required_timeframes": [
+      "1m",
+      "5m",
+      "15m",
+      "1h",
+      "4h",
+      "1d"
+    ],
+    "minimum_candles": {
+      "1m": 120,
+      "5m": 120,
+      "15m": 120,
+      "1h": 120,
+      "4h": 90,
+      "1d": 90
+    },
+    "required_fields": [
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume"
+    ],
+    "required_microstructure": [
+      "best_bid",
+      "best_ask",
+      "spread_pct",
+      "order_book_top20_optional"
+    ]
+  },
+  "market_snapshot": {
+    "timestamp": "2026-08-16T02:03:16+02:00",
+    "source": "Binance Spot LINKUSDT",
+    "last_price": 9.471,
+    "best_bid": 9.471,
+    "best_ask": 9.472,
+    "spread_pct": 0.01056,
+    "rolling_24h": {
+      "open": 8.978,
+      "high": 9.746,
+      "low": 8.978,
+      "last": 9.471,
+      "change_pct": 5.491,
+      "range_pct": 8.554,
+      "quote_volume_usdt": 37608290.71851,
+      "trade_count": 393314
+    },
+    "order_book_top20": {
+      "bid_quantity_total_link": 11363.48,
+      "ask_quantity_total_link": 11452.21,
+      "bid_ask_quantity_ratio": 0.9923,
+      "interpretation": "Equilibre global; aucun desequilibre suffisamment fort pour servir de signal seul."
+    }
+  },
+  "indicator_snapshot": {
+    "calculation_note": "EMA et RSI Wilder calcules sur les bougies recentes recuperees; valeurs indicatives au moment du snapshot et a recalculer avant chaque trade.",
+    "5m": {
+      "ema9": 9.48235,
+      "ema21": 9.50565,
+      "rsi14_wilder": 30.36,
+      "bias": "BEARISH_PULLBACK_OVERSOLD"
+    },
+    "15m": {
+      "ema9": 9.50487,
+      "ema21": 9.53007,
+      "rsi14_wilder": 37.18,
+      "atr14": 0.03186,
+      "atr_pct": 0.3364,
+      "bollinger_sma20": 9.547,
+      "bollinger_upper_2sd": 9.62833,
+      "bollinger_lower_2sd": 9.46567,
+      "bias": "BEARISH_CORRECTION_NEAR_LOWER_BAND"
+    },
+    "1h": {
+      "ema9": 9.51055,
+      "ema21": 9.4393,
+      "rsi14_wilder": 55.85,
+      "bias": "BULLISH_TREND_PULLBACK"
+    },
+    "4h": {
+      "ema9": 9.34683,
+      "ema21": 9.10476,
+      "rsi14_wilder": 66.97,
+      "bias": "BULLISH"
+    },
+    "1d": {
+      "ema9": 8.91545,
+      "ema21": 8.61924,
+      "ema50": 8.34559,
+      "rsi14_wilder": 71.58,
+      "bias": "BULLISH_BUT_EXTENDED"
+    }
+  },
+  "chart_structure": {
+    "1d": {
+      "pattern": "Bullish impulse / breakout from a multi-day base",
+      "interpretation": "Hausse forte et volume eleve; tendance de fond positive mais RSI journalier etire, donc ne pas poursuivre le prix sans pullback."
+    },
+    "4h": {
+      "pattern": "High-base / bull-flag-like consolidation after impulsive breakout",
+      "interpretation": "Structure encore haussiere au-dessus des moyennes, mais zone 9.60-9.75 agit comme resistance importante."
+    },
+    "1h": {
+      "pattern": "Corrective descending pullback toward EMA21",
+      "interpretation": "Le prix corrige sous EMA9 mais reste au-dessus d'EMA21; regime haussier conserve tant que la zone 9.42-9.44 tient."
+    },
+    "15m": {
+      "pattern": "Short-term lower-high/lower-low correction",
+      "interpretation": "Momentum vendeur court terme, prix proche de la bande de Bollinger basse; chercher une reprise confirmee, pas un achat aveugle."
+    },
+    "5m": {
+      "pattern": "Oversold corrective leg",
+      "interpretation": "RSI proche de 30 et EMA9 sous EMA21; aucune entree LONG avant retournement du momentum."
+    },
+    "1m": {
+      "pattern": "Microstructure de vente en ralentissement pres de 9.46-9.47",
+      "interpretation": "Utiliser uniquement pour optimiser le timing; ne jamais prendre une position sur le 1m seul."
+    },
+    "key_zones_snapshot": {
+      "support_1": [
+        9.46,
+        9.47
+      ],
+      "support_2": [
+        9.42,
+        9.44
+      ],
+      "support_3": [
+        9.28,
+        9.32
+      ],
+      "resistance_1": [
+        9.49,
+        9.53
+      ],
+      "resistance_2": [
+        9.6,
+        9.63
+      ],
+      "resistance_3": [
+        9.72,
+        9.75
+      ]
+    }
+  },
+  "strategy_logic": {
+    "name": "MTF Pullback Recovery + Breakdown Failsafe",
+    "primary_side": "LONG",
+    "secondary_side": "SHORT_ONLY_AFTER_REGIME_BREAK",
+    "no_trade_default": true,
+    "long_regime_filter_all": [
+      "EMA9_4h > EMA21_4h",
+      "close_1h > EMA21_1h",
+      "RSI14_4h >= 52 and RSI14_4h <= 75",
+      "RSI14_1d < 78",
+      "spread_pct <= 0.05"
+    ],
+    "long_setup_all": [
+      "RSI14_15m >= 28 and RSI14_15m <= 48",
+      "close_15m >= BollingerLower_15m - 0.15 * ATR14_15m",
+      "price is not more than 1.5 * ATR14_15m above EMA9_15m",
+      "15m structure has not closed below the current 1h invalidation support"
+    ],
+    "long_trigger_all": [
+      "5m close crosses above EMA9_5m",
+      "RSI14_5m crosses upward through 38",
+      "5m close > highest high of previous 2 completed 5m candles OR 5m close > local micro swing high",
+      "5m volume >= 1.15 * SMA(volume,20)_5m",
+      "1m does not print a new 10-minute low during the final confirmation candle"
+    ],
+    "long_entry": {
+      "type": "MARKET_OR_TIGHT_LIMIT_AFTER_CONFIRMED_5M_CLOSE",
+      "max_entry_chase": "0.20 * ATR14_15m",
+      "cancel_if_price_moves_without_fill": "0.35 * ATR14_15m"
+    },
+    "short_regime_filter_all": [
+      "close_1h < EMA21_1h",
+      "EMA9_15m < EMA21_15m",
+      "RSI14_15m < 42",
+      "15m close breaks the active 1h support with volume >= 1.25 * SMA(volume,20)_15m",
+      "spread_pct <= 0.05"
+    ],
+    "short_trigger_all": [
+      "after the break, a 5m pullback/retest fails below broken support",
+      "5m EMA9 remains below EMA21",
+      "RSI14_5m fails below 50",
+      "5m bearish confirmation candle closes below its midpoint with volume >= SMA(volume,20)_5m"
+    ],
+    "short_note": "SHORT est contre la tendance 4h/1d tant que EMA9_4h > EMA21_4h; risque reduit tant que ce regime n'est pas lui-meme devenu baissier."
+  },
+  "risk_management": {
+    "risk_score_0_to_10": 6.7,
+    "risk_label": "ELEVE_MAIS_CONTROLE",
+    "risk_per_trade_pct_equity": {
+      "long": 0.75,
+      "short_countertrend": 0.5,
+      "short_if_4h_bearish": 0.75
+    },
+    "max_leverage": {
+      "spot": 1.0,
+      "derivatives": 3.0
+    },
+    "margin_mode_derivatives": "ISOLATED_ONLY",
+    "max_open_positions_on_symbol": 1,
+    "max_total_link_notional_multiple_of_equity": 1.5,
+    "stop_model": {
+      "atr_timeframe": "15m",
+      "base_stop_distance_atr": 1.4,
+      "current_reference_distance": 0.0446,
+      "current_reference_distance_pct": 0.4709,
+      "rule": "For LONG: stop below recent 5m swing low with at least 1.2*ATR15 protection, target about 1.4*ATR15. Reject trade if required stop > 0.75% of entry. Mirror for SHORT.",
+      "never_widen_stop_after_entry": true,
+      "never_average_down": true
+    },
+    "profit_management": {
+      "tp1_R": 1.0,
+      "tp1_close_pct": 35,
+      "after_tp1": "Move stop to break-even plus estimated fees/slippage only if market structure remains valid.",
+      "tp2_R": 1.8,
+      "tp2_close_pct": 40,
+      "tp3_management": "Trail remaining 25% using 0.75*ATR15 or last confirmed 5m swing, whichever is tighter.",
+      "minimum_expected_RR_to_enter": 1.7
+    },
+    "time_stop": {
+      "if_no_progress_minutes": 30,
+      "required_progress_R": 0.35,
+      "absolute_max_hold_minutes": 120,
+      "action": "EXIT_OR_REDUCE; this is a rapid strategy, capital must not remain trapped."
+    },
+    "session_guards": {
+      "max_consecutive_losses": 2,
+      "cooldown_after_max_losses_minutes": 90,
+      "max_daily_loss_pct_equity": 2.25,
+      "stop_trading_for_day_if_hit": true,
+      "max_slippage_pct": 0.08,
+      "max_spread_pct": 0.05
+    }
+  },
+  "dynamic_invalidation": {
+    "long_invalidation": [
+      "1h close below EMA21_1h AND failed reclaim within next 2 completed 5m candles",
+      "15m close below active support with abnormal sell volume",
+      "4h momentum reversal with EMA9_4h crossing below EMA21_4h",
+      "spread or slippage exceeds allowed threshold"
+    ],
+    "short_invalidation": [
+      "1h closes back above EMA21_1h after breakdown",
+      "5m retest reclaims broken support with rising buy volume",
+      "4h trend remains strongly bullish and short has not moved +0.35R within 30 minutes"
+    ]
+  },
+  "snapshot_execution_state": {
+    "state": "WAIT_LONG_CONFIRMATION",
+    "reason": "4h/1h remain bullish, but 5m and 15m are still below fast EMAs. Current price near 15m lower Bollinger band; wait for 5m reclaim + RSI recovery + volume before LONG.",
+    "do_not_enter_immediately": true,
+    "snapshot_reference_long_trigger_zone": [
+      9.48,
+      9.53
+    ],
+    "snapshot_reference_breakout_zone": [
+      9.6,
+      9.63
+    ],
+    "snapshot_reference_hard_support": [
+      9.42,
+      9.44
+    ],
+    "snapshot_reference_day_high": 9.746,
+    "note": "These prices are context only and must be recomputed from fresh market data before execution."
+  },
+  "position_sizing": {
+    "formula": "risk_amount_quote = equity_quote * risk_pct / 100; stop_distance_quote_per_LINK = abs(entry - stop); quantity_LINK = risk_amount_quote / stop_distance_quote_per_LINK",
+    "caps": [
+      "Respect max_notional_multiple_of_equity",
+      "Respect venue minimum quantity/notional",
+      "Round quantity to venue step size",
+      "Recalculate after fees and estimated slippage"
+    ]
+  },
+  "ai_execution_protocol": {
+    "before_trade": [
+      "Refresh all required timeframes and order book.",
+      "Recalculate EMA9, EMA21, EMA50 where required, RSI14 Wilder, ATR14, Bollinger20/2 and volume SMA20.",
+      "Reject stale data older than 120 seconds.",
+      "Classify regime: BULLISH, NEUTRAL or BEARISH.",
+      "Evaluate LONG and SHORT rules exactly; do not infer missing conditions.",
+      "If neither side passes all mandatory conditions, output NO_TRADE."
+    ],
+    "on_signal": [
+      "Compute entry, hard stop, TP1, TP2 and trailing plan before sending an order.",
+      "Compute position size from equity risk, never from desired leverage.",
+      "Log the exact indicator values and rules that passed.",
+      "Never remove or widen a hard stop.",
+      "Never add to a losing position."
+    ],
+    "after_entry": [
+      "Monitor every completed 1m candle for emergency conditions.",
+      "Re-evaluate official strategy conditions on each completed 5m candle.",
+      "Apply time stop and session loss guards.",
+      "Log exit reason: STOP, TP1, TP2, TRAIL, TIME_STOP, INVALIDATION, MANUAL."
+    ],
+    "output_contract": {
+      "required_fields": [
+        "decision",
+        "side",
+        "entry",
+        "stop",
+        "tp1",
+        "tp2",
+        "risk_pct_equity",
+        "quantity",
+        "expected_RR",
+        "regime",
+        "conditions_passed",
+        "conditions_failed",
+        "data_timestamp"
+      ],
+      "allowed_decisions": [
+        "NO_TRADE",
+        "PREPARE_LONG",
+        "PREPARE_SHORT",
+        "EXIT",
+        "REDUCE"
+      ]
+    }
+  },
+  "validation_requirements": {
+    "paper_or_testnet_min_trades": 50,
+    "minimum_profit_factor": 1.2,
+    "minimum_win_rate_note": "No fixed minimum if average win/loss is favorable; evaluate expectancy instead.",
+    "maximum_acceptable_drawdown_pct": 8.0,
+    "minimum_sample_positive_expectancy": true,
+    "if_requirements_fail": "DO_NOT_ENABLE_LIVE; adjust or reject strategy."
+  },
+  "iatb_executable": {
+    "schema_version": 1,
+    "name": "Test LINK/USDT",
+    "version": "1.0",
+    "exchange": "GMX",
+    "symbol": "LINKUSD",
+    "timeframe": "5m",
+    "indicators": {
+      "rsi": {
+        "period": 14
+      },
+      "ema": {
+        "period": 9
+      },
+      "ema_slow": {
+        "period": 21
+      }
+    },
+    "entry": {
+      "side": "BUY",
+      "conditions": [
+        {
+          "indicator": "RSI",
+          "operator": "crosses_above",
+          "value": 38
+        },
+        {
+          "indicator": "EMA9_MINUS_EMA21",
+          "operator": ">",
+          "value": 0
+        }
+      ]
+    },
+    "exit": {
+      "conditions": [
+        {
+          "indicator": "RSI",
+          "operator": ">=",
+          "value": 70
+        },
+        {
+          "indicator": "EMA9_MINUS_EMA21",
+          "operator": "crosses_below",
+          "value": 0
+        }
+      ]
+    },
+    "risk": {
+      "leverage": 3,
+      "max_position_usdt": 20,
+      "stop_loss_percent": 0.75,
+      "take_profit_percent": 1.35
+    }
+  },
+  "iatb_runtime_notes": {
+    "mode": "MTF_GUARDED",
+    "mandatory_pretrade": "Relire data_policy, strategy_logic, risk_management et dynamic_invalidation avant toute preparation d ordre.",
+    "live_activation": "TESTNET/PAPER d abord; ne pas activer en reel avant validation_requirements."
+  },
+  "runtime_migration_note": "Projet v1.0: execution compilee sur GMX / LINKUSD; les snapshots Binance historiques ci-dessus sont conserves uniquement comme recherche historique."
+}

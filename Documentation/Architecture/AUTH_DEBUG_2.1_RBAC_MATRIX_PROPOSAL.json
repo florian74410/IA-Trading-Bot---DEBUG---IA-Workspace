@@ -1,0 +1,2269 @@
+{
+  "schema": "iatb.auth.rbac-matrix-proposal/1",
+  "status": "DESIGN_APPROVED_NOT_ACTIVE",
+  "source": {
+    "repository": "florian74410/IA-Trading-Bot",
+    "ref": "fix/v2.0.1-debug",
+    "sha": "4a5024473e1318491f4f66516292274f4a4c852c",
+    "endpoint_inventory": "Documentation/Security/AUTH_ENDPOINT_INVENTORY_v1.json",
+    "entries": 212
+  },
+  "scope": "P1.7 design approved, 212 route entries and 77 Router actions classified; NOT runtime policy; runtime enforcement and CI coverage gate have not been activated.",
+  "roles": [
+    "ADMIN",
+    "USER",
+    "GUEST"
+  ],
+  "principals": [
+    "ANONYMOUS",
+    "SERVICE"
+  ],
+  "default_decision": "DENY",
+  "invariants": {
+    "clientId": "CORE_AUTH_SESSION_ONLY",
+    "ownership_check": "AT_CORE_AND_BUSINESS_EXECUTION",
+    "global_writes": "ADMIN_ONLY",
+    "guest_writes": "NEVER",
+    "legacy_roles": "NO_IMPLICIT_MAPPING",
+    "cp1_machine": "NOT_A_HUMAN_PRINCIPAL",
+    "wallet": "FROZEN_NO_CHANGE",
+    "trading_live_debug": "DISABLED",
+    "require_csrf": true,
+    "debug_release_isolated": true,
+    "deny_unknown_routes": true,
+    "deny_unknown_actions": true,
+    "deny_unknown_roles": true
+  },
+  "classifications": {
+    "ANON_MINIMAL": {
+      "roles": [
+        "ANONYMOUS",
+        "GUEST",
+        "USER",
+        "ADMIN"
+      ],
+      "scope": "MINIMAL_AUTH_FIELDS_ONLY",
+      "condition": "NO_CLIENT_DETAILS_WHEN_ANONYMOUS"
+    },
+    "ANON_STATIC": {
+      "roles": [
+        "ANONYMOUS",
+        "GUEST",
+        "USER",
+        "ADMIN"
+      ],
+      "scope": "EXPLICIT_LOGIN_ASSET_ALLOWLIST_ONLY",
+      "condition": "ASSET_REVIEW"
+    },
+    "ADMIN": {
+      "roles": [
+        "ADMIN"
+      ],
+      "scope": "GLOBAL_WRITE_OR_PRIVILEGED",
+      "condition": "SERVER_SIDE_AUDIT_CONFIRMATION"
+    },
+    "ADMIN_READ": {
+      "roles": [
+        "ADMIN"
+      ],
+      "scope": "GLOBAL_OPERATIONS_READ",
+      "condition": "NO_SECRET_VALUES_IN_RESPONSE"
+    },
+    "OWN_READ": {
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "scope": "AUTHENTICATED_SELF_ONLY",
+      "condition": "TENANT_STORAGE_BEFORE_USER_ENABLE"
+    },
+    "OWN_WRITE": {
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "scope": "AUTHENTICATED_SELF_ONLY",
+      "condition": "TENANT_STORAGE_CSRF_AND_OWNER_PREDICATE"
+    },
+    "GUEST_SHARED": {
+      "roles": [
+        "GUEST",
+        "USER",
+        "ADMIN"
+      ],
+      "scope": "SANITIZED_PUBLIC_SHARED_READ",
+      "condition": "NO_PRIVATE_DATA_NO_EXTERNAL_SIDE_EFFECT"
+    },
+    "GUEST_PAGE": {
+      "roles": [
+        "GUEST",
+        "USER",
+        "ADMIN"
+      ],
+      "scope": "PAGE_SHELL_ONLY",
+      "condition": "ROLE_MODULE_FILTER_NO_PRIVATE_PREFETCH"
+    },
+    "USER_PAGE": {
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "scope": "SELF_PAGE_ONLY",
+      "condition": "TENANT_SCOPING_BEFORE_USER_ENABLE"
+    },
+    "MACHINE": {
+      "roles": [
+        "SERVICE"
+      ],
+      "scope": "MACHINE_ONLY",
+      "condition": "CP1_AUTH_SCOPE_ALLOWLIST_NOT_HUMAN_ROLE"
+    },
+    "HEALTH": {
+      "roles": [
+        "SERVICE"
+      ],
+      "scope": "MACHINE_MINIMAL_HEALTH",
+      "condition": "NO_SENSITIVE_METADATA"
+    },
+    "FROZEN": {
+      "roles": [],
+      "scope": "OUT_OF_AUTH2_1_SCOPE_WALLET",
+      "condition": "PRESERVE_LEGACY_NO_NEW_EXPOSURE_OR_KEY_CHANGES"
+    },
+    "DISABLED": {
+      "roles": [],
+      "scope": "LEGACY_DISABLED",
+      "condition": "DENY_IN_AUTH1_MODE"
+    },
+    "DENY": {
+      "roles": [],
+      "scope": "DEFAULT_DENY",
+      "condition": "EXPLICIT_REVIEW_BEFORE_ALLOW"
+    },
+    "ACTION_READ": {
+      "roles": [],
+      "scope": "ACTION_SPECIFIC_READ",
+      "condition": "SEE_ACTION_RULES_FOR_TARGET_ACTION"
+    },
+    "ACTION_WRITE": {
+      "roles": [
+        "ADMIN"
+      ],
+      "scope": "GLOBAL_ENGINE_MUTATION",
+      "condition": "CP1_AND_SIGNED_HUMAN_ACTION_AUTH"
+    },
+    "MIXED": {
+      "roles": [],
+      "scope": "DISPATCH_EXACT_METHOD_PATH",
+      "condition": "NO_PREFIX_BASED_ALLOW"
+    }
+  },
+  "route_review": {
+    "method": "SOURCE_STATIC_212_ENTRIES; duplication reflects aliases/prefix and explicit handlers",
+    "read-only-design-note": "Class labels are proposed dispositions, not runtime permissions; class ACTION_READ dispatches by exact target/action, MIXED never allows by prefix, class FROZEN preserves legacy without enabling routes in new Auth.",
+    "counts": {
+      "MACHINE": 24,
+      "HEALTH": 17,
+      "ANON_MINIMAL": 3,
+      "DISABLED": 5,
+      "OWN_WRITE": 15,
+      "ADMIN": 72,
+      "ADMIN_READ": 7,
+      "GUEST_SHARED": 5,
+      "OWN_READ": 3,
+      "FROZEN": 26,
+      "ACTION_READ": 2,
+      "ACTION_WRITE": 2,
+      "DENY": 3,
+      "GUEST_PAGE": 16,
+      "USER_PAGE": 10,
+      "MIXED": 3,
+      "ANON_STATIC": 2
+    },
+    "entries": [
+      {
+        "i": 1,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/internal/ai-gateway/cp/v1",
+        "source": "App/Core/Server/server.js",
+        "source_line": 149,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 2,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/internal/x-gateway/cp/v1",
+        "source": "App/Core/Server/server.js",
+        "source_line": 176,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 3,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/health",
+        "source": "App/Core/Server/server.js",
+        "source_line": 404,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 4,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/bootstrap",
+        "source": "App/Core/Server/server.js",
+        "source_line": 405,
+        "classification": "ANON_MINIMAL"
+      },
+      {
+        "i": 5,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/setup",
+        "source": "App/Core/Server/server.js",
+        "source_line": 406,
+        "classification": "DISABLED"
+      },
+      {
+        "i": 6,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/login",
+        "source": "App/Core/Server/server.js",
+        "source_line": 422,
+        "classification": "ANON_MINIMAL"
+      },
+      {
+        "i": 7,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/recovery/request",
+        "source": "App/Core/Server/server.js",
+        "source_line": 434,
+        "classification": "DISABLED"
+      },
+      {
+        "i": 8,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/recovery/confirm",
+        "source": "App/Core/Server/server.js",
+        "source_line": 445,
+        "classification": "DISABLED"
+      },
+      {
+        "i": 9,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/logout",
+        "source": "App/Core/Server/server.js",
+        "source_line": 458,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 10,
+        "service": "Core",
+        "method": "ANY_GUARD",
+        "path": "/api/ai-updates",
+        "source": "App/Core/Server/server.js",
+        "source_line": 462,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 11,
+        "service": "Core",
+        "method": "ANY_GUARD",
+        "path": "/api/ai-updates/*",
+        "source": "App/Core/Server/server.js",
+        "source_line": 462,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 12,
+        "service": "Core",
+        "method": "ANY_GUARD",
+        "path": "/api/updates",
+        "source": "App/Core/Server/server.js",
+        "source_line": 462,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 13,
+        "service": "Core",
+        "method": "ANY_GUARD",
+        "path": "/api/updates/*",
+        "source": "App/Core/Server/server.js",
+        "source_line": 462,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 14,
+        "service": "Core",
+        "method": "ANY_GUARD",
+        "path": "/api/admin/*",
+        "source": "App/Core/Server/server.js",
+        "source_line": 463,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 15,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/bank/vaults",
+        "source": "App/Core/Server/server.js",
+        "source_line": 464,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 16,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/bank/vaults",
+        "source": "App/Core/Server/server.js",
+        "source_line": 465,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 17,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/bank/vaults",
+        "source": "App/Core/Server/server.js",
+        "source_line": 466,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 18,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/session",
+        "source": "App/Core/Server/server.js",
+        "source_line": 467,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 19,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 468,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 20,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/console/catalog",
+        "source": "App/Core/Server/server.js",
+        "source_line": 469,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 21,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/console/execute",
+        "source": "App/Core/Server/server.js",
+        "source_line": 470,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 22,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/logs",
+        "source": "App/Core/Server/server.js",
+        "source_line": 471,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 23,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/logs/clear",
+        "source": "App/Core/Server/server.js",
+        "source_line": 472,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 24,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/service/restart",
+        "source": "App/Core/Server/server.js",
+        "source_line": 473,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 25,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/process/toggle",
+        "source": "App/Core/Server/server.js",
+        "source_line": 474,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 26,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/firewall/thread/stop",
+        "source": "App/Core/Server/server.js",
+        "source_line": 475,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 27,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/firewall/thread/restart",
+        "source": "App/Core/Server/server.js",
+        "source_line": 476,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 28,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/firewall/toggle",
+        "source": "App/Core/Server/server.js",
+        "source_line": 477,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 29,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/indicators/reload",
+        "source": "App/Core/Server/server.js",
+        "source_line": 478,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 30,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/cache/clear",
+        "source": "App/Core/Server/server.js",
+        "source_line": 479,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 31,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/core/restart",
+        "source": "App/Core/Server/server.js",
+        "source_line": 480,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 32,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/system/restart",
+        "source": "App/Core/Server/server.js",
+        "source_line": 481,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 33,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/system/stop-total",
+        "source": "App/Core/Server/server.js",
+        "source_line": 488,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 34,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/shutdown",
+        "source": "App/Core/Server/server.js",
+        "source_line": 494,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 35,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/updates",
+        "source": "App/Core/Server/server.js",
+        "source_line": 495,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 36,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/updates/upload",
+        "source": "App/Core/Server/server.js",
+        "source_line": 496,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 37,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/updates/fetch",
+        "source": "App/Core/Server/server.js",
+        "source_line": 497,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 38,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/updates/install",
+        "source": "App/Core/Server/server.js",
+        "source_line": 498,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 39,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/ai-updates/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 499,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 40,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/ai-updates/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 500,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 41,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/ai-updates",
+        "source": "App/Core/Server/server.js",
+        "source_line": 501,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 42,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/ai-updates/package",
+        "source": "App/Core/Server/server.js",
+        "source_line": 502,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 43,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/ai-updates/execute",
+        "source": "App/Core/Server/server.js",
+        "source_line": 504,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 44,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/mosaics",
+        "source": "App/Core/Server/server.js",
+        "source_line": 506,
+        "classification": "GUEST_SHARED"
+      },
+      {
+        "i": 45,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/mosaics/runtime",
+        "source": "App/Core/Server/server.js",
+        "source_line": 507,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 46,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/mosaics/create",
+        "source": "App/Core/Server/server.js",
+        "source_line": 508,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 47,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/mosaics/delete",
+        "source": "App/Core/Server/server.js",
+        "source_line": 509,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 48,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/firewall/toggle",
+        "source": "App/Core/Server/server.js",
+        "source_line": 511,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 49,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/client/me",
+        "source": "App/Core/Server/server.js",
+        "source_line": 512,
+        "classification": "OWN_READ"
+      },
+      {
+        "i": 50,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/client/me",
+        "source": "App/Core/Server/server.js",
+        "source_line": 513,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 51,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/clients/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 514,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 52,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/clients",
+        "source": "App/Core/Server/server.js",
+        "source_line": 515,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 53,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/security/wallets",
+        "source": "App/Core/Server/server.js",
+        "source_line": 516,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 54,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/security/wallets/networks",
+        "source": "App/Core/Server/server.js",
+        "source_line": 517,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 55,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/security/wallets/next-id",
+        "source": "App/Core/Server/server.js",
+        "source_line": 518,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 56,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/wallets/create",
+        "source": "App/Core/Server/server.js",
+        "source_line": 519,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 57,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/wallets/import",
+        "source": "App/Core/Server/server.js",
+        "source_line": 520,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 58,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/wallets/remove-key",
+        "source": "App/Core/Server/server.js",
+        "source_line": 521,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 59,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/security/wallets/export",
+        "source": "App/Core/Server/server.js",
+        "source_line": 522,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 60,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/wallets/reveal",
+        "source": "App/Core/Server/server.js",
+        "source_line": 524,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 61,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/security/wallets/remove",
+        "source": "App/Core/Server/server.js",
+        "source_line": 525,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 62,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 526,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 63,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/logs",
+        "source": "App/Core/Server/server.js",
+        "source_line": 527,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 64,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 528,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 65,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/language",
+        "source": "App/Core/Server/server.js",
+        "source_line": 537,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 66,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/general",
+        "source": "App/Core/Server/server.js",
+        "source_line": 538,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 67,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/apis",
+        "source": "App/Core/Server/server.js",
+        "source_line": 539,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 68,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/apis/clear",
+        "source": "App/Core/Server/server.js",
+        "source_line": 540,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 69,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/test-openai",
+        "source": "App/Core/Server/server.js",
+        "source_line": 541,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 70,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/test-zerox",
+        "source": "App/Core/Server/server.js",
+        "source_line": 542,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 71,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/test-x",
+        "source": "App/Core/Server/server.js",
+        "source_line": 543,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 72,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/supervisor/brains",
+        "source": "App/Core/Server/server.js",
+        "source_line": 544,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 73,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/ai",
+        "source": "App/Core/Server/server.js",
+        "source_line": 545,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 74,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/portfolio",
+        "source": "App/Core/Server/server.js",
+        "source_line": 546,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 75,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/power",
+        "source": "App/Core/Server/server.js",
+        "source_line": 547,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 76,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/settings/modulation",
+        "source": "App/Core/Server/server.js",
+        "source_line": 548,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 77,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/app-settings/select",
+        "source": "App/Core/Server/server.js",
+        "source_line": 549,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 78,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/transfers/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 551,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 79,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/transfers/assets",
+        "source": "App/Core/Server/server.js",
+        "source_line": 552,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 80,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/transfers/preview",
+        "source": "App/Core/Server/server.js",
+        "source_line": 553,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 81,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/transfers/execute",
+        "source": "App/Core/Server/server.js",
+        "source_line": 554,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 82,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/transfers/history",
+        "source": "App/Core/Server/server.js",
+        "source_line": 555,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 83,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/onchain/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 557,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 84,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/onchain/identity",
+        "source": "App/Core/Server/server.js",
+        "source_line": 558,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 85,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/onchain/wallet",
+        "source": "App/Core/Server/server.js",
+        "source_line": 559,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 86,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/onchain/history",
+        "source": "App/Core/Server/server.js",
+        "source_line": 560,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 87,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/onchain/tx",
+        "source": "App/Core/Server/server.js",
+        "source_line": 561,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 88,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/swap-bridge/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 562,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 89,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/swap-bridge/quote",
+        "source": "App/Core/Server/server.js",
+        "source_line": 563,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 90,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/swap-bridge/prepare",
+        "source": "App/Core/Server/server.js",
+        "source_line": 564,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 91,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/swap-bridge/execute",
+        "source": "App/Core/Server/server.js",
+        "source_line": 565,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 92,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/swap-bridge/history",
+        "source": "App/Core/Server/server.js",
+        "source_line": 566,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 93,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/swap-bridge/submitted",
+        "source": "App/Core/Server/server.js",
+        "source_line": 567,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 94,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/swap-bridge/track",
+        "source": "App/Core/Server/server.js",
+        "source_line": 568,
+        "classification": "FROZEN"
+      },
+      {
+        "i": 95,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/notifications/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 570,
+        "classification": "OWN_READ"
+      },
+      {
+        "i": 96,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/notifications/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 571,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 97,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/notifications",
+        "source": "App/Core/Server/server.js",
+        "source_line": 572,
+        "classification": "OWN_READ"
+      },
+      {
+        "i": 98,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/notifications/test",
+        "source": "App/Core/Server/server.js",
+        "source_line": 573,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 99,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/notifications/read",
+        "source": "App/Core/Server/server.js",
+        "source_line": 574,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 100,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/credits/usage",
+        "source": "App/Core/Server/server.js",
+        "source_line": 576,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 101,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/credits/pricing",
+        "source": "App/Core/Server/server.js",
+        "source_line": 577,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 102,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/token-usage",
+        "source": "App/Core/Server/server.js",
+        "source_line": 578,
+        "classification": "ADMIN_READ"
+      },
+      {
+        "i": 103,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/profile",
+        "source": "App/Core/Server/server.js",
+        "source_line": 579,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 104,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/session/change-password",
+        "source": "App/Core/Server/server.js",
+        "source_line": 580,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 105,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/session/change-email",
+        "source": "App/Core/Server/server.js",
+        "source_line": 581,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 106,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/session/test-email",
+        "source": "App/Core/Server/server.js",
+        "source_line": 597,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 107,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/chart-viewer/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 598,
+        "classification": "GUEST_SHARED"
+      },
+      {
+        "i": 108,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/chart-viewer/chat",
+        "source": "App/Core/Server/server.js",
+        "source_line": 599,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 109,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/companion/chat",
+        "source": "App/Core/Server/server.js",
+        "source_line": 600,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 110,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/chat",
+        "source": "App/Core/Server/server.js",
+        "source_line": 601,
+        "classification": "OWN_WRITE"
+      },
+      {
+        "i": 111,
+        "service": "Firewall",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 55,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 112,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/data/inspect",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 56,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 113,
+        "service": "Firewall",
+        "method": "GET",
+        "path": "/api/thread/config",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 57,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 114,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/thread/config",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 58,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 115,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/thread/stop",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 59,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 116,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/thread/restart",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 60,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 117,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/thread/toggle",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 61,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 118,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/api/thread/reload",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 62,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 119,
+        "service": "Firewall",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Core/Firewall/firewall_service.js",
+        "source_line": 63,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 120,
+        "service": "Fundamental",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Fundamental/Engine/fundamental_service.js",
+        "source_line": 134,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 121,
+        "service": "Fundamental",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Fundamental/Engine/fundamental_service.js",
+        "source_line": 134,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 122,
+        "service": "Indicator",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Indicators/Engine/indicator_service.js",
+        "source_line": 85,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 123,
+        "service": "Indicator",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Indicators/Engine/indicator_service.js",
+        "source_line": 86,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 124,
+        "service": "Liquidity",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Liquidity/Engine/liquidity_service.js",
+        "source_line": 82,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 125,
+        "service": "Liquidity",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Liquidity/Engine/liquidity_service.js",
+        "source_line": 82,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 126,
+        "service": "MarketData",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/MarketData/market_data_service.js",
+        "source_line": 130,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 127,
+        "service": "MarketData",
+        "method": "GET",
+        "path": "/candles",
+        "source": "App/MarketData/market_data_service.js",
+        "source_line": 131,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 128,
+        "service": "MarketData",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/MarketData/market_data_service.js",
+        "source_line": 131,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 129,
+        "service": "Portfolio",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Portfolio/Engine/portfolio_service.js",
+        "source_line": 22,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 130,
+        "service": "Portfolio",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Portfolio/Engine/portfolio_service.js",
+        "source_line": 22,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 131,
+        "service": "Risk",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Risk/Engine/risk_service.js",
+        "source_line": 185,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 132,
+        "service": "Risk",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Risk/Engine/risk_service.js",
+        "source_line": 190,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 133,
+        "service": "Router",
+        "method": "ANY",
+        "path": "/router-health-internal",
+        "source": "App/Core/Router/router.js",
+        "source_line": 195,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 134,
+        "service": "Router",
+        "method": "ANY",
+        "path": "/router-health",
+        "source": "App/Core/Router/router.js",
+        "source_line": 196,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 135,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication-health",
+        "source": "App/Core/Router/router.js",
+        "source_line": 197,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 136,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication-test",
+        "source": "App/Core/Router/router.js",
+        "source_line": 198,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 137,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/register",
+        "source": "App/Core/Router/router.js",
+        "source_line": 199,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 138,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/request",
+        "source": "App/Core/Router/router.js",
+        "source_line": 200,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 139,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/ui/read",
+        "source": "App/Core/Router/router.js",
+        "source_line": 201,
+        "classification": "ACTION_READ"
+      },
+      {
+        "i": 140,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/ui/write",
+        "source": "App/Core/Router/router.js",
+        "source_line": 202,
+        "classification": "ACTION_WRITE"
+      },
+      {
+        "i": 141,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/event",
+        "source": "App/Core/Router/router.js",
+        "source_line": 203,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 142,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication/v1/events",
+        "source": "App/Core/Router/router.js",
+        "source_line": 204,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 143,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication/v1/capabilities",
+        "source": "App/Core/Router/router.js",
+        "source_line": 205,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 144,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication/v1/registry",
+        "source": "App/Core/Router/router.js",
+        "source_line": 206,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 145,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication/v1/registry/*",
+        "source": "App/Core/Router/router.js",
+        "source_line": 207,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 146,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/client/plan",
+        "source": "App/Core/Router/router.js",
+        "source_line": 208,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 147,
+        "service": "Router",
+        "method": "POST",
+        "path": "/communication/v1/client/ack",
+        "source": "App/Core/Router/router.js",
+        "source_line": 209,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 148,
+        "service": "Router",
+        "method": "GET",
+        "path": "/communication/v1/runtime",
+        "source": "App/Core/Router/router.js",
+        "source_line": 210,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 149,
+        "service": "Router",
+        "method": "GET",
+        "path": "/market-data/candles",
+        "source": "App/Core/Router/router.js",
+        "source_line": 211,
+        "classification": "GUEST_SHARED"
+      },
+      {
+        "i": 150,
+        "service": "Router",
+        "method": "ANY",
+        "path": "/*",
+        "source": "App/Core/Router/router.js",
+        "source_line": 212,
+        "classification": "DENY"
+      },
+      {
+        "i": 151,
+        "service": "Strategy",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Strategy/Engine/strategy_service.js",
+        "source_line": 33,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 152,
+        "service": "Strategy",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Strategy/Engine/strategy_service.js",
+        "source_line": 33,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 153,
+        "service": "Supervisor",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/Supervisor/supervisor_service.js",
+        "source_line": 37,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 154,
+        "service": "Supervisor",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/Supervisor/supervisor_service.js",
+        "source_line": 37,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 155,
+        "service": "Trading Engine",
+        "method": "POST",
+        "path": "/cp/v1",
+        "source": "App/services/trading-engine/trading_service.js",
+        "source_line": 30,
+        "classification": "MACHINE"
+      },
+      {
+        "i": 156,
+        "service": "Trading Engine",
+        "method": "GET",
+        "path": "/health",
+        "source": "App/services/trading-engine/trading_service.js",
+        "source_line": 30,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 157,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 158,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 159,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 160,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/vaults",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 161,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/vaults/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 162,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/bank",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 163,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/bank/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 164,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/bank/keys",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 165,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/bank/keys/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 166,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/chart-viewer",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 167,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/chart-viewer/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 168,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/charts",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 169,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/fundamental",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 170,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/fundamental/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 171,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/ia-trading",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 172,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/ia-trading/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 173,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/keys",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 174,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/keys/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 175,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/portfolio",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 176,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/portfolio/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 177,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/settings",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 178,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/settings/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "USER_PAGE"
+      },
+      {
+        "i": 179,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/statistiques",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 180,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/statistiques/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 181,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/strategies",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 182,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/strategies/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 183,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/strategy",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 184,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/strategy/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 185,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/trading",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 186,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/trading/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 15,
+        "classification": "GUEST_PAGE"
+      },
+      {
+        "i": 187,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-health",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 36,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 188,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-api/project-tree",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 37,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 189,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-api/project-file",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 38,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 190,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-api/session",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 39,
+        "classification": "ANON_MINIMAL"
+      },
+      {
+        "i": 191,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/communication-health",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 40,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 192,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/router-health",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 41,
+        "classification": "HEALTH"
+      },
+      {
+        "i": 193,
+        "service": "UI Gateway",
+        "method": "POST",
+        "path": "/communication-test",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 42,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 194,
+        "service": "UI Gateway",
+        "method": "POST",
+        "path": "/communication/v1/ui/read",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 43,
+        "classification": "ACTION_READ"
+      },
+      {
+        "i": 195,
+        "service": "UI Gateway",
+        "method": "POST",
+        "path": "/communication/v1/ui/write",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 44,
+        "classification": "ACTION_WRITE"
+      },
+      {
+        "i": 196,
+        "service": "UI Gateway",
+        "method": "POST",
+        "path": "/communication/v1/client/ack",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 45,
+        "classification": "MIXED"
+      },
+      {
+        "i": 197,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/communication/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 46,
+        "classification": "DENY"
+      },
+      {
+        "i": 198,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/communication/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 46,
+        "classification": "DENY"
+      },
+      {
+        "i": 199,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 47,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 200,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 47,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 201,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/vaults",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 47,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 202,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/admin/vaults/",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 47,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 203,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/assets/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 48,
+        "classification": "ANON_STATIC"
+      },
+      {
+        "i": 204,
+        "service": "UI Gateway",
+        "method": "GET/HEAD",
+        "path": "/assets/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 48,
+        "classification": "ANON_STATIC"
+      },
+      {
+        "i": 205,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/firewall-admin/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 49,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 206,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/firewall-admin/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 49,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 207,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-data/market/candles",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 51,
+        "classification": "GUEST_SHARED"
+      },
+      {
+        "i": 208,
+        "service": "UI Gateway",
+        "method": "GET",
+        "path": "/ui-data/market/candles",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 51,
+        "classification": "GUEST_SHARED"
+      },
+      {
+        "i": 209,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/api/internal/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 52,
+        "classification": "DISABLED"
+      },
+      {
+        "i": 210,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/api/internal/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 52,
+        "classification": "DISABLED"
+      },
+      {
+        "i": 211,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/api/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 53,
+        "classification": "MIXED"
+      },
+      {
+        "i": 212,
+        "service": "UI Gateway",
+        "method": "ANY",
+        "path": "/api/*",
+        "source": "App/UI/Gateway/ui_service.js",
+        "source_line": 53,
+        "classification": "MIXED"
+      },
+      {
+        "i": 213,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/firewall/status",
+        "source": "App/Core/Server/server.js",
+        "source_line": 507,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 214,
+        "service": "Core",
+        "method": "GET",
+        "path": "/api/admin/risk/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 0,
+        "classification": "ADMIN"
+      },
+      {
+        "i": 215,
+        "service": "Core",
+        "method": "POST",
+        "path": "/api/admin/risk/settings",
+        "source": "App/Core/Server/server.js",
+        "source_line": 0,
+        "classification": "ADMIN"
+      }
+    ]
+  },
+  "cp1_action_review": {
+    "source": "App/Core/Router/router.js:UI_READ_ACTIONS/UI_WRITE_ACTIONS",
+    "actionCountSource": 82,
+    "classifiedActionCount": 82,
+    "unknownActionNames": [],
+    "groups": {
+      "PUBLIC_SHARED_READ": {
+        "actions": [
+          "indicator.list_indicators",
+          "indicator.definition.get",
+          "indicator.language.info",
+          "fundamental.summary",
+          "fundamental.news.search",
+          "fundamental.sources.search",
+          "fundamental.source.get",
+          "fundamental.feeds.search",
+          "fundamental.fedwatch.get",
+          "fundamental.calendar.upcoming",
+          "strategy.catalog",
+          "liquidity.zones",
+          "marketdata.asset.price",
+          "marketdata.catalog",
+          "marketdata.asset.resolve",
+          "marketdata.symbols",
+          "marketdata.ticker",
+          "marketdata.providers",
+          "marketdata.registry.search",
+          "marketdata.registry.list",
+          "marketdata.registry.asset"
+        ],
+        "roles": [
+          "GUEST",
+          "USER",
+          "ADMIN"
+        ],
+        "guard": "NON_PERSONAL_SANITIZED_ONLY;NO_EXTERNAL_SIDE_EFFECT"
+      },
+      "OWNER_READ_WITH_TENANT_STORAGE": {
+        "actions": [
+          "portfolio.overview",
+          "portfolio.positions",
+          "portfolio.position.health",
+          "portfolio.trades",
+          "portfolio.trade.detail",
+          "portfolio.statistics",
+          "portfolio.history",
+          "portfolio.events"
+        ],
+        "roles": [
+          "ADMIN",
+          "USER"
+        ],
+        "guard": "OWNER_CLIENT_ID_AT_CORE_AND_ENGINE;GUEST_DENY"
+      },
+      "USER_QUOTA_PROTECTED": {
+        "actions": [
+          "indicator.compute_batch",
+          "indicator.analyze",
+          "indicator.definition.validate",
+          "indicator.language.validate",
+          "indicator.compute_batch_data"
+        ],
+        "roles": [
+          "ADMIN",
+          "USER"
+        ],
+        "guard": "QUOTA_CIRCUIT_BREAKER;NO_GUEST_COMPUTE"
+      },
+      "ADMIN_READ_OR_COSTLY": {
+        "actions": [
+          "indicator.settings.get",
+          "indicator.registry.status",
+          "firewall.events",
+          "firewall.status",
+          "fundamental.ai_summary.state",
+          "fundamental.health",
+          "fundamental.providers.status",
+          "fundamental.synthesis.history",
+          "fundamental.diagnostic.feed",
+          "fundamental.logs.recent",
+          "strategy.health",
+          "strategy.capabilities",
+          "strategy.stats",
+          "strategy.state",
+          "marketdata.health",
+          "marketdata.provider.test",
+          "marketdata.settings.get",
+          "marketdata.registry.status",
+          "marketdata.registry.query",
+          "marketdata.financial.snapshot",
+          "marketdata.financial.history",
+          "marketdata.financial.storage",
+          "marketdata.dex.liquidity.snapshot",
+          "marketdata.derivatives.open_interest",
+          "marketdata.liquidations.stats",
+          "marketdata.liquidations.streams"
+        ],
+        "roles": [
+          "ADMIN"
+        ],
+        "guard": "NO_SECRET_LEAKS;NO_GUEST_PROVIDER_CALL;COST_CONFIRMATION_WHEN_NEEDED"
+      },
+      "AUTH2_1_FREEZE_TRADING": {
+        "actions": [
+          "trading.account.positions",
+          "trading.account.orders",
+          "trading.account.balances"
+        ],
+        "roles": [],
+        "guard": "TRADING_ENGINE_DISABLED_AND_WALLET_MODEL_SEPARATE"
+      },
+      "GLOBAL_ADMIN_WRITE": {
+        "actions": [
+          "indicator.settings.set",
+          "indicator.registry.reload",
+          "indicator.definition.create",
+          "indicator.language.create",
+          "indicator.custom.delete",
+          "marketdata.settings.set",
+          "marketdata.registry.refresh",
+          "marketdata.cache.clear",
+          "fundamental.collect",
+          "fundamental.provider.test",
+          "fundamental.feed.test_draft",
+          "fundamental.feed.create",
+          "fundamental.feed.update",
+          "fundamental.feed.toggle",
+          "fundamental.feed.delete",
+          "fundamental.news.purge",
+          "fundamental.fedwatch.refresh",
+          "fundamental.ai_summary.generate",
+          "fundamental.translate"
+        ],
+        "roles": [
+          "ADMIN"
+        ],
+        "guard": "CP1_MACHINE_AND_CORE_HUMAN_PROOF;AUDIT;NO_GUEST_OR_USER"
+      }
+    }
+  },
+  "transition": "Legacy globals in default SQLite/User Data must remain ADMIN-only for mutations until tenant-scoped storage exists. No current runtime behavior changes at P1.7.",
+  "negative_tests": "Documentation/Security/AUTH_DEBUG_2.1_RBAC_NEGATIVE_TEST_PLAN.md",
+  "approved_by_operator_date": "2026-10-14",
+  "change_policy": "Documentation/Security/AUTH_DEBUG_2.1_RBAC_CHANGE_POLICY.md",
+  "user_management_review": {
+    "status": "REVIEW_PENDING",
+    "note": "Five 2.1.1 Router actions inventoried conservatively. Authenticated per-owner adapters are separately described in Documentation/UserManagement/rbac-v1.json; this proposal is not runtime authority."
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "application": "IA-Trading-Bot",
+  "package_type": "UPDATE",
+  "from_version": "2.0.0",
+  "to_version": "2.1.0",
+  "payload_root": "payload",
+  "entrypoint": "Core/Server/server.js",
+  "description": "Exemple de mise à jour IA-TB v2",
+  "files": []
+}

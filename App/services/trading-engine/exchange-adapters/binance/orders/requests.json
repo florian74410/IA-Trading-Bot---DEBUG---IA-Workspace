@@ -1,0 +1,26 @@
+{
+  "spot_create": {
+    "method": "POST",
+    "path": "/api/v3/order"
+  },
+  "spot_cancel": {
+    "method": "DELETE",
+    "path": "/api/v3/order"
+  },
+  "spot_get": {
+    "method": "GET",
+    "path": "/api/v3/order"
+  },
+  "futures_create": {
+    "method": "POST",
+    "path": "/fapi/v1/order"
+  },
+  "futures_cancel": {
+    "method": "DELETE",
+    "path": "/fapi/v1/order"
+  },
+  "futures_get": {
+    "method": "GET",
+    "path": "/fapi/v1/order"
+  }
+}

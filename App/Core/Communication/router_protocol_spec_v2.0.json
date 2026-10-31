@@ -1,0 +1,90 @@
+{
+  "schema": "iatb.router-protocol/2.0",
+  "application": "IA-Trading-Bot",
+  "appVersionSource": "VERSION",
+  "protocol": "CP/1",
+  "protocolRegistry": "2.0",
+  "transport": "HTTP_LOCAL_AUTHENTICATED",
+  "router": {
+    "host": "127.0.0.1",
+    "port": 8021
+  },
+  "request": {
+    "required": [
+      "protocol",
+      "request_id",
+      "timestamp",
+      "target",
+      "action",
+      "arguments"
+    ],
+    "detail": [
+      "summary",
+      "analysis",
+      "evidence",
+      "execution"
+    ],
+    "target": "ProtocolRegistry-declared component id",
+    "action": "ProtocolRegistry-declared command"
+  },
+  "response": {
+    "required": [
+      "protocol",
+      "request_id",
+      "engine",
+      "action",
+      "status",
+      "schema",
+      "generated_at",
+      "duration_ms",
+      "data_hash",
+      "data"
+    ],
+    "status": [
+      "OK",
+      "DEGRADED",
+      "PROTECTION",
+      "OFFLINE",
+      "ERROR"
+    ]
+  },
+  "security": {
+    "loopbackOnly": true,
+    "auth": "X-IATB-CP-Token",
+    "integrity": "X-IATB-CP-Signature HMAC-SHA256",
+    "replayProtection": true,
+    "arbitraryShell": false,
+    "arbitraryPath": false,
+    "arbitraryURL": false,
+    "tradingRoute": "Router -> Firewall:8017 -> Risk approval -> Trading Engine:8016"
+  },
+  "canonicalClient": "Core/Communication/cp1_client.js",
+  "canonicalValidation": "Core/Communication/ProtocolRegistry/*.json",
+  "activeCP1": [
+    "indicator",
+    "trading",
+    "risk",
+    "portfolio",
+    "marketdata",
+    "liquidity",
+    "fundamental",
+    "strategy",
+    "supervisor"
+  ],
+  "securityBridges": [
+    "firewall"
+  ],
+  "browserBoundary": {
+    "rule": "Browser/UI never receives the CP secret.",
+    "path": "UI -> Router read/control APIs -> CP/1 components"
+  },
+  "exceptions": [
+    {
+      "target": "trading",
+      "logicalPort": 8017,
+      "runtimePort": 8016,
+      "via": "FIREWALL",
+      "reason": "Mutating execution must cross Firewall and Risk before Trading Engine."
+    }
+  ]
+}

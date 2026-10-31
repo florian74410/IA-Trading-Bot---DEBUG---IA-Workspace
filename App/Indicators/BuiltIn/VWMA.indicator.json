@@ -1,0 +1,66 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "vwma",
+  "name": "Volume Weighted Moving Average",
+  "version": "2.1",
+  "category": "volume",
+  "inputs": {
+    "source": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "volume": {
+      "type": "series",
+      "default": "volume",
+      "allowed": [
+        "volume"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 20,
+      "min": 2,
+      "max": 500
+    }
+  },
+  "engine": {
+    "operation": "vwma"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  }
+}

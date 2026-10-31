@@ -1,0 +1,22 @@
+{
+  "App/Core/Clients/UserManagement/runtime.js": {
+    "baseline": "c169a15d6d94db0d1830a49007cd97646f5306d03cee92915b5459918667019d",
+    "reviewed": "1247fec90e2d62513d227db7d786f33d8be7d5fdcbe4c67f6be23c6d1f84c259"
+  },
+  "App/Core/Firewall/firewall_service.js": {
+    "baseline": "b0f4f447338d010f4222912b5006dbecf3d9642d25736891ef05b6d0f5f9d119",
+    "reviewed": "d7af5c363ebcfd75f6bf87fa3de3e546bfa57fca58bc09d1855fa879f3918896"
+  },
+  "App/Core/Communication/ProtocolRegistry/trading.json": {
+    "baseline": "46c22db258c7d633f2c347e7a3c2ead302760af9ee4b1bfb0991a5a6af2d5c39",
+    "reviewed": "2ebb4359a287ee6fd40b54bd259fb14dc2cb25f683af2c627afbfb6eaf0f1fd5"
+  },
+  "App/Core/Clients/UserManagement/cp_bridge.js": {
+    "baseline": "4f5e8e12332d99a125567a20831dc8c8bfd04ac56d9a7d5f95d9b95dc6c3dd8f",
+    "reviewed": "77dbfcdec14cd3bd77293671f92f5c36c180fd9b14eceafc571a43145243203e"
+  },
+  "App/Core/Clients/UserManagement/http.js": {
+    "baseline": "f091abe22a28592dd43a8cf819d8a5ddae19f9a800a8d0e8deae5449472a3d4e",
+    "reviewed": "13eaff7879f84077ca19d6481fa5711fddde5813b72d2ed5048e49356c928c68"
+  }
+}

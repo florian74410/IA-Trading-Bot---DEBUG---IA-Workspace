@@ -1,0 +1,17 @@
+'use strict';
+var assert=require('assert');
+var Runtime=require('../runtime_registry_v1');
+var r=new Runtime.RuntimeRegistry({maxActiveSupervisors:1});
+var s1=r.registerSupervisor({supervisor_instance_id:'SUP-001',role:'TRADING',resource_profile:'NORMAL'});
+assert.strictEqual(s1.worker_thread,'RESERVED');
+assert.strictEqual(s1.status,'ONLINE');
+assert.throws(function(){r.registerSupervisor({supervisor_instance_id:'SUP-002',role:'YIELD'});},/SUPERVISOR_MAX_ACTIVE_REACHED/);
+var st1=r.createStrategyInstance({strategy_instance_id:'STRAT-001',strategy_id:'BREAKOUT',role:'PRIMARY',symbol:'BTC/USD',timeframe:'4h'});
+assert.strictEqual(st1.owner_supervisor_id,null);
+r.assignStrategy('STRAT-001','SUP-001');
+assert.strictEqual(r.snapshot().exclusive_strategy_leases.length,1);
+r.setSupervisorStatus('SUP-001','PROTECTION');
+assert.strictEqual(r.snapshot().supervisors[0].status,'PROTECTION');
+r.releaseStrategy('STRAT-001','SUP-001');
+assert.strictEqual(r.snapshot().exclusive_strategy_leases.length,0);
+console.log('test_runtime_registry_v1: OK');

@@ -1,0 +1,6 @@
+'use strict';
+var ACTIONS=['BUY','SELL','HOLD'],TYPES=['MARKET','LIMIT'];
+function cleanString(v,n){return String(v==null?'':v).trim().slice(0,n||120)}
+function normalize(x){x=x||{};var action=cleanString(x.action,12).toUpperCase();if(ACTIONS.indexOf(action)<0)action='HOLD';var type=cleanString(x.orderType||x.order_type,12).toUpperCase();if(TYPES.indexOf(type)<0)type='MARKET';return{schema:'cp1.trade-intent/1.0',source:'supervisor.autonomous-trading',mode:cleanString(x.mode||'ANALYZE',24).toUpperCase(),symbol:cleanString(x.symbol,40).toUpperCase(),action:action,orderType:type,size:Number(x.size)||0,limitPrice:x.limitPrice==null?null:Number(x.limitPrice),stopLoss:x.stopLoss==null?null:Number(x.stopLoss),takeProfit:x.takeProfit==null?null:Number(x.takeProfit),confidence:Math.max(0,Math.min(1,Number(x.confidence)||0)),reason:cleanString(x.reason,1200),createdAt:new Date().toISOString(),requiresRiskApproval:true};}
+function validate(i){var e=[];if(!i.symbol)e.push('SYMBOL_REQUIRED');if(i.action!=='HOLD'&&!(i.size>0))e.push('SIZE_REQUIRED');if(i.mode==='LIVE_GUARDED')e.push('LIVE_RUNTIME_NOT_ENABLED');return{ok:!e.length,errors:e};}
+module.exports={normalize:normalize,validate:validate,ACTIONS:ACTIONS,TYPES:TYPES};

@@ -1,0 +1,11 @@
+'use strict';
+const assert=require('node:assert/strict');
+const c=require('../Fundamental/Providers/calendar_provider');
+assert.equal(c._classifyFetchError(Error('HTTP 403')),'HTTP_BLOCKED');
+assert.equal(c._classifyFetchError(Error('HTTP 429')),'HTTP_BLOCKED');
+assert.equal(c._classifyFetchError(Error('TIMEOUT')),'UNAVAILABLE');
+assert.equal(c._classifyEmptyHtml('Showing undefined Matching Events for 21st October 2026','economic','NO_EVENTS_FOR_CURRENT_DATE'),'NO_EVENTS');
+assert.equal(c._classifyEmptyHtml('<html>Verify you are human</html>','economic','PARSE_EMPTY'),'HTTP_BLOCKED');
+assert.equal(c._classifyEmptyHtml('<html><script src="webpack.js"></script></html>','economic','PARSE_EMPTY'),'JS_RENDER_REQUIRED');
+assert.equal(c._classifyEmptyHtml('<html><h1>Economic Release Calendar</h1></html>','economic','PARSE_EMPTY'),'PARSE_INCOMPATIBLE');
+console.log('PASS CME diagnostics');

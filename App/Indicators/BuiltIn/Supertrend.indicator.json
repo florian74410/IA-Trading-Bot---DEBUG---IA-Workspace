@@ -1,0 +1,85 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "supertrend",
+  "name": "Supertrend",
+  "version": "2.1",
+  "category": "trend",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "atr_period": {
+      "type": "integer",
+      "default": 10,
+      "min": 2,
+      "max": 200
+    },
+    "multiplier": {
+      "type": "number",
+      "default": 3,
+      "min": 0.1,
+      "max": 20
+    }
+  },
+  "engine": {
+    "operation": "supertrend"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    },
+    "direction": {
+      "type": "number",
+      "strategy": true,
+      "chart": false,
+      "visual": {
+        "color": "#fcaf57",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "price",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  }
+}

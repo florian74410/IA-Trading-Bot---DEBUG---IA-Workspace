@@ -1,0 +1,32 @@
+{
+  "id": "trading",
+  "label": "Trading Engine",
+  "type": "ENGINE",
+  "order": 100,
+  "port": 8016,
+  "healthPath": "/health",
+  "marker": "IA-TB Trading Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "services/trading-engine/trading_service.js",
+  "log": ".runtime/logs/trading.log",
+  "env": {
+    "IATB_TRADING_ENGINE_PORT": "8016",
+    "IATB_TRADING_LIVE": "0",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router",
+    "firewall",
+    "risk"
+  ],
+  "versionSource": "RUNTIME_HEALTH",
+  "communication": {
+    "protocol": "CP/1",
+    "logicalTarget": "trading",
+    "routeVia": "firewall",
+    "routePort": 8017,
+    "runtimePort": 8016
+  },
+  "optionalDependencies": []
+}

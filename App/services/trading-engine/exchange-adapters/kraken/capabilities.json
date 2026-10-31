@@ -1,0 +1,28 @@
+{
+  "exchange": "KRAKEN",
+  "market_types": [
+    "SPOT",
+    "MARGIN"
+  ],
+  "operations": [
+    "CREATE_ORDER",
+    "AMEND_ORDER",
+    "CANCEL_ORDER",
+    "GET_ORDER",
+    "OPEN_ORDERS"
+  ],
+  "order_types": [
+    "MARKET",
+    "LIMIT",
+    "ICEBERG",
+    "STOP_LOSS",
+    "TAKE_PROFIT",
+    "STOP_LOSS_LIMIT",
+    "TAKE_PROFIT_LIMIT",
+    "TRAILING_STOP",
+    "TRAILING_STOP_LIMIT"
+  ],
+  "client_order_id": true,
+  "reduce_only": true,
+  "auth": "API_SIGN_SHA512"
+}

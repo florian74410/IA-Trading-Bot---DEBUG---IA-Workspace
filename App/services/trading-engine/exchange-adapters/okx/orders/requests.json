@@ -1,0 +1,26 @@
+{
+  "create": {
+    "method": "POST",
+    "path": "/api/v5/trade/order"
+  },
+  "cancel": {
+    "method": "POST",
+    "path": "/api/v5/trade/cancel-order"
+  },
+  "amend": {
+    "method": "POST",
+    "path": "/api/v5/trade/amend-order"
+  },
+  "get": {
+    "method": "GET",
+    "path": "/api/v5/trade/order"
+  },
+  "pending": {
+    "method": "GET",
+    "path": "/api/v5/trade/orders-pending"
+  },
+  "algo_create": {
+    "method": "POST",
+    "path": "/api/v5/trade/order-algo"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "application": "IA-Trading-Bot",
+  "version": "2.5.3",
+  "status": "DEV",
+  "source_version": "2.4.2",
+  "entrypoint": "Core/Server/server.js",
+  "update_artifact": "Any .zip filename using IA-TB update manifest format",
+  "ui_entrypoint": "UI/Gateway/ui_service.js",
+  "ui_port": 8000,
+  "router_port": 8021,
+  "revision": "DEV"
+}

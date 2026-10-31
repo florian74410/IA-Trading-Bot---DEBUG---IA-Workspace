@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>IA-TB · Portfolio</title>
+<link rel="stylesheet" href="/assets/portfolio_v1.0.css?v=2001">
+<link rel="stylesheet" href="/assets/companion_v1.0.css">
+<link rel="stylesheet" href="/assets/global_navigation_v2.0.css?v=2013">
+<script defer src="/assets/global_navigation_v2.0.js?v=2019"></script>
+</head>
+<body>
+<div class="portfolioApp">
+  <main class="portfolioMain">
+    <section class="portfolioIntro">
+      <div>
+        <span class="eyebrow">PORTFOLIO ENGINE · TRADING LEDGER</span>
+        <h1>Portfolio</h1>
+        <p>Positions ouvertes, santé des trades et historique des positions fermées enregistrées.</p>
+      </div>
+      <div class="introStatus">
+        <span id="engineBadge" class="pill wait">Portfolio --</span>
+        <span id="updatedAt">--</span>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <article><span>POSITIONS OUVERTES</span><strong id="openCount">0</strong><small>Trades actifs</small></article>
+      <article><span>PNL LATENT</span><strong id="unrealized">--</strong><small>Positions ouvertes</small></article>
+      <article><span>PNL RÉALISÉ</span><strong id="realized">--</strong><small>Trades fermés</small></article>
+      <article><span>COLLATÉRAL ENGAGÉ</span><strong id="marginUsed">--</strong><small>Positions ouvertes</small></article>
+      <article><span>EXPOSITION</span><strong id="exposure">--</strong><small>Notional positions</small></article>
+    </section>
+
+    <section class="row topAnalytics">
+      <article class="card pnlCard">
+        <div class="cardTitle">
+          <div><b>ÉVOLUTION DU PNL TRADING</b><span id="rangeLabel">7 jours</span></div>
+          <div class="ranges">
+            <button data-range="24h">24H</button>
+            <button class="active" data-range="7d">7J</button>
+            <button data-range="30d">30J</button>
+            <button data-range="6m">6M</button>
+            <button data-range="1y">1A</button>
+          </div>
+        </div>
+        <div class="chartWrap"><canvas id="equityChart"></canvas><div id="chartEmpty" class="emptyChart">Aucun snapshot de trading disponible</div></div>
+      </article>
+      <article class="card healthCard">
+        <div class="cardTitle"><b>SANTÉ DES POSITIONS</b><span id="healthUpdated">Temps réel</span></div>
+        <div class="healthGrid">
+          <div><span>Healthy</span><b id="healthHealthy">0</b></div>
+          <div><span>Watch</span><b id="healthWatch">0</b></div>
+          <div><span>Warning</span><b id="healthWarning">0</b></div>
+          <div><span>Critical</span><b id="healthCritical">0</b></div>
+          <div><span>Unknown</span><b id="healthUnknown">0</b></div>
+        </div>
+        <div class="healthNote">Lecture via Portfolio Engine. Le Supervisor peut récupérer ces mêmes données via Router / CP/1.</div>
+      </article>
+    </section>
+
+    <section class="card positionsCard">
+      <div class="cardTitle">
+        <div><b>POSITIONS OUVERTES</b><span id="positionCount">0 position</span></div>
+        <span class="cardHint">Wallet · asset · marge · liquidation · santé</span>
+      </div>
+      <div class="tableWrap positionsWrap">
+        <table class="positionsTable">
+          <thead><tr>
+            <th>Wallet</th><th>Asset</th><th>Exchange</th><th>Sens</th><th>Taille</th><th>Collatéral</th><th>Levier</th>
+            <th>Entrée</th><th>Mark</th><th>Liquidation</th><th>PnL latent</th><th>Ouverte</th><th>Santé</th>
+          </tr></thead>
+          <tbody id="positionsBody"><tr><td colspan="13" class="emptyCell">Aucune position ouverte.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="row lowerRow">
+      <article class="card historyCard">
+        <div class="cardTitle">
+          <div><b>HISTORIQUE DES TRADES FERMÉS</b><span id="tradeCount">0 trade</span></div>
+          <label class="historyLimit">Afficher
+            <select id="tradeLimit">
+              <option value="1">1</option>
+              <option value="5">5</option>
+              <option value="10" selected>10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </label>
+        </div>
+        <div class="tableWrap historyWrap">
+          <table class="historyTable">
+            <thead><tr>
+              <th>Fermeture</th><th>Wallet</th><th>Asset</th><th>Exchange</th><th>Sens</th><th>Taille</th><th>Entrée</th><th>Sortie</th><th>Levier</th><th>PnL</th><th>Durée</th>
+            </tr></thead>
+            <tbody id="tradesBody"><tr><td colspan="11" class="emptyCell">Aucun trade fermé enregistré.</td></tr></tbody>
+          </table>
+        </div>
+      </article>
+      <article class="card statsCard">
+        <div class="cardTitle"><b>STATISTIQUES TRADING</b><span>Trades fermés uniquement</span></div>
+        <div class="statsGrid">
+          <div><span>Win Rate</span><b id="winRate">--</b></div>
+          <div><span>Profit Factor</span><b id="profitFactor">--</b></div>
+          <div><span>Trades fermés</span><b id="trades">--</b></div>
+          <div><span>Drawdown</span><b id="drawdown">--</b></div>
+          <div><span>Gain moyen</span><b id="avgWin">--</b></div>
+          <div><span>Perte moyenne</span><b id="avgLoss">--</b></div>
+          <div><span>Meilleur trade</span><b id="bestTrade">--</b></div>
+          <div><span>Pire trade</span><b id="worstTrade">--</b></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="statusBar">
+    <b>ÉTAT DES SERVICES</b>
+    <div id="services" class="services">
+      <span>Core <i></i></span><span>Market Data <i></i></span><span>Trading <i></i></span><span>Portfolio <i></i></span><span>Firewall <i></i></span>
+    </div>
+    <div class="statusRight"><span id="refreshInfo">--</span></div>
+  </footer>
+</div>
+
+<div id="tradeDetailLayer" class="tradeDetailLayer" hidden>
+  <div class="tradeDetailModal" role="dialog" aria-modal="true" aria-labelledby="tradeDetailTitle">
+    <div class="tradeDetailHead">
+      <div><span>TRADE LEDGER</span><h2 id="tradeDetailTitle">Détail du trade</h2></div>
+      <button id="tradeDetailClose" aria-label="Fermer">×</button>
+    </div>
+    <div id="tradeDetailBody" class="tradeDetailBody"></div>
+  </div>
+</div>
+
+<script src="/assets/portfolio_controller_v1.0.js?v=2001"></script>
+<script src="/assets/companion_v1.0.js"></script>
+</body>
+</html>

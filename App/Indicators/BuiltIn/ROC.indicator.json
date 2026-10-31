@@ -1,0 +1,65 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "roc",
+  "name": "Rate of Change",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "source": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 12,
+      "min": 1,
+      "max": 500
+    }
+  },
+  "engine": {
+    "operation": "roc"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": [],
+      "levels": [
+        {
+          "value": 0,
+          "color": "#71849f"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "autonomous-trading",
+  "version": "0.1.0",
+  "label": "Autonomous Trading",
+  "owner": "supervisor",
+  "status": "SCAFFOLDED",
+  "modes": [
+    "OFF",
+    "ANALYZE",
+    "PAPER",
+    "LIVE_GUARDED"
+  ],
+  "defaultMode": "OFF",
+  "requires": [
+    "router",
+    "risk",
+    "firewall",
+    "trading"
+  ],
+  "chat": {
+    "enabled": true,
+    "activationRequiresConfirmation": true
+  },
+  "live": {
+    "enabled": false,
+    "requiresRiskGate": true,
+    "requiresExplicitActivation": true
+  }
+}

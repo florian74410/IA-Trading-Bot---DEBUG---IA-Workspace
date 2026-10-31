@@ -1,0 +1,99 @@
+IA-TB Market Data Collector V2.0 / Financial Data Layer
+=========================================
+Goal
+- Market Data Collector is the universal READ data ingress.
+- Liquidity Engine analyses liquidity; it does not own broker credentials or portfolio state.
+- Strategy, Portfolio, Supervisor and Chat consume normalized contracts.
+- Supervisor/Chat access is READ_ONLY.
+
+Provider families
+CEX_MARKET: Kraken/Binance/etc.
+DEX_MARKET: DEX pools/order books when an adapter exists.
+AGGREGATOR: CoinGecko / future DeFiLlama-style catalogues.
+ONCHAIN_RPC: generic read-only blockchain JSON-RPC.
+DEFI_PROTOCOL: protocol/indexer adapter producing VAULT/STAKING/LP/LENDING/BORROWING/FARM/LOCKED positions.
+
+Important: no single aggregator is assumed complete. Aggregators provide breadth; direct/indexed on-chain adapters provide wallet/protocol detail. Adding a broker/venue should add a provider capability when its liquidity cannot be supplied reliably by an existing aggregator.
+
+Canonical financial snapshot schema: iatb.financial.snapshot/2.0. Normalized component contracts remain versioned independently. DeFi positions include chain, protocol, contract, wallet, asset, quantity/share, USD value, TVL, APR/APY, rewards, block and provenance. Liquidity includes venue, market type, bid/ask/spread, depth, OI, TVL, volume, reserves and provenance.
+
+Security
+- onchain RPC whitelist: eth_call, eth_getBalance, eth_getBlockByNumber, eth_blockNumber, eth_getCode, eth_getLogs.
+- NO eth_sendTransaction, signing, private keys, shell or arbitrary JS.
+- Chat/Supervisor manifests expose query/read commands only.
+- Configuration/write/refresh/cache commands are intentionally absent from AI manifests.
+
+CoinGecko and DeFiLlama adapters are implemented inside Market Data Collector. Runtime availability remains observable: unavailable providers degrade the snapshot and are never replaced silently by the other provider.
+
+V2.0 DEBUG ownership policy
+---------------------------
+Authoritative provider ownership is explicit to prevent duplicate/conflicting metrics:
+- CoinGecko -> token market / spot breadth:
+  price, market cap, token volume, 24h change, market ranking, exchange overview.
+- DeFiLlama -> DeFi breadth:
+  protocol TVL, chain TVL, DeFi categories, DEX volume/rankings, stablecoin aggregate market cap.
+- When both providers expose nearby/overlapping concepts, consumers MUST use the authoritative owner above.
+  The secondary source may only be used later as fallback/validation and must never silently overwrite the owner.
+
+Data path
+---------
+Providers -> Market Data Collector -> Market Data Firewall validation -> normalized financial store
+-> Communication Router CP/1 -> read-only consumers.
+
+Direct provider access from Liquidity, Indicators, Supervisor, Portfolio or Statistics UI is forbidden.
+
+Freshness / persistence
+-----------------------
+Default financial refresh: 60s.
+CeFi/token-market TTL: 45s.
+DeFi TTL: 90s.
+Current snapshot lives in memory.
+Persistent history is sampled to JSONL every 15 minutes by default.
+Default retention: 30 days, bounded by maxHistory.
+This prevents excessive disk writes while preserving enough history for dashboards, AI context and derived indicators.
+
+Consumers
+---------
+- Statistics UI: current snapshot + persisted history through Router UI read channel.
+- Liquidity Engine: liquidity.financial, derives market/DeFi liquidity ratios from Router-distributed data.
+- Indicator Engine:
+  - indicator.financial_context
+  - indicator.financial_series
+  - indicator.financial_analyze
+  These allow deterministic calculations over persisted financial metrics without provider/network access inside the math engine.
+- Supervisor/LLM: marketdata.financial.ai_context through CP/1, read-only.
+
+Technical market data
+---------------------
+Indicators and Liquidity candle reads use Router -> Firewall -> Market Data rather than calling Market Data port 8013 directly.
+
+
+V2.0 LOCK / QUALITY CONTRACT
+----------------------------
+Collector identity: Market Data Collector V2.0 (runtime 2.0.0).
+
+Quality gate runs before a financial snapshot is stored:
+- rejects negative monetary values and invalid timestamps;
+- rejects CoinGecko/DeFiLlama authority inversion;
+- warns on duplicate asset/protocol/exchange identifiers;
+- validates BTC dominance range and DeFi aggregate consistency;
+- preserves explicit provenance and per-family freshness.
+
+Coverage semantics:
+- CoinGecko exchange volume from the requested exchange page is SAMPLED, never labelled a complete global CEX total.
+- CoinGecko asset-volume aggregation is a top-market sample, not the global token-volume metric.
+- CoinGecko /global remains authoritative for global crypto market cap and global token volume.
+- DeFiLlama chain aggregate is authoritative for DeFi TVL; protocol sum is fallback only.
+- DeFiLlama is authoritative for DEX volume and DeFi protocol/category/chain data.
+- Non-USD stablecoin peg units are never blindly added to a USD total.
+
+Audit:
+GET /audit
+CP/1 action marketdata.audit
+returns PASS/WARN/FAIL with provider, cache, registry, storage, freshness, quality and routing state.
+
+Tests:
+node MarketData/Tests/test_market_data_collector_v2_lock.js
+node MarketData/Tests/test_market_data_runtime_v2.js
+
+The runtime test expects the IA-TB services to be running on their standard ports.

@@ -1,0 +1,60 @@
+{
+  "id": "M05",
+  "decision_before_edit": "Keep the existing live-stack Market Data audit, but remove its stale hardcoded 2.0.0 version expectation; compare with the current build metadata. This probe still requires a running stack and is not a unit test.",
+  "files": [
+    "App/MarketData/Tests/test_market_data_runtime_v2.js"
+  ],
+  "support_outputs": [
+    "Documentation/Cleanup/2.4.2-R1/REFERENCE_BASELINE.json",
+    "Documentation/Cleanup/2.4.2-R1/RESULTS.md",
+    "Documentation/wiki/Nettoyage-2.4.2-R1.md"
+  ],
+  "validation": "Preserve every request and security assertion; syntax check and CI version/manifest guard. The read-only import/asset baseline is empty; no missing reference is whitelisted.",
+  "M06": {
+    "decision_before_edit": "The old Liquidity provider is a deprecated throwing stub with no runtime imports, referenced only by two tests. Remove it and replace the obsolete test of nonexistent direct exchange methods with a real CP1-client contract test. Update the pipeline guard to inspect every maintained provider. Baseline 2.4.1 reproduces the stale static assertion failure.",
+    "delete": [
+      {
+        "path": "App/Liquidity/Provider/realtime_liquidity_provider.js",
+        "bytes": "464",
+        "sha256": "eea392b00f015781a5e3de70806874f213f8184655ddd5e7b729d48cf9c4e314",
+        "decision": "KEEP",
+        "rule": "active-or-compatible-support"
+      },
+      {
+        "path": "App/Liquidity/Tests/test_realtime_provider_static.js",
+        "bytes": "479",
+        "sha256": "fd60bc6e2f7bc3ff5b92325f0cddc573568b2306a5afe32581dcf1d638bb01dc",
+        "decision": "KEEP",
+        "rule": "active-or-compatible-support"
+      }
+    ],
+    "files": [
+      "App/Liquidity/Tests/test_market_data_provider_static.js",
+      "App/MarketData/Tests/test_liquidity_pipeline_v1.js"
+    ],
+    "validation": "No direct Internet imports in any Liquidity provider; all public client operations target marketdata through canonical CP1."
+  },
+  "M07": {
+    "decision_before_edit": "Classify live-stack tests separately from isolated CI: test_market_data_runtime_v2, test_market_liquidity_layer_v2 and test_shadow_runtime_orchestrator_v1 require running services; the last additionally requires SHADOW mode. Preserve them and record prerequisites instead of fabricating success or disabling assertions.",
+    "files": [
+      ".github/workflows/v24-finance-trading-logs.yml"
+    ]
+  },
+  "M03b": {
+    "decision_before_edit": "Refresh current source/DEV documentation and link the immutable historical release; keep architecture, migration and security contracts.",
+    "files": [
+      "Documentation/wiki/Roadmap.md",
+      "Documentation/wiki/Installation.md",
+      "Documentation/wiki/Wiki-Publishing.md"
+    ]
+  },
+  "M08": {
+    "decision_before_edit": "An additional unchanged RBAC source-only gate fails on the 2.4.1 baseline because GET /api/admin/firewall/status is absent from two historical static inventories. Register this existing route as ADMIN in both metadata files; keep all classification roles, default DENY, runtime policy and negative tests unchanged. Run the gate and its self-tests in this branch CI.",
+    "files": [
+      "Documentation/Architecture/AUTH_DEBUG_2.1_RBAC_MATRIX_PROPOSAL.json",
+      "Documentation/Security/AUTH_ENDPOINT_INVENTORY_v1.json",
+      ".github/workflows/v24-finance-trading-logs.yml"
+    ],
+    "validation": "Baseline failure reproduced independently; ADMIN-only path invariant and all privilege-escalation self-tests must pass."
+  }
+}

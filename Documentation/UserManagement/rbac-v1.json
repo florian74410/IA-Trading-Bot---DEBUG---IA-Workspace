@@ -1,0 +1,226 @@
+{
+  "schema": "iatb.user-management.rbac/1",
+  "status": "IMPLEMENTED_REVIEW_PENDING_NOT_DEPLOYED",
+  "permissions_version": 3,
+  "default_decision": "DENY",
+  "runtime_authority": "Hardcoded guards in Core/Clients/UserManagement, signed IPC proof and live SQLite session; this JSON cannot grant a permission",
+  "ownership": "validated SQLite session clientId; browser identity and role fields never confer authority",
+  "scope": "AUTHENTICATED/PRODUCTION; DEV-LOCAL bypass preserved separately and audited",
+  "actions": [
+    {
+      "id": "POST /auth21/login (alias /api/login)",
+      "roles": [
+        "ANONYMOUS"
+      ],
+      "data_class": "CREDENTIAL",
+      "effects": "bounded KDF, login throttling, session/audit insert",
+      "guard": "TLS, exact Origin, strict email/password fields, generic failure"
+    },
+    {
+      "id": "GET /auth21/me, /api/client/me, /api/profile, /ui-api/session",
+      "roles": [
+        "ADMIN",
+        "USER",
+        "GUEST"
+      ],
+      "data_class": "OWN_ACCOUNT",
+      "effects": "session validation, coarse last-activity update",
+      "guard": "cookie, current role/status/version, own identity only"
+    },
+    {
+      "id": "GET /auth21/csrf, /auth21/sessions, /auth21/audit",
+      "roles": [
+        "ADMIN",
+        "USER",
+        "GUEST"
+      ],
+      "data_class": "OWN_ACCOUNT",
+      "effects": "own account security reads",
+      "guard": "live session, no other client selector"
+    },
+    {
+      "id": "POST /auth21/logout, /api/logout, /auth21/sessions/revoke",
+      "roles": [
+        "ADMIN",
+        "USER",
+        "GUEST"
+      ],
+      "data_class": "OWN_ACCOUNT",
+      "effects": "own revocation/audit",
+      "guard": "Origin, CSRF, live session; public session IDs scoped to owner"
+    },
+    {
+      "id": "POST|PUT /auth21/profile, /api/profile, /api/client/me; POST /auth21/password",
+      "roles": [
+        "ADMIN",
+        "USER",
+        "GUEST"
+      ],
+      "data_class": "OWN_ACCOUNT",
+      "effects": "identity/password changes, invalidation and audit",
+      "guard": "Origin, CSRF, current password, strict fields, transactional version recheck"
+    },
+    {
+      "id": "/auth21/preferences, /auth21/browser-state, POST /api/settings/apis",
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "OWNER",
+      "effects": "encrypted preference/secret writes; own reads",
+      "guard": "live session, Origin+CSRF for mutation, current password for secrets; GUEST browser-state is empty; public generic preferences limited to ui/chart/preferences namespaces, reserved business scopes only through validated domain actions"
+    },
+    {
+      "id": "Legacy self routes",
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "OWNER",
+      "effects": "see route-inventory.json; scoped SQLite context, wallet reads/writes",
+      "guard": "exact allowlist, AsyncLocalStorage server principal, sensitive wallet reauthentication; GUEST only self settings/status reads"
+    },
+    {
+      "id": "indicator personal definitions/settings via Core UI bridge",
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "OWNER",
+      "effects": "Engine validation/compilation, encrypted own SQLite preference write",
+      "guard": "Core own definitions; no fallthrough to global Custom registry; GUEST native metadata only"
+    },
+    {
+      "id": "indicator.user.compute",
+      "roles": [
+        "SERVICE"
+      ],
+      "human_roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "OWNER",
+      "effects": "CPU calculation, bounded rows/requests and per-user quota",
+      "guard": "CP token/signature plus Core proof bound to action/owner/payload, replay rejection and live Core session revalidation; engine math unchanged"
+    },
+    {
+      "id": "POST /auth21/internal/authorize-compute",
+      "roles": [
+        "SERVICE"
+      ],
+      "data_class": "INTERNAL_SERVICE",
+      "effects": "proof consumption and live session validation",
+      "guard": "internal TLS, CP secret, bound proof; Gateway denies this path"
+    },
+    {
+      "id": "/ui-data/market/candles and allowed PUBLIC market/fundamental CP actions",
+      "roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "PUBLIC_SHARED_WITH_PROVIDER_COST",
+      "effects": "may collect public data/cost provider quota; capped at 300 requests per user/5min per lane",
+      "guard": "authenticated Core exact action allowlist; force/refresh forbidden, no user-supplied target expansion"
+    },
+    {
+      "id": "marketdata.providers, marketdata.registry.search/list/asset",
+      "roles": [
+        "ADMIN",
+        "USER",
+        "GUEST"
+      ],
+      "data_class": "PUBLIC_SHARED",
+      "effects": "local public registry/metadata reads; no forced collection",
+      "guard": "Core exact GUEST allowlist; no arbitrary CP action"
+    },
+    {
+      "id": "CLI create/list/show/set-role/enable/disable/reset-password/revoke-sessions/audit/import-legacy-vault",
+      "roles": [
+        "ADMIN"
+      ],
+      "data_class": "GLOBAL_ADMIN",
+      "effects": "account mutations/audit; optional explicit legacy vault attribution",
+      "guard": "non-root local owner TTY plus ADMIN password, confirmation for mutations, last ADMIN SQL guards; no HTTP equivalent"
+    },
+    {
+      "id": "CLI migrate/create-first-admin",
+      "roles": [
+        "LOCAL_OS_OWNER"
+      ],
+      "data_class": "GLOBAL_ADMIN_BOOTSTRAP",
+      "effects": "offline backup/schema migration or first ADMIN creation",
+      "guard": "private canonical files, real non-root owner TTY, explicit confirmation; bootstrap only without active ADMIN"
+    },
+    {
+      "id": "Other legacy routes, trading/execution, unlisted Engines/actions",
+      "roles": [],
+      "data_class": "DENY",
+      "effects": "none authorized",
+      "guard": "default deny; confinement is not completed migration"
+    },
+    {
+      "id": "strategy.user.request / portfolio.user.request / supervisor.user.request",
+      "roles": [
+        "SERVICE"
+      ],
+      "human_roles": [
+        "ADMIN",
+        "USER"
+      ],
+      "data_class": "OWNER",
+      "effects": "private SQLite data, canonical evaluation, AI provider costs within owner quota",
+      "guard": "Core-derived owner, bound single-use proof, exact operation allowlist, live Core session and role revalidation; no global private fallback"
+    },
+    {
+      "id": "POST /auth21/internal/authorize-owner; POST /auth21/internal/ai-responses",
+      "roles": [
+        "SERVICE"
+      ],
+      "data_class": "INTERNAL_SERVICE",
+      "effects": "proof validation / personal provider call",
+      "guard": "pinned TLS, CP token, audience/action/body/owner binding, live permissions version 3 session; never exposed by Gateway"
+    },
+    {
+      "id": "Firewall machine inspect and thread control paths",
+      "roles": [
+        "SERVICE"
+      ],
+      "data_class": "MACHINE",
+      "effects": "data validation or explicit ADMIN service control",
+      "guard": "CP token and exact body HMAC; thread controls additionally require single-use bound ADMIN capability and live Core ADMIN session revalidation; Gateway denies internal paths"
+    },
+    {
+      "id": "CLI import-legacy-portfolio / import-legacy-setting",
+      "roles": [
+        "ADMIN"
+      ],
+      "data_class": "OWNER_ATTRIBUTION",
+      "effects": "SQLite backup and one-time explicit owner copy; original rows and keys preserved",
+      "guard": "non-root owner TTY, ADMIN password, two confirmations including stopped writers, active non-GUEST target, canonical private files, transaction and claim uniqueness"
+    },
+    {
+      "id": "POST /auth21/internal/authorize-admin",
+      "roles": [
+        "SERVICE"
+      ],
+      "human_roles": [
+        "ADMIN"
+      ],
+      "data_class": "GLOBAL_ADMIN",
+      "effects": "consume a short-lived Firewall control capability",
+      "guard": "TLS, CP token, exact path/body proof, live ADMIN session and permissions version 3; machine token alone never grants human administration"
+    },
+    {
+      "id": "CLI import-legacy-definition",
+      "roles": [
+        "ADMIN"
+      ],
+      "data_class": "OWNER_ATTRIBUTION",
+      "effects": "validate and copy one canonical Custom Indicator, Strategy V1/V2 or Mosaic definition to an explicit owner with native SQLite backup",
+      "guard": "non-root owner TTY and ADMIN password, offline confirmations, active non-GUEST target, private canonical source file, no BuiltIn override or ID collision, single-owner source claim in same transaction"
+    }
+  ],
+  "session_policy_change": "Migration v4 revokes all previous/experimental sessions; new sessions carry permissions_version=2, checked at Core and IPC revalidation",
+  "validation": "user_management_v1.test.js, route-inventory.json, VALIDATION.md; OS TTY positive test skipped where no non-root UID mapping exists",
+  "performance": "Password KDF only at login/reauth/password reset, not candle/tick. No p95/p99 benchmark qualification yet. No live trading."
+}

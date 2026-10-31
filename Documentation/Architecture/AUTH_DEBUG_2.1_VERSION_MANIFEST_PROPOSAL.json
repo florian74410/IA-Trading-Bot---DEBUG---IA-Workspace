@@ -1,0 +1,87 @@
+{
+  "title": "IA-TB DEBUG 2.1 — Auth/version compatibility proposal (NOT active runtime config)",
+  "description": "P1.6 design approved by Overflow 2026-10-14; documentation only. NOT a runtime configuration; exact signature and key rotation remain subject to implementation/benchmark.",
+  "contract_id": "iatb.auth-compatibility/1",
+  "status": "DESIGN_APPROVED_NOT_ACTIVE",
+  "environment": "DEBUG",
+  "versions": {
+    "auth_schema_version": 1,
+    "auth_protocol_version": 1,
+    "permissions_version": 1,
+    "client_schema_version_existing": 2,
+    "cp_protocol_existing": "CP/1"
+  },
+  "legacy_auth_schema_version": 0,
+  "roles": [
+    "ADMIN",
+    "USER",
+    "GUEST"
+  ],
+  "legacy_roles_requires_explicit_mapping": [
+    "SUPERADMIN",
+    "VISITOR"
+  ],
+  "requirements": {
+    "fail_closed_on_unknown_version": true,
+    "no_privileged_bypass": true,
+    "authorizer_is_core": true,
+    "permission_check_by_target_action_client_id": true,
+    "forbid_cross_environment_tokens": true,
+    "preserve_existing_client_ids": true,
+    "preserve_legacy_client_migration_scripts": true,
+    "do_not_autogenerate_master_keys_with_existing_data": true,
+    "no_wallet_schema_or_key_changes": true,
+    "no_release_session_or_admin_role_import": true,
+    "no_public_login_until_https_and_auth_tests": true,
+    "trading_live_disabled_in_debug": true
+  },
+  "futureAuthProof": {
+    "version_field": "auth_protocol_version",
+    "policy_field": "permissions_version",
+    "requires": [
+      "issuer",
+      "aud",
+      "environment",
+      "subject_client_id",
+      "role",
+      "target",
+      "action",
+      "arguments_digest",
+      "client_security_version",
+      "session_epoch",
+      "issued_at_ms",
+      "expires_at_ms",
+      "nonce",
+      "key_id"
+    ],
+    "recommended_signature_candidate": "Ed25519 candidate for Core-only signing and public-key Router/Engines validation; compare benchmark vs truly isolated HMAC; not finalized.",
+    "machine_layer_preserved": "CP/1",
+    "do_not_accept_unverified_browser_role": true,
+    "replay_protection_for_mutations": true
+  },
+  "migrations": {
+    "auth_migrations_table": "auth_schema_migrations",
+    "legacy_migrations_table": "client_schema_migrations",
+    "validate_checksum": true,
+    "transactional": true,
+    "backup_and_restore_test_required_before_apply": true,
+    "no_sql_execution_in_p16": true
+  },
+  "rollback": {
+    "require_maintenance_fail_closed": true,
+    "restore_consistent_backup_with_original_key": true,
+    "revoke_abandoned_sessions": true,
+    "forbid_older_bypass_runtime_on_auth_v1_data": true,
+    "forbid_any_wallet_change": true,
+    "require_explicit_operator_approval": true
+  },
+  "performance": {
+    "target_p95_extra_percent": 5,
+    "target_p99_extra_percent": 10,
+    "measured": false,
+    "forbid_password_hash_per_market_tick": true,
+    "forbid_permission_shortcut": true
+  },
+  "manifest_format": "iatb.auth-compatibility-proposal-json/1",
+  "design_approved_date": "2026-10-14"
+}

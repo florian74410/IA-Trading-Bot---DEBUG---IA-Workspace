@@ -1,0 +1,1966 @@
+{
+  "schema": "iatb.auth.endpoint-inventory/1",
+  "audit": "P1.3",
+  "state": "provisional-static-review",
+  "source_ref": "fix/v2.0.1-debug",
+  "source_sha": "4a5024473e1318491f4f66516292274f4a4c852c",
+  "count": 215,
+  "services": {
+    "Core": 113,
+    "Firewall": 9,
+    "Fundamental": 2,
+    "Indicator": 2,
+    "Liquidity": 2,
+    "MarketData": 3,
+    "Portfolio": 2,
+    "Risk": 2,
+    "Router": 18,
+    "Strategy": 2,
+    "Supervisor": 2,
+    "Trading Engine": 2,
+    "UI Gateway": 56
+  },
+  "limitations": [
+    "Heuristic source scan, not proof of complete runtime routes",
+    "Frontend fetch paths and dynamic modules require separate verification",
+    "No container or network runtime tests performed",
+    "Some /cp/v1 entries inherited via CPAdapter"
+  ],
+  "entries": [
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/internal/ai-gateway/cp/v1",
+      "source": "App/Core/Server/server.js",
+      "line": 149,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_AUTH"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/internal/x-gateway/cp/v1",
+      "source": "App/Core/Server/server.js",
+      "line": 176,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_AUTH"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/health",
+      "source": "App/Core/Server/server.js",
+      "line": 404,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/bootstrap",
+      "source": "App/Core/Server/server.js",
+      "line": 405,
+      "kind": "explicit",
+      "target_policy": "PUBLIC_MINIMAL"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/setup",
+      "source": "App/Core/Server/server.js",
+      "line": 406,
+      "kind": "explicit",
+      "target_policy": "DISABLE_LEGACY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/login",
+      "source": "App/Core/Server/server.js",
+      "line": 422,
+      "kind": "explicit",
+      "target_policy": "PUBLIC_MINIMAL"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/recovery/request",
+      "source": "App/Core/Server/server.js",
+      "line": 434,
+      "kind": "explicit",
+      "target_policy": "DISABLE_LEGACY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/recovery/confirm",
+      "source": "App/Core/Server/server.js",
+      "line": 445,
+      "kind": "explicit",
+      "target_policy": "DISABLE_LEGACY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/logout",
+      "source": "App/Core/Server/server.js",
+      "line": 458,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "ANY_GUARD",
+      "path": "/api/ai-updates",
+      "source": "App/Core/Server/server.js",
+      "line": 462,
+      "kind": "middleware",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "ANY_GUARD",
+      "path": "/api/ai-updates/*",
+      "source": "App/Core/Server/server.js",
+      "line": 462,
+      "kind": "middleware",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "ANY_GUARD",
+      "path": "/api/updates",
+      "source": "App/Core/Server/server.js",
+      "line": 462,
+      "kind": "middleware",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "ANY_GUARD",
+      "path": "/api/updates/*",
+      "source": "App/Core/Server/server.js",
+      "line": 462,
+      "kind": "middleware",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "ANY_GUARD",
+      "path": "/api/admin/*",
+      "source": "App/Core/Server/server.js",
+      "line": 463,
+      "kind": "middleware",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/bank/vaults",
+      "source": "App/Core/Server/server.js",
+      "line": 464,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/bank/vaults",
+      "source": "App/Core/Server/server.js",
+      "line": 465,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/bank/vaults",
+      "source": "App/Core/Server/server.js",
+      "line": 466,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/session",
+      "source": "App/Core/Server/server.js",
+      "line": 467,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/status",
+      "source": "App/Core/Server/server.js",
+      "line": 468,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/console/catalog",
+      "source": "App/Core/Server/server.js",
+      "line": 469,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/console/execute",
+      "source": "App/Core/Server/server.js",
+      "line": 470,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/logs",
+      "source": "App/Core/Server/server.js",
+      "line": 471,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/logs/clear",
+      "source": "App/Core/Server/server.js",
+      "line": 472,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/service/restart",
+      "source": "App/Core/Server/server.js",
+      "line": 473,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/process/toggle",
+      "source": "App/Core/Server/server.js",
+      "line": 474,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/stop",
+      "source": "App/Core/Server/server.js",
+      "line": 475,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/firewall/thread/restart",
+      "source": "App/Core/Server/server.js",
+      "line": 476,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/firewall/toggle",
+      "source": "App/Core/Server/server.js",
+      "line": 477,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/indicators/reload",
+      "source": "App/Core/Server/server.js",
+      "line": 478,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/cache/clear",
+      "source": "App/Core/Server/server.js",
+      "line": 479,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/core/restart",
+      "source": "App/Core/Server/server.js",
+      "line": 480,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/system/restart",
+      "source": "App/Core/Server/server.js",
+      "line": 481,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/system/stop-total",
+      "source": "App/Core/Server/server.js",
+      "line": 488,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/shutdown",
+      "source": "App/Core/Server/server.js",
+      "line": 494,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/updates",
+      "source": "App/Core/Server/server.js",
+      "line": 495,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/updates/upload",
+      "source": "App/Core/Server/server.js",
+      "line": 496,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/updates/fetch",
+      "source": "App/Core/Server/server.js",
+      "line": 497,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/updates/install",
+      "source": "App/Core/Server/server.js",
+      "line": 498,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/ai-updates/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 499,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/ai-updates/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 500,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/ai-updates",
+      "source": "App/Core/Server/server.js",
+      "line": 501,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/ai-updates/package",
+      "source": "App/Core/Server/server.js",
+      "line": 502,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/ai-updates/execute",
+      "source": "App/Core/Server/server.js",
+      "line": 504,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/mosaics",
+      "source": "App/Core/Server/server.js",
+      "line": 506,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/mosaics/runtime",
+      "source": "App/Core/Server/server.js",
+      "line": 507,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/mosaics/create",
+      "source": "App/Core/Server/server.js",
+      "line": 508,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/mosaics/delete",
+      "source": "App/Core/Server/server.js",
+      "line": 509,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/firewall/toggle",
+      "source": "App/Core/Server/server.js",
+      "line": 511,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/client/me",
+      "source": "App/Core/Server/server.js",
+      "line": 512,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/client/me",
+      "source": "App/Core/Server/server.js",
+      "line": 513,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/clients/status",
+      "source": "App/Core/Server/server.js",
+      "line": 514,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/clients",
+      "source": "App/Core/Server/server.js",
+      "line": 515,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/security/wallets",
+      "source": "App/Core/Server/server.js",
+      "line": 516,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/security/wallets/networks",
+      "source": "App/Core/Server/server.js",
+      "line": 517,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/security/wallets/next-id",
+      "source": "App/Core/Server/server.js",
+      "line": 518,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/wallets/create",
+      "source": "App/Core/Server/server.js",
+      "line": 519,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/wallets/import",
+      "source": "App/Core/Server/server.js",
+      "line": 520,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/wallets/remove-key",
+      "source": "App/Core/Server/server.js",
+      "line": 521,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/security/wallets/export",
+      "source": "App/Core/Server/server.js",
+      "line": 522,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/wallets/reveal",
+      "source": "App/Core/Server/server.js",
+      "line": 524,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/security/wallets/remove",
+      "source": "App/Core/Server/server.js",
+      "line": 525,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/status",
+      "source": "App/Core/Server/server.js",
+      "line": 526,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/logs",
+      "source": "App/Core/Server/server.js",
+      "line": 527,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 528,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/language",
+      "source": "App/Core/Server/server.js",
+      "line": 537,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/general",
+      "source": "App/Core/Server/server.js",
+      "line": 538,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/apis",
+      "source": "App/Core/Server/server.js",
+      "line": 539,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/apis/clear",
+      "source": "App/Core/Server/server.js",
+      "line": 540,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/test-openai",
+      "source": "App/Core/Server/server.js",
+      "line": 541,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/test-zerox",
+      "source": "App/Core/Server/server.js",
+      "line": 542,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/test-x",
+      "source": "App/Core/Server/server.js",
+      "line": 543,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/supervisor/brains",
+      "source": "App/Core/Server/server.js",
+      "line": 544,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/ai",
+      "source": "App/Core/Server/server.js",
+      "line": 545,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/portfolio",
+      "source": "App/Core/Server/server.js",
+      "line": 546,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/power",
+      "source": "App/Core/Server/server.js",
+      "line": 547,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/settings/modulation",
+      "source": "App/Core/Server/server.js",
+      "line": 548,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/app-settings/select",
+      "source": "App/Core/Server/server.js",
+      "line": 549,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/transfers/status",
+      "source": "App/Core/Server/server.js",
+      "line": 551,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/transfers/assets",
+      "source": "App/Core/Server/server.js",
+      "line": 552,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/transfers/preview",
+      "source": "App/Core/Server/server.js",
+      "line": 553,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/transfers/execute",
+      "source": "App/Core/Server/server.js",
+      "line": 554,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/transfers/history",
+      "source": "App/Core/Server/server.js",
+      "line": 555,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/onchain/status",
+      "source": "App/Core/Server/server.js",
+      "line": 557,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/onchain/identity",
+      "source": "App/Core/Server/server.js",
+      "line": 558,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/onchain/wallet",
+      "source": "App/Core/Server/server.js",
+      "line": 559,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/onchain/history",
+      "source": "App/Core/Server/server.js",
+      "line": 560,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/onchain/tx",
+      "source": "App/Core/Server/server.js",
+      "line": 561,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/swap-bridge/status",
+      "source": "App/Core/Server/server.js",
+      "line": 562,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/swap-bridge/quote",
+      "source": "App/Core/Server/server.js",
+      "line": 563,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/swap-bridge/prepare",
+      "source": "App/Core/Server/server.js",
+      "line": 564,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/swap-bridge/execute",
+      "source": "App/Core/Server/server.js",
+      "line": 565,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/swap-bridge/history",
+      "source": "App/Core/Server/server.js",
+      "line": 566,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/swap-bridge/submitted",
+      "source": "App/Core/Server/server.js",
+      "line": 567,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/swap-bridge/track",
+      "source": "App/Core/Server/server.js",
+      "line": 568,
+      "kind": "explicit",
+      "target_policy": "AUTH_OWNER_SENSITIVE"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/notifications/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 570,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/notifications/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 571,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/notifications",
+      "source": "App/Core/Server/server.js",
+      "line": 572,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/notifications/test",
+      "source": "App/Core/Server/server.js",
+      "line": 573,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/notifications/read",
+      "source": "App/Core/Server/server.js",
+      "line": 574,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/credits/usage",
+      "source": "App/Core/Server/server.js",
+      "line": 576,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/credits/pricing",
+      "source": "App/Core/Server/server.js",
+      "line": 577,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/token-usage",
+      "source": "App/Core/Server/server.js",
+      "line": 578,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/profile",
+      "source": "App/Core/Server/server.js",
+      "line": 579,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/session/change-password",
+      "source": "App/Core/Server/server.js",
+      "line": 580,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/session/change-email",
+      "source": "App/Core/Server/server.js",
+      "line": 581,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/session/test-email",
+      "source": "App/Core/Server/server.js",
+      "line": 597,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/chart-viewer/status",
+      "source": "App/Core/Server/server.js",
+      "line": 598,
+      "kind": "explicit",
+      "target_policy": "AUTH_READ_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/chart-viewer/chat",
+      "source": "App/Core/Server/server.js",
+      "line": 599,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/companion/chat",
+      "source": "App/Core/Server/server.js",
+      "line": 600,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/chat",
+      "source": "App/Core/Server/server.js",
+      "line": 601,
+      "kind": "explicit",
+      "target_policy": "USER_WRITE_OR_ADMIN"
+    },
+    {
+      "service": "Firewall",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 55,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_AUTH"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/data/inspect",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 56,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_AUTH"
+    },
+    {
+      "service": "Firewall",
+      "method": "GET",
+      "path": "/api/thread/config",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 57,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/thread/config",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 58,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/thread/stop",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 59,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/thread/restart",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 60,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/thread/toggle",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 61,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/api/thread/reload",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 62,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_ADMIN_ONLY"
+    },
+    {
+      "service": "Firewall",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Core/Firewall/firewall_service.js",
+      "line": 63,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_AUTH"
+    },
+    {
+      "service": "Fundamental",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Fundamental/Engine/fundamental_service.js",
+      "line": 134,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Fundamental",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Fundamental/Engine/fundamental_service.js",
+      "line": 134,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Indicator",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Indicators/Engine/indicator_service.js",
+      "line": 85,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Indicator",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Indicators/Engine/indicator_service.js",
+      "line": 86,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Liquidity",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Liquidity/Engine/liquidity_service.js",
+      "line": 82,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Liquidity",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Liquidity/Engine/liquidity_service.js",
+      "line": 82,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "MarketData",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/MarketData/market_data_service.js",
+      "line": 130,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "MarketData",
+      "method": "GET",
+      "path": "/candles",
+      "source": "App/MarketData/market_data_service.js",
+      "line": 131,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "MarketData",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/MarketData/market_data_service.js",
+      "line": 131,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Portfolio",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Portfolio/Engine/portfolio_service.js",
+      "line": 22,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Portfolio",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Portfolio/Engine/portfolio_service.js",
+      "line": 22,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Risk",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Risk/Engine/risk_service.js",
+      "line": 185,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Risk",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Risk/Engine/risk_service.js",
+      "line": 190,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Router",
+      "method": "ANY",
+      "path": "/router-health-internal",
+      "source": "App/Core/Router/router.js",
+      "line": 195,
+      "kind": "explicit",
+      "target_policy": "INTERNAL"
+    },
+    {
+      "service": "Router",
+      "method": "ANY",
+      "path": "/router-health",
+      "source": "App/Core/Router/router.js",
+      "line": 196,
+      "kind": "explicit",
+      "target_policy": "INTERNAL"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication-health",
+      "source": "App/Core/Router/router.js",
+      "line": 197,
+      "kind": "explicit",
+      "target_policy": "INTERNAL"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication-test",
+      "source": "App/Core/Router/router.js",
+      "line": 198,
+      "kind": "explicit",
+      "target_policy": "INTERNAL"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/register",
+      "source": "App/Core/Router/router.js",
+      "line": 199,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/request",
+      "source": "App/Core/Router/router.js",
+      "line": 200,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/ui/read",
+      "source": "App/Core/Router/router.js",
+      "line": 201,
+      "kind": "explicit",
+      "target_policy": "TRUSTED_UI_IDENTITY"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/ui/write",
+      "source": "App/Core/Router/router.js",
+      "line": 202,
+      "kind": "explicit",
+      "target_policy": "TRUSTED_UI_IDENTITY_AND_RBAC"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/event",
+      "source": "App/Core/Router/router.js",
+      "line": 203,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication/v1/events",
+      "source": "App/Core/Router/router.js",
+      "line": 204,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication/v1/capabilities",
+      "source": "App/Core/Router/router.js",
+      "line": 205,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication/v1/registry",
+      "source": "App/Core/Router/router.js",
+      "line": 206,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication/v1/registry/*",
+      "source": "App/Core/Router/router.js",
+      "line": 207,
+      "kind": "prefix",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/client/plan",
+      "source": "App/Core/Router/router.js",
+      "line": 208,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "POST",
+      "path": "/communication/v1/client/ack",
+      "source": "App/Core/Router/router.js",
+      "line": 209,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/communication/v1/runtime",
+      "source": "App/Core/Router/router.js",
+      "line": 210,
+      "kind": "explicit",
+      "target_policy": "CP_TOKEN_OR_TRUSTED_PROXY"
+    },
+    {
+      "service": "Router",
+      "method": "GET",
+      "path": "/market-data/candles",
+      "source": "App/Core/Router/router.js",
+      "line": 211,
+      "kind": "explicit",
+      "target_policy": "INTERNAL"
+    },
+    {
+      "service": "Router",
+      "method": "ANY",
+      "path": "/*",
+      "source": "App/Core/Router/router.js",
+      "line": 212,
+      "kind": "catch_all_proxy_to_core",
+      "target_policy": "REPLACE_WITH_ALLOWLIST"
+    },
+    {
+      "service": "Strategy",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Strategy/Engine/strategy_service.js",
+      "line": 33,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Strategy",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Strategy/Engine/strategy_service.js",
+      "line": 33,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Supervisor",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/Supervisor/supervisor_service.js",
+      "line": 37,
+      "kind": "shared_cp_adapter",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Supervisor",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/Supervisor/supervisor_service.js",
+      "line": 37,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "Trading Engine",
+      "method": "POST",
+      "path": "/cp/v1",
+      "source": "App/services/trading-engine/trading_service.js",
+      "line": 30,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_CP_TOKEN_HMAC"
+    },
+    {
+      "service": "Trading Engine",
+      "method": "GET",
+      "path": "/health",
+      "source": "App/services/trading-engine/trading_service.js",
+      "line": 30,
+      "kind": "explicit",
+      "target_policy": "INTERNAL_HEALTH"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/vaults",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/vaults/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/bank",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/bank/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/bank/keys",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/bank/keys/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/chart-viewer",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/chart-viewer/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/charts",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/fundamental",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/fundamental/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/ia-trading",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/ia-trading/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/keys",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/keys/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/portfolio",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/portfolio/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/settings",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/settings/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/statistiques",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/statistiques/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/strategies",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/strategies/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/strategy",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/strategy/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/trading",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/trading/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 15,
+      "kind": "page_alias",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-health",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 36,
+      "kind": "explicit",
+      "target_policy": "RESTRICT_METADATA"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-api/project-tree",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 37,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-api/project-file",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 38,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-api/session",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 39,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/communication-health",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 40,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/router-health",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 41,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "POST",
+      "path": "/communication-test",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 42,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "POST",
+      "path": "/communication/v1/ui/read",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 43,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "POST",
+      "path": "/communication/v1/ui/write",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 44,
+      "kind": "explicit",
+      "target_policy": "RBAC_ACTION"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "POST",
+      "path": "/communication/v1/client/ack",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 45,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/communication/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 46,
+      "kind": "prefix",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/communication/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 46,
+      "kind": "deny_prefix",
+      "target_policy": "DENY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 47,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 47,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/vaults",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 47,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/admin/vaults/",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 47,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/assets/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 48,
+      "kind": "prefix",
+      "target_policy": "PUBLIC_LOGIN_ASSETS_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET/HEAD",
+      "path": "/assets/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 48,
+      "kind": "static_asset",
+      "target_policy": "PUBLIC_LOGIN_ASSETS_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/firewall-admin/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 49,
+      "kind": "prefix",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/firewall-admin/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 49,
+      "kind": "catch_all_proxy_to_firewall",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-data/market/candles",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 51,
+      "kind": "explicit",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "GET",
+      "path": "/ui-data/market/candles",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 51,
+      "kind": "direct_router_proxy",
+      "target_policy": "AUTH_REQUIRED_OR_PUBLIC_MINIMAL"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/api/internal/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 52,
+      "kind": "prefix",
+      "target_policy": "AUTHN_AND_CORE_POLICY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/api/internal/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 52,
+      "kind": "deny_prefix",
+      "target_policy": "DENY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/api/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 53,
+      "kind": "prefix",
+      "target_policy": "AUTHN_AND_CORE_POLICY"
+    },
+    {
+      "service": "UI Gateway",
+      "method": "ANY",
+      "path": "/api/*",
+      "source": "App/UI/Gateway/ui_service.js",
+      "line": 53,
+      "kind": "catch_all_proxy_to_core",
+      "target_policy": "REPLACE_WITH_ALLOWLIST"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/firewall/status",
+      "source": "App/Core/Server/server.js",
+      "line": 507,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "GET",
+      "path": "/api/admin/risk/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 0,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    },
+    {
+      "service": "Core",
+      "method": "POST",
+      "path": "/api/admin/risk/settings",
+      "source": "App/Core/Server/server.js",
+      "line": 0,
+      "kind": "explicit",
+      "target_policy": "ADMIN_ONLY"
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "providers": [
+    "KRAKEN",
+    "KRAKEN_PUBLIC_REFERENCE",
+    "GMX",
+    "BINANCE",
+    "BINANCE_PUBLIC",
+    "OKX",
+    "OKX_PUBLIC",
+    "HYPERLIQUID",
+    "FX",
+    "COINGECKO",
+    "DEFILLAMA",
+    "BLOCKCHAIN",
+    "BINANCE_FUTURES",
+    "BYBIT",
+    "BYBIT_PUBLIC",
+    "DEXSCREENER",
+    "KRAKEN_PUBLIC",
+    "HYPERLIQUID_PUBLIC"
+  ],
+  "types": [
+    "PRICE",
+    "TICKER",
+    "OHLC",
+    "OHLCV",
+    "CANDLES",
+    "TRADES",
+    "ORDERBOOK",
+    "L2BOOK",
+    "MARKET_ANALYTICS",
+    "ONCHAIN",
+    "LIQUIDITY_SNAPSHOT",
+    "OPEN_INTEREST",
+    "LIQUIDATION",
+    "MARKET_TICKER",
+    "MARKET_SYMBOLS"
+  ]
+}

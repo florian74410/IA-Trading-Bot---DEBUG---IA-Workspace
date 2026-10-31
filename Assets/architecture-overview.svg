@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1122" height="1402" viewBox="0 0 300 375" role="img" aria-labelledby="title desc">
+  <title id="title">IA-TB — Architecture fonctionnelle</title>
+  <desc id="desc">Schéma officiel de communication entre les modules de IA-TB.</desc>
+  <image href="architecture-overview.png" x="0" y="0" width="300" height="375" preserveAspectRatio="xMidYMid meet"/>
+</svg>

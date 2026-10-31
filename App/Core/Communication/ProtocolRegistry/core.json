@@ -1,0 +1,28 @@
+{
+  "id": "core",
+  "label": "Core Server",
+  "type": "CORE",
+  "transport": "INTERNAL",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8001,
+    "healthPath": "/api/health"
+  },
+  "registration": {
+    "dynamic": false
+  },
+  "table": {
+    "commands": [],
+    "dataTypes": [
+      {
+        "name": "ui.state",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "settings.state",
+        "direction": "BOTH"
+      }
+    ],
+    "events": []
+  }
+}

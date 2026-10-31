@@ -1,0 +1,3 @@
+'use strict';
+var assert=require('assert'),Manager=require('../llm_manager');
+(async function(){var m=new Manager({provider:'MOCK',fallbackEnabled:false,mock:{response:'OK'}});assert.equal(m.status().provider,'MOCK');var h=await m.health('MOCK');assert.equal(h.ok,true);var r=await m.reason({prompt:'ping'});assert.equal(r.provider,'MOCK');assert.equal(r.text,'OK');var missing=new Manager({provider:'REMOTE_LLM',remote:{endpoint:''}});var failed=false;try{await missing.reason({prompt:'ping'});}catch(e){failed=/ENDPOINT_MISSING/.test(e.message);}assert.equal(failed,true);console.log('Supervisor LLM provider tests: OK');})().catch(function(e){console.error(e);process.exit(1);});

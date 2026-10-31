@@ -1,0 +1,193 @@
+<!doctype html><html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<title>IA-TB · Statistiques</title>
+<link rel="stylesheet" href="/assets/global_navigation_v2.0.css?v=2013">
+<link rel="stylesheet" href="/assets/ia_icons_v1.css">
+<link rel="stylesheet" href="/assets/statistiques_v1.0.css?v=201-step4">
+<script defer src="/assets/global_navigation_v2.0.js?v=3022"></script>
+<script defer src="/assets/ia_icons_v1.js"></script>
+<script defer src="/assets/statistiques_v1.0.js?v=201-step4"></script>
+</head><body>
+<div class="statsApp">
+ <aside class="statsSide">
+  <div class="statsSideTitle"><span class="statsSideHeroIcon">▥</span><b>STATISTIQUES</b></div>
+  <nav class="statsSideNav">
+   <a class="active" href="/statistiques#server" data-stats-nav="server"><span class="statsSideSvgIcon">▣</span>Serveur / Réseaux</a>
+   <a href="/statistiques#cefi" data-stats-nav="cefi"><span class="statsSideSvgIcon">🏛</span>CeFi</a>
+   <a href="/statistiques#defi" data-stats-nav="defi"><span class="statsSideSvgIcon">⛓</span>DeFi</a>
+  </nav>
+ </aside>
+ <main class="statsMain">
+  <section class="statsSection active" data-stats-section="server">
+
+  <section class="statsIntro statsPanel">
+   <div class="statsIntroCopy"><h1>Statistiques</h1><p>Vue d’ensemble temps réel des exchanges, engines, oracles et réseaux utilisés par IA-TB.</p></div>
+   <div class="statsGlobalBanner">
+    <img src="/assets/stats_network_banner_v1.svg" alt="">
+    <div class="statsBannerCopy"><b>RÉSEAU IA-TB GLOBAL</b><span>Surveillance en temps réel</span><small>Multi-exchanges • Multi-chains • IA</small></div>
+    <a href="/ia-trading">← Retour Tableau de bord</a>
+   </div>
+  </section>
+
+  <section class="statsGrid statsGridTop">
+   <article class="statsPanel cexMapPanel">
+    <header class="statsCardHead"><div><h2><span class="panelIcon">⛓</span> Connexions CEX ↔ IA-TB</h2><p>Latence temps réel depuis nos serveurs</p></div><span class="statusPill good" id="cexConnectedState">● 5/5 connectés</span></header>
+    <div class="cexMapStage">
+     <img class="worldMapAsset" src="/assets/stats_world_map_v1.svg" alt="">
+     <svg class="cexLines" viewBox="0 0 1000 430" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M500 310 C360 250 260 190 165 142"/><path d="M500 310 C460 220 450 145 465 88"/><path d="M500 310 C650 220 720 165 825 138"/><path d="M500 310 C350 315 260 335 160 355"/><path d="M500 310 C655 315 745 338 845 360"/>
+     </svg>
+     <div class="mapHub"><span class="hubLogo">▥</span><b>IA-TB</b><small>Serveur principal</small></div>
+     <div class="exchangeNode nodeCoinbase" data-exchange="coinbase"><span class="brandIcon coinbase">C</span><span><b>Coinbase</b><small><i></i><em data-stat="coinbase-latency">12 ms</em></small></span></div>
+     <div class="exchangeNode nodeBinance" data-exchange="binance"><span class="brandIcon binance">◆</span><span><b>Binance</b><small><i></i><em data-stat="binance-latency">8 ms</em></small></span></div>
+     <div class="exchangeNode nodeOkx" data-exchange="okx"><span class="brandIcon okx">✣</span><span><b>OKX</b><small><i></i><em data-stat="okx-latency">15 ms</em></small></span></div>
+     <div class="exchangeNode nodeKraken" data-exchange="kraken"><span class="brandIcon kraken">K</span><span><b>Kraken</b><small><i></i><em data-stat="kraken-latency">18 ms</em></small></span></div>
+     <div class="exchangeNode nodeGmx" data-exchange="gmx"><span class="brandIcon gmx">▲</span><span><b>GMX (DEX)</b><small><i></i><em data-stat="gmx-latency">22 ms</em></small></span></div>
+    </div>
+   </article>
+
+   <article class="statsPanel enginesPanel">
+    <header class="statsCardHead"><div><h2><span class="panelIcon">⌘</span> Topologie des Engines & latence</h2><p>Architecture interne et latences inter-services</p></div><span class="statusPill good" id="engineGlobalState">● Tous les services opérationnels</span></header>
+    <div class="engineStage">
+     <svg class="engineLines" viewBox="0 0 760 410" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M380 205L205 104"/><path d="M380 205L380 62"/><path d="M380 205L565 104"/><path d="M380 205L665 175"/><path d="M380 205L650 272"/><path d="M380 205L560 352"/><path d="M380 205L380 360"/><path d="M380 205L198 344"/><path d="M380 205L95 274"/><path d="M380 205L88 175"/>
+     </svg>
+     <div class="engineHub"><img src="/assets/stats_core_hub_v1.svg" alt="IA-TB Core"></div>
+     <div class="engineNode eRouter"><span>⇄</span><b>Router</b><em data-engine-ms="router">5 ms</em></div>
+     <div class="engineNode eMarket"><span>▤</span><b>Market Data</b><em data-engine-ms="market">3 ms</em></div>
+     <div class="engineNode eIndicator"><span>▥</span><b>Indicator</b><em data-engine-ms="indicator">7 ms</em></div>
+     <div class="engineNode eStrategy"><span>◉</span><b>Strategy</b><em data-engine-ms="strategy">9 ms</em></div>
+     <div class="engineNode eTrading"><span>↔</span><b>Trading</b><em data-engine-ms="trading">6 ms</em></div>
+     <div class="engineNode eRisk"><span>⬡</span><b>Risk</b><em data-engine-ms="risk">4 ms</em></div>
+     <div class="engineNode ePortfolio"><span>◔</span><b>Portfolio</b><em data-engine-ms="portfolio">8 ms</em></div>
+     <div class="engineNode eFundamental"><span>▤</span><b>Fundamental</b><em data-engine-ms="fundamental">12 ms</em></div>
+     <div class="engineNode eSupervisor"><span>⚙</span><b>Supervisor</b><em data-engine-ms="supervisor">6 ms</em></div>
+     <div class="engineNode eUi"><span>▣</span><b>UI</b><em data-engine-ms="ui">3 ms</em></div>
+    </div>
+   </article>
+  </section>
+
+  <section class="statsGrid statsGridMid">
+   <article class="statsPanel platformPanel">
+    <header class="statsCardHead compact"><div><h2><span class="panelIcon">▤</span> État des DEX & CEX</h2><p>Statut des plateformes, latence et liquidité</p></div><button id="toggleAllExchanges" class="ghostLink" type="button" aria-expanded="false">Afficher tous les DEX & CEX ↓</button></header>
+    <div class="platformCards" id="platformCards"></div>
+   </article>
+
+   <article class="statsPanel oraclePanel">
+    <header class="statsCardHead compact"><div><h2><span class="panelIcon">⌘</span> Oracles & Bridges</h2><p>Fiabilité des flux de prix et ponts cross-chain</p></div><button id="toggleAllOracles" class="ghostLink" type="button" aria-expanded="false">Afficher tous les Oracles & Bridges ↓</button></header>
+    <div class="oracleCards" id="oracleCards"></div>
+   </article>
+  </section>
+
+  <section class="statsGrid statsGridBottom">
+   <article class="statsPanel adoptionPanel">
+    <header class="statsCardHead compact adoptionHead"><div><h2><span class="panelIcon">▥</span> Adoption crypto</h2><p id="adoptionSubtitle">Évolution des utilisateurs, volumes et part de marché · 30J</p></div><div class="chartLegend"><span><i class="blue"></i>Utilisateurs</span><span><i class="green"></i>Volumes (M$)</span><span><i class="purple"></i>Dominance DeFi (%)</span></div><div class="rangeBtns"><button data-range="7J">7J</button><button class="active" data-range="30J">30J</button><button data-range="3M">3M</button><button data-range="1A">1A</button></div></header>
+    <div class="adoptionChart" id="adoptionChart"></div>
+   </article>
+
+   <article class="statsPanel summaryPanel">
+    <header class="statsCardHead compact"><div><h2><span class="panelIcon">◔</span> Résumé réseau</h2><p>Métriques globales IA-TB en temps réel</p></div></header>
+    <div class="summaryGrid" id="summaryGrid"></div>
+   </article>
+  </section>
+
+  </section>
+
+  <section class="statsSection" data-stats-section="cefi">
+   <section class="statsSectionIntro statsPanel">
+    <div><span class="statsSectionKicker">FINANCE CENTRALISÉE</span><h1>CeFi · Marchés Centralisés</h1><p>Volumes, liquidité, activité et répartition des principaux exchanges centralisés.</p></div>
+    <div class="statsSectionBadge"><span>🏛</span><b>CEX</b><small>Vue financière</small></div>
+   </section>
+
+   <p id="cefiDataStatus" class="financeLoadStatus" role="status">Chargement des sources…</p>
+   <section class="marketKpiGrid">
+    <article class="marketKpi cyan"><span>Volume CEX suivi · 24h</span><b id="cefiVolume24">--</b><em>--</em><small>Échantillon exchanges centralisés</small></article>
+    <article class="marketKpi violet"><span>Volume marché crypto · 24h</span><b id="cefiSpot24">--</b><em>--</em><small>Volume global observé</small></article>
+    <article class="marketKpi green"><span>Open Interest</span><b id="cefiOi">--</b><em>--</em><small>Futures & perpetuals</small></article>
+    <article class="marketKpi amber"><span>Liquidations observées · 24h</span><b id="cefiLiq">--</b><em>--</em><small>Long + short</small></article>
+   </section>
+
+   <section class="financeHeroGrid">
+    <article class="statsPanel financeChartPanel">
+     <header class="statsCardHead"><div><h2><span class="panelIcon">▥</span> Volume total des CEX suivis</h2><p id="cefiVolumeSubtitle">Évolution du volume CEX suivi · snapshots Market Data Collector</p></div><div class="financeRanges"><button>1H</button><button class="active">24H</button><button>7J</button><button>30J</button></div></header>
+     <div class="financeChart" id="cefiVolumeChart"></div>
+    </article>
+    <article class="statsPanel financeSharePanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">◔</span> Répartition par exchange</h2><p>Part du volume des CEX suivis · CoinGecko</p></div></header>
+     <div class="financeDonutWrap"><div class="financeDonut cefiDonut"><span><b>--</b><small>24H</small></span></div><div class="financeLegend" id="cefiShareLegend"></div></div>
+    </article>
+   </section>
+
+
+
+   <section class="statsGrid financeBottomGrid">
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">⇄</span> Exchanges suivis</h2><p>Volume 24 h et part suivie · score de confiance CoinGecko</p></div></header>
+     <div class="financeExchangeTable" id="cefiExchangeTable"></div>
+    </article>
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">▤</span> Volumes par actif</h2><p>Volumes globaux des actifs · CoinGecko (CEX et DEX)</p></div></header>
+     <div class="assetVolumeList" id="cefiAssetVolumes"></div>
+    </article>
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">⚡</span> Santé du marché CeFi</h2><p>Lecture synthétique de l'activité centralisée</p></div></header>
+     <div class="marketHealthGrid" id="cefiHealth"></div>
+    </article>
+   </section>
+  </section>
+
+  <section class="statsSection" data-stats-section="defi">
+   <section class="statsSectionIntro statsPanel">
+    <div><span class="statsSectionKicker defi">FINANCE DÉCENTRALISÉE</span><h1>DeFi · Protocoles & DEX</h1><p>TVL, volumes DEX, stablecoins, bridges, liquidité et activité des principaux protocoles.</p></div>
+    <div class="statsSectionBadge defi"><span>⛓</span><b>DeFi</b><small>Vue on-chain</small></div>
+   </section>
+
+   <p id="defiDataStatus" class="financeLoadStatus" role="status">Chargement des sources…</p>
+   <section class="marketKpiGrid">
+    <article class="marketKpi cyan"><span>TVL DeFi</span><b id="defiTvl">--</b><em>--</em><small>Valeur totale verrouillée</small></article>
+    <article class="marketKpi violet"><span>Volume DEX · 24h</span><b id="defiDexVolume">--</b><em>--</em><small>Swaps décentralisés</small></article>
+    <article class="marketKpi green"><span>Stablecoins</span><b id="defiStable">--</b><em>--</em><small>Capitalisation totale</small></article>
+    <article class="marketKpi amber"><span>Bridges · 24h</span><b id="defiBridgeVolume">--</b><em>--</em><small>Volume inter-chaînes</small></article>
+   </section>
+
+   <section class="financeHeroGrid">
+    <article class="statsPanel financeChartPanel">
+     <header class="statsCardHead"><div><h2><span class="panelIcon">⛓</span> Volume total DEX / DeFi</h2><p id="defiVolumeSubtitle">Volume total observé sur l’ensemble des DEX suivis</p></div><div class="financeRanges defiVolumeRanges"><button data-defi-range="1H">1H</button><button class="active" data-defi-range="24H">24H</button><button data-defi-range="7J">7J</button><button data-defi-range="30J">30J</button></div></header>
+     <div class="financeChart defiChart" id="defiVolumeChart"></div>
+    </article>
+    <article class="statsPanel financeSharePanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">◔</span> TVL par catégorie</h2><p>Parts des catégories de protocoles suivies · DeFiLlama</p></div></header>
+     <div class="financeDonutWrap"><div class="financeDonut defiDonut"><span><b>--</b><small>CATÉGORIES SUIVIES</small></span></div><div class="financeLegend" id="defiShareLegend"></div></div>
+    </article>
+   </section>
+
+   <section class="defiInsightGrid">
+    <article class="statsPanel topPoolsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">◈</span> Top Pools</h2><p>Pools suivies · ETH/USDC via DexScreener · TVL/APY selon disponibilité DeFiLlama</p></div><span class="statusPill good">Sources suivies</span></header>
+     <div id="defiTopPools" class="topPoolsGrid"><div class="modulePlaceholder">Chargement des pools…</div></div>
+    </article>
+    <article class="statsPanel executionCostPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">⚡</span> Estimation d’exécution</h2><p>Ordre de grandeur théorique · réseau et DEX issus des pools DexScreener validées</p></div><label class="execAmountControl">Montant <select id="execTradeSize"><option value="1000">1 000 $</option><option value="10000" selected>10 000 $</option><option value="50000">50 000 $</option><option value="100000">100 000 $</option></select></label></header>
+     <div class="execSelectors"><label>Réseau <select id="execNetwork"><option value="">Chargement des réseaux…</option></select></label><label>DEX <select id="execDex"><option value="">Chargement des DEX…</option></select></label></div>
+     <div id="defiExecutionCost" class="executionCostBody"><div class="modulePlaceholder">Calcul de l’estimation…</div></div>
+    </article>
+   </section>
+
+   <section class="statsGrid financeBottomGrid">
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">◆</span> Protocoles DEX suivis</h2><p>Volume 24h, part du volume DEX et source des principaux protocoles</p></div></header>
+     <div class="financeExchangeTable" id="defiProtocolTable"></div>
+    </article>
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">◉</span> Variations des stablecoins</h2><p>Variation nette de capitalisation en USD · observations DeFiLlama</p></div></header>
+     <div class="stableFlowChart" id="defiStableFlow"></div>
+    </article>
+    <article class="statsPanel">
+     <header class="statsCardHead compact"><div><h2><span class="panelIcon">↔</span> Réseaux DeFi</h2><p>TVL observée par chaîne · données DeFiLlama</p></div></header>
+     <div class="assetVolumeList" id="defiNetworks"></div>
+    </article>
+   </section>
+  </section>
+ </main>
+</div>
+</body></html>

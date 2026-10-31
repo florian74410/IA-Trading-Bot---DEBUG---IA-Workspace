@@ -1,0 +1,15 @@
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),{firefox}=require('playwright');
+const root=path.resolve(__dirname,'../..');
+test('Firefox account settings: CEX secret fields clear, DEX internal wallet selection and CSRF request',async()=>{
+ const browser=await firefox.launch({headless:true,firefoxUserPrefs:{'security.sandbox.content.level':0,'security.sandbox.gpu.level':0,'dom.ipc.forkserver.enable':false}}),page=await browser.newPage({viewport:{width:900,height:900}});let rows=[],saved;
+ try{
+  await page.route('**/*',async r=>{const req=r.request(),p=new URL(req.url()).pathname;if(p==='/settings')return r.fulfill({contentType:'text/html',body:'<!doctype html><title>Settings fixture</title>'});if(p==='/auth21/csrf')return r.fulfill({json:{csrfToken:'csrf-fixture'}});if(p==='/api/security/wallets')return r.fulfill({json:{items:[{id:'W0001',name:'Interne',accounts:[{id:'evm',family:'EVM',address:'0x'+'a'.repeat(40),hasSecret:true,networks:['arbitrum']}]}]}});assert.equal(p,'/auth21/trading/accounts');if(req.method()==='PUT'){assert.equal(req.headers()['x-iatb-csrf'],'csrf-fixture');saved=req.postDataJSON();rows=[{...saved,kind:'CEX'}];delete rows[0].credentials;delete rows[0].password;return r.fulfill({json:{account:rows[0]}});}return r.fulfill({json:{accounts:rows}});});
+  await page.goto('http://localhost/settings');const html=fs.readFileSync(path.join(root,'Frontend/Pages/settings.html'),'utf8');const start=html.indexOf('<section class="panel apiCard" id="tradingAccountCard">'),end=html.indexOf('<section class="panel apiCard apiInfoCard">',start);await page.setContent(html.slice(start,end));await page.addStyleTag({content:fs.readFileSync(path.join(root,'Frontend/CSS/settings.css'),'utf8')});await page.addScriptTag({content:fs.readFileSync(path.join(root,'Frontend/JS/trading_accounts.js'),'utf8')});
+  await page.waitForFunction(()=>document.querySelector('#taWallet').options.length===1);
+  await page.locator('#taId').fill('binance-main');await page.locator('#taKey').fill('fixture-key');await page.locator('#taSecret').fill('fixture-secret');await page.locator('#taPassword').fill('fixture-password');await page.locator('#taForm button').click();await page.waitForFunction(()=>document.querySelector('#taStatus').textContent.includes('enregistrée'));
+  assert.equal(saved.credentials.apiSecret,'fixture-secret');assert.equal(await page.locator('#taSecret').inputValue(),'');assert.equal(await page.locator('#taPassword').inputValue(),'');assert.equal(await page.locator('#taBroker').isDisabled(),true);
+  await page.locator('#taExisting').selectOption('');await page.locator('#taBroker').selectOption('GMX');assert.equal(await page.locator('#taDex').isVisible(),true);assert.equal(await page.locator('#taCex').isVisible(),false);assert.equal(await page.locator('#taWallet').inputValue(),'W0001:evm');
+  await page.setViewportSize({width:390,height:900});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),true);
+ }finally{await browser.close();}
+});

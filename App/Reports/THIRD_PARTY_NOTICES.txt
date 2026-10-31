@@ -1,0 +1,10 @@
+Crypto Chart Viewer IA Trader v2.8 — Composant tiers
+================================
+
+TradingView Lightweight Charts™ 5.2.0
+Créateur : TradingView, Inc.
+Licence : Apache License 2.0
+Projet : https://www.tradingview.com/lightweight-charts/
+
+Crypto Chart Viewer IA Trader conserve l attribution TradingView visible dans le graphique et active également le logo d attribution fourni par la bibliothèque.
+La bibliothèque est chargée depuis la distribution standalone versionnée au démarrage de la page.

@@ -1,0 +1,38 @@
+/* IA-TB v2.0 DEBUG — compact transfer module */
+.wvSideBox h3{font-size:14px!important;display:flex!important;align-items:center!important;gap:8px!important}
+.wvModuleTitleIcon{width:24px;height:24px;min-width:24px;display:grid;place-items:center;color:#42cfff}
+.wvModuleTitleIcon svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btcTransferCompact{position:relative}
+.btcField{display:block;margin:8px 0}
+.btcField>span,.btcAmounts label>span{display:block;margin-bottom:4px;color:#809bad;font-size:8px;text-transform:uppercase;letter-spacing:.05em}
+.btcField select,.btcField input{width:100%;height:34px;padding:0 9px;border:1px solid #21475b;border-radius:6px;background:#06141e;color:#ecf9ff;font-size:10px}
+.btcNetworkRow{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:7px;margin:8px 0;padding:7px;border:1px solid #183d51;border-radius:7px;background:#06141e}
+.btcNetworkRow>span:first-child{font-size:8px;color:#718fa1;text-transform:uppercase}
+.btcNetworkBtn{display:flex;align-items:center;gap:6px;min-width:0;height:30px;padding:0 8px;border:1px solid #225a73;border-radius:6px;background:#08202c;color:#eef9ff;cursor:pointer}
+.btcNetworkBtn img{width:20px;height:20px;object-fit:contain;border-radius:50%}.btcNetworkBtn b{font-size:10px}.btcNetworkBtn i{margin-left:auto;color:#39d99b;font-style:normal}
+.btcNetCheck{font-size:7.5px;color:#53d6a2}
+.btcCoinPick{width:100%;height:43px;display:grid;grid-template-columns:30px minmax(0,1fr) 18px;align-items:center;gap:8px;padding:5px 8px;border:1px solid #24536b;border-radius:7px;background:#071722;color:#edf9ff;text-align:left;cursor:pointer}
+.btcCoinPick img,.btcCoinRow img{width:28px;height:28px;border-radius:50%;object-fit:contain}.btcCoinPick span b,.btcCoinRow span b{display:block;font-size:10px}.btcCoinPick span small,.btcCoinRow span small{display:block;margin-top:2px;color:#7f9aaa;font-size:7.5px}.btcCoinPick i{font-style:normal;color:#72a9c4}
+.btcCoinFallback{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:#102b3a;color:#4ccfff}
+.btcAmounts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:9px 0}
+.btcAmountInput{height:46px;display:flex;align-items:center;border:1px solid #28627d;border-radius:7px;background:#04131d;overflow:hidden}
+.btcAmountInput input{flex:1;min-width:0;height:100%;padding:0 10px;border:0;background:transparent;color:#fff;font-size:15px;font-weight:700;outline:none}
+.btcAmountInput b,.btcAmountInput button{flex:0 0 auto;height:100%;padding:0 9px;border:0;border-left:1px solid #1d465a;background:#08202c;color:#70d7ff;font-size:10px;font-weight:800}
+.btcAmountInput button{cursor:pointer}
+.btcGas{min-height:35px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:7px 0;padding:7px 9px;border:1px solid #1b4358;border-radius:7px;background:#061722;color:#7699aa;font-size:8px}
+.btcGas b{color:#e6f6fc;font-size:9px}.btcGas.wait{color:#5ec9f5}
+.btcCheck{margin:7px 0;padding:7px 9px;border:1px solid #214556;border-radius:7px;background:#07151e;color:#7d99a7;font-size:8px;line-height:1.35}.btcCheck.ok{border-color:#1b6b54;color:#54dfad}.btcCheck.bad{border-color:#71323b;color:#ff9aa5}
+.btcHuman{display:flex;align-items:center;gap:7px;margin:8px 0;padding:7px 8px;border:1px solid #1b4052;border-radius:7px;background:#06141e;color:#c5d9e3;font-size:9px;cursor:pointer}.btcHuman input{accent-color:#24b4ef}
+.btcSend{height:36px!important;font-size:11px!important}.btcSend:disabled{opacity:.42!important;cursor:not-allowed!important}
+.btcPicker{position:absolute;z-index:60;left:8px;right:8px;top:135px;max-height:360px;border:1px solid #28627d;border-radius:9px;background:#06131d;box-shadow:0 16px 42px rgba(0,0,0,.55);overflow:hidden}.btcPicker[hidden]{display:none}
+.btcPickerHead{display:flex;gap:6px;padding:7px;border-bottom:1px solid #173949}.btcPickerHead input{flex:1;min-width:0;height:32px;padding:0 9px;border:1px solid #24536b;border-radius:6px;background:#041019;color:#fff;font-size:10px}.btcPickerHead button{width:32px;border:1px solid #244a5c;border-radius:6px;background:#0a1c27;color:#d9edf6}
+.btcCoinList{max-height:260px;overflow-y:auto}.btcCoinRow{width:100%;height:44px;display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:8px;padding:5px 9px;border:0;border-bottom:1px solid #112c3a;background:#06131d;color:#fff;text-align:left;cursor:pointer}.btcCoinRow:hover{background:#0a2230}
+.btcMore{width:100%;height:32px;border:0;border-top:1px solid #173949;background:#08202c;color:#5ccfff;font-size:9px;cursor:pointer}.btcLoading{padding:16px;text-align:center;color:#7695a5;font-size:9px}.btcLoading.bad{color:#ff9aa5}
+@media(max-width:620px){.btcAmounts{grid-template-columns:1fr}.btcPicker{left:4px;right:4px}}
+
+/* 2.4.1: identical labels and shared control widths in the Transaction block. */
+.btcTransferCompact .btcField,.btcTransferCompact .btcAmounts>label{min-width:0;margin:8px 0;display:flex;flex-direction:column;align-items:stretch;gap:4px}
+.btcTransferCompact .btcField>span,.btcTransferCompact .btcAmounts>label>span{height:auto;min-height:12px;line-height:12px;margin:0;text-align:left;align-self:stretch}
+.btcTransferCompact .btcAmounts{margin:0;align-items:start;grid-template-columns:repeat(2,minmax(0,1fr))}
+.btcTransferCompact .btcCoinPick{box-sizing:border-box;min-width:0}
+@media(max-width:620px){.btcTransferCompact .btcAmounts{grid-template-columns:1fr}}

@@ -1,0 +1,14 @@
+'use strict';
+var fs=require('fs'),path=require('path'),assert=require('assert');
+var ROOT=path.resolve(__dirname,'../../..');
+var pages=['app_v1.0.html','chart_viewer_v1.0.html','portfolio_v1.0.html','fundamental_v3.html','admin_v1.0.html'];
+var navJs=path.join(ROOT,'Frontend/JS/shared_navigation_v1.8.8.js');
+var navCss=path.join(ROOT,'Frontend/CSS/navigation_v1.6.2.css');
+assert(fs.existsSync(navJs),'shared navigation JS missing');
+assert(fs.existsSync(navCss),'shared navigation CSS missing');
+var js=fs.readFileSync(navJs,'utf8');
+['/ia-trading','/chart-viewer','/portfolio','/fundamental','/admin','#settings','#strategies'].forEach(function(x){assert(js.indexOf(x)>=0,'navigation target missing: '+x);});
+pages.forEach(function(name){var html=fs.readFileSync(path.join(ROOT,'Frontend/Pages',name),'utf8');assert(html.indexOf('/assets/navigation_v1.6.2.css')>=0,name+' missing shared CSS');assert(html.indexOf('/assets/shared_navigation_v1.8.8.js')>=0,name+' missing shared JS');});
+var server=fs.readFileSync(path.join(ROOT,'Core/Server/server.js'),'utf8');
+assert(server.indexOf("/assets/shared_navigation_v1.8.8.js")>=0,'server does not expose shared navigation JS');
+console.log('PASS shared navigation v1.8.8: '+pages.length+' pages unified');

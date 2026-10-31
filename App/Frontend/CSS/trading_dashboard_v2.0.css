@@ -1,0 +1,636 @@
+/* IA-TB v1.8.6 — /ia-trading production dashboard shell
+   Pure visual/layout layer. Existing controllers and DOM IDs stay intact. */
+:root{
+  --ia-bg:#030910;
+  --ia-panel:#07111a;
+  --ia-panel-2:#091722;
+  --ia-panel-3:#0b1b27;
+  --ia-line:#172c3a;
+  --ia-line-2:#234356;
+  --ia-text:#edf5fa;
+  --ia-muted:#7e94a3;
+  --ia-blue:#199fff;
+  --ia-cyan:#32c7ff;
+  --ia-green:#18d982;
+  --ia-green-soft:#0ea764;
+  --ia-yellow:#f1b82b;
+  --ia-red:#f0525f;
+  --ia-purple:#9a77ff;
+  --ia-top-h:58px;
+  --ia-status-h:50px;
+  --ia-left-w:286px;
+  --ia-right-w:330px;
+  --ia-gap:8px;
+}
+
+@media (min-width:981px){
+  html,body{height:100%!important;min-height:100%!important;overflow:hidden!important;background:var(--ia-bg)!important}
+  body{color:var(--ia-text)!important}
+  .app{height:100vh!important;min-height:100vh!important;max-height:100vh!important;overflow:hidden!important;background:var(--ia-bg)!important}
+  .macbar{display:none!important}
+
+  /* Thin fixed top navigation. The logo lives in the left rail, not here. */
+  .top{
+    position:fixed!important;z-index:80!important;top:0!important;left:0!important;right:0!important;
+    height:var(--ia-top-h)!important;min-height:var(--ia-top-h)!important;max-height:var(--ia-top-h)!important;
+    padding:0 14px 0 calc(var(--ia-left-w) + 12px)!important;
+    display:flex!important;align-items:center!important;gap:8px!important;flex-wrap:nowrap!important;
+    background:rgba(3,9,15,.985)!important;border-bottom:1px solid #173044!important;
+    box-shadow:0 8px 28px rgba(0,0,0,.22)!important;
+  }
+  .top>.appLogoWrap,.top>.tag{display:none!important}
+  .navActions{width:100%!important;min-width:0!important;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;padding:0!important;overflow:hidden!important}
+  .navBtn{
+    flex:0 0 auto!important;height:36px!important;padding:0 12px!important;border-radius:6px!important;
+    border:1px solid #1c3545!important;background:#07131d!important;color:#e5eef4!important;
+    font-size:12px!important;font-weight:600!important;box-shadow:inset 0 1px rgba(255,255,255,.025)!important;
+  }
+  .navBtn:hover{background:#0b1d2a!important;border-color:#2a5770!important}
+  .navBtn.active{background:#0c2940!important;border-color:#2589c7!important;box-shadow:inset 0 -2px #24b7ff,0 0 14px rgba(36,183,255,.08)!important}
+  #walletConnect{margin-left:auto!important;border-color:#24475d!important;background:#0a1721!important;white-space:nowrap!important}
+  #adminBtn{white-space:nowrap!important}
+  #updatesBtn{display:none!important}
+  .iatbTopUtilities{display:flex;align-items:center;gap:7px;margin-left:2px;flex:0 0 auto}
+  .iatbTopUtility{width:32px;height:32px;border-radius:50%;border:1px solid #1a3343;background:#07131c;color:#c9d7df;display:flex;align-items:center;justify-content:center;font-size:13px}
+  .iatbTopLive{width:9px;height:9px;border-radius:50%;background:var(--ia-green);box-shadow:0 0 9px rgba(24,217,130,.5)}
+
+  /* Main /ia-trading workspace: 3 columns, no document scroll. */
+  .body[data-mosaic-root]{
+    position:fixed!important;z-index:10!important;left:0!important;right:0!important;
+    top:var(--ia-top-h)!important;bottom:var(--ia-status-h)!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    display:grid!important;grid-template-columns:var(--ia-left-w) minmax(0,1fr) var(--ia-right-w)!important;
+    grid-template-rows:minmax(0,1fr)!important;gap:var(--ia-gap)!important;padding:var(--ia-gap)!important;
+    overflow:hidden!important;background:var(--ia-bg)!important;
+  }
+  .body[data-mosaic-root]>.left,.body[data-mosaic-root]>.right{display:none!important}
+  .body[data-mosaic-root] [data-mosaic-id]{
+    grid-column:auto!important;grid-row:auto!important;position:relative!important;inset:auto!important;
+    width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;max-width:none!important;
+    border:0!important;border-radius:0!important;overflow:hidden!important;background:transparent!important;
+    transform:none!important;
+  }
+
+  /* LEFT: brand + Supervisor chat. */
+  .iatbChatColumn{
+    grid-column:1;grid-row:1;min-width:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr);
+    border:1px solid var(--ia-line);border-radius:8px;overflow:hidden;background:#061019;
+  }
+  .iatbBrandBox{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--ia-line);background:linear-gradient(180deg,#06131e,#051019)}
+  .iatbBrandBox .appLogoWrap{display:flex!important;width:100%!important;min-width:0!important;max-width:none!important;height:60px!important;margin:0!important;align-items:center!important;justify-content:flex-start!important;overflow:hidden!important}
+  .iatbBrandBox .appLogo{display:block!important;max-width:170px!important;max-height:54px!important;width:auto!important;height:auto!important;object-fit:contain!important;object-position:left center!important;filter:drop-shadow(0 0 8px rgba(28,176,255,.14))}
+  .iatbChatColumn .chatPrimary{width:100%!important;height:100%!important;min-height:0!important;display:flex!important;flex-direction:column!important;background:#061019!important}
+  .iatbChatColumn .panelTitle{
+    height:44px!important;min-height:44px!important;flex:0 0 44px!important;padding:0 12px!important;
+    display:flex!important;align-items:center!important;border-bottom:1px solid var(--ia-line)!important;
+    background:#08141e!important;color:#edf5fa!important;font-size:11px!important;font-weight:800!important;letter-spacing:.25px!important;text-transform:uppercase!important;
+  }
+  .iatbChatColumn .panelTitle:before{content:'✦';color:var(--ia-cyan);margin-right:7px;font-size:10px}
+  .iatbChatColumn #aiState{margin-left:auto!important;color:#30d98b!important;font-size:10px!important;text-transform:none!important;letter-spacing:0!important}
+  .iatbChatColumn .msgs{flex:1 1 auto!important;min-height:0!important;padding:10px!important;overflow-y:auto!important;overflow-x:hidden!important;background:#061019!important;scrollbar-width:thin}
+  .iatbChatColumn .msg{max-width:96%!important;margin:7px 0!important;padding:11px!important;border-radius:7px!important;border:1px solid #152b39!important;background:#0a1721!important;color:#dce7ed!important;font-size:11.5px!important;line-height:1.55!important;white-space:pre-wrap!important}
+  .iatbChatColumn .msg.me{margin-left:12%!important;background:linear-gradient(145deg,#0b3158,#0a2745)!important;border-color:#15568d!important}
+  .iatbChatColumn .msg.ai{margin-right:3%!important}
+  .iatbChatColumn .aiHint{display:none!important}
+  .iatbChatColumn .chatForm{flex:0 0 auto!important;display:flex!important;gap:7px!important;padding:9px!important;background:#07131d!important;border-top:1px solid var(--ia-line)!important}
+  .iatbChatColumn .chatForm input{height:40px!important;min-width:0!important;flex:1!important;padding:0 10px!important;border:1px solid #203d4e!important;border-radius:6px!important;background:#06131d!important;color:#e9f2f7!important}
+  .iatbChatColumn .chatForm .btn{width:42px!important;height:40px!important;padding:0!important;border-radius:6px!important;font-size:0!important;background:#123d5c!important;border:1px solid #2a6c96!important}
+  .iatbChatColumn .chatForm .btn:after{content:'➤';font-size:17px;color:#e4f7ff}
+  .iatbChatFooter{height:38px;flex:0 0 38px;display:flex;align-items:center;justify-content:space-between;padding:0 10px;color:#6d8291;font-size:9px;border-top:1px solid #102632;background:#061019}
+  .iatbChatClear{height:25px;padding:0 8px;border-radius:5px;border:1px solid #173444;background:#071722;color:#8fa3b0;font-size:9px;cursor:pointer}
+
+  /* CENTER: Chart first, mosaics second. */
+  .iatbCenterColumn{grid-column:2;grid-row:1;min-width:0;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 226px;gap:var(--ia-gap);overflow:hidden}
+  .iatbCenterColumn #chartArea{grid-row:1!important;width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;display:flex!important;flex-direction:column!important;border:1px solid var(--ia-line)!important;border-radius:8px!important;overflow:hidden!important;background:#050d14!important}
+  .iatbChartHead{height:42px;flex:0 0 42px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid var(--ia-line);background:#08141d}
+  .iatbChartHead strong{font-size:15px;color:#f0f6f9}.iatbChartHead span{margin-left:10px;color:#758d9c;font-size:10px}.iatbChartHead .iatbChartLive{margin-left:auto;color:#2fdc88;font-size:10px}
+  .iatbCenterColumn #chartArea .controls{min-height:45px!important;flex:0 0 45px!important;padding:5px 8px!important;display:flex!important;align-items:center!important;gap:6px!important;flex-wrap:nowrap!important;overflow-x:auto!important;border-bottom:1px solid var(--ia-line)!important;background:#07131c!important}
+  .iatbCenterColumn #chartArea .controls select,.iatbCenterColumn #chartArea .controls .navBtn{height:34px!important;min-height:34px!important;border-radius:5px!important;background:#071620!important;border:1px solid #1e3b4c!important;color:#e2edf3!important;font-size:11px!important;padding:0 9px!important}
+  .iatbCenterColumn #chartArea .chartTools{height:34px!important;padding:0 7px!important;border:1px solid #1e3b4c!important;border-radius:5px!important;background:#071620!important;font-size:10px!important}
+  .iatbCenterColumn #chartArea #marketSourceBadge{display:none!important}
+  .iatbCenterColumn #chartArea #wsState{margin-left:auto!important;color:#6e8999!important;font-size:10px!important;white-space:nowrap!important}
+  .iatbCenterColumn #chartArea .price{font-size:15px!important;color:#27dd87!important;font-weight:700!important;white-space:nowrap!important}
+  .iatbCenterColumn #chartArea .chart{flex:1 1 auto!important;min-height:0!important;background:#030a10!important}
+  .iatbCenterColumn #chartArea .marketState{top:10px!important;left:11px!important;padding:5px 8px!important;border-radius:5px!important;background:rgba(4,12,18,.86)!important;border:1px solid #173448!important;color:#91a7b5!important;font-size:10px!important}
+  .iatbCenterColumn #chartArea .tvAttribution{opacity:.5!important;font-size:9px!important}
+
+  .iatbModuleWrap{grid-row:2;min-width:0;min-height:0;display:flex;flex-direction:column;border:1px solid var(--ia-line);border-radius:8px;overflow:hidden;background:#061019}
+  .iatbModuleLabel{height:37px;flex:0 0 37px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid var(--ia-line);background:#08141d;color:#dbe7ed;font-size:10px;font-weight:800;letter-spacing:.35px;text-transform:uppercase}
+  .iatbModuleLabel:before{content:'▦';color:#a8bbc7;margin-right:7px;font-size:12px}
+  .iatbModuleDeck{flex:1 1 auto;min-height:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;padding:7px;background:#061019}
+  .iatbDashCard{position:relative;min-width:0;min-height:0;overflow:hidden;padding:11px 12px 9px;border:1px solid #17303f;border-radius:7px;background:linear-gradient(180deg,#091720,#071019);color:var(--ia-text)}
+  .iatbDashCard h3{margin:0 0 9px;font-size:10.5px;color:#dbe7ed;letter-spacing:.2px;text-transform:uppercase}.iatbDashCard h3 .accent{color:var(--ia-cyan)}
+  .iatbMetricBig{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;margin-bottom:5px}.iatbMetricBig strong{font-size:17px;color:#eef6f9}.iatbMetricBig span{font-size:9px;color:var(--ia-green);text-align:right}
+  .iatbBars{height:64px;display:flex;align-items:flex-end;gap:4px;padding:4px 1px 0;border-bottom:1px solid #142b39}.iatbBars i{display:block;flex:1;min-width:3px;border-radius:2px 2px 0 0;background:linear-gradient(#27da86,#10945c);opacity:.94}.iatbBars i:nth-child(3n){background:linear-gradient(#e95662,#92333c)}
+  .iatbMiniTable{width:100%;border-collapse:collapse;font-size:9px}.iatbMiniTable th{text-align:left;padding:0 3px 5px;color:#708795;font-weight:500}.iatbMiniTable td{padding:5px 3px;border-top:1px solid #142936;color:#c7d5dc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.iatbPill{display:inline-flex;padding:2px 5px;border-radius:9px;background:#0a3b29;color:#39de8d;font-size:8px;font-weight:700}.iatbPill.ready{background:#1b2d38;color:#91a7b5}
+  .iatbAiSummary{font-size:9.5px;color:#a7bac5;line-height:1.45}.iatbAiSummary p{margin:0 0 6px}.iatbAiSummary ul{margin:5px 0 0;padding-left:16px}.iatbAiSummary li{margin:3px 0}.iatbMore{position:absolute;left:12px;bottom:8px;color:#2babf5;text-decoration:none;font-size:8.8px}
+
+  /* RIGHT: Exchanges + volume/price consensus. */
+  .iatbExchangeColumn{grid-column:3;grid-row:1;min-width:0;min-height:0;display:flex;flex-direction:column;border:1px solid var(--ia-line);border-radius:8px;overflow:hidden;background:#061019}
+  .iatbSideHead{height:44px;flex:0 0 44px;display:flex;align-items:center;padding:0 12px;border-bottom:1px solid var(--ia-line);background:#08141d;font-size:12px;font-weight:800;letter-spacing:.25px}.iatbSideHead button{margin-left:auto;width:24px;height:24px;border:0;background:transparent;color:#d5e1e7;font-size:18px;cursor:pointer}
+  .iatbExchangeScroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;padding:9px;scrollbar-width:thin}
+  .iatbSideSectionTitle{margin:0 1px 8px;color:#2cafef;font-size:9px;font-weight:800;letter-spacing:.25px;text-transform:uppercase}
+  .iatbExchangeList{border:1px solid #152d3a;border-radius:7px;overflow:hidden;background:#07131c}
+  .iatbExchangeRow{height:47px;display:grid;grid-template-columns:30px minmax(0,1fr) auto 27px;align-items:center;gap:7px;padding:0 8px;border-bottom:1px solid #142936;background:#07131c}.iatbExchangeRow:last-child{border-bottom:0}
+  .iatbExchangeRow.selectable{cursor:pointer;user-select:none}.iatbExchangeRow.selectable:hover{background:#0a1a25}.iatbExchangeRow.selectable:focus{outline:1px solid #2caafd;outline-offset:-1px}.iatbExchangeRow.active{background:#0b1f2c}.iatbExchangeRow.active .iatbExName strong{color:#dff5ff}.iatbExchangeRow.planned{cursor:default}
+  .iatbExLogo{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid #27495c;background:#102533;color:#fff;font-size:10px;font-weight:900}.iatbExLogo.binance{background:#3c2b05;color:#f6bd1f}.iatbExLogo.kraken{background:#27205d;color:#c1b0ff}.iatbExLogo.coinbase{background:#073d91;color:#fff}.iatbExLogo.okx{background:#101010;border-color:#4a4a4a}.iatbExLogo.gmx{background:#153946;color:#8eeaff}.iatbExLogo.future{background:#182530;color:#8da1ae}
+  .iatbExName{min-width:0}.iatbExName strong{display:block;color:#e6eff4;font-size:9.8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.iatbExName span{display:block;margin-top:1px;color:#6f8594;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .iatbExStatus{text-align:right}.iatbExStatus strong{display:block;color:#35d98b;font-size:8px}.iatbExStatus span{display:block;margin-top:2px;color:#7a909e;font-size:7.5px}.iatbExStatus.planned strong{color:#e5b43a}
+  .iatbSwitch{width:26px;height:15px;border-radius:10px;background:#17364a;position:relative}.iatbSwitch:after{content:'';position:absolute;right:2px;top:2px;width:11px;height:11px;border-radius:50%;background:#2caafd}.iatbSwitch.off:after{right:13px;background:#61798a}
+  .iatbAddEx{width:100%;height:34px;margin:8px 0 10px;border-radius:5px;border:1px solid #1c6fa1;background:#071824;color:#2daff5;font-size:10px;cursor:pointer}
+  .iatbConsensus{border:1px solid #152d3a;border-radius:7px;background:#07131c;padding:10px}.iatbConsensus h3{margin:0 0 9px;color:#2aacf4;font-size:9.5px;text-transform:uppercase}.iatbConsensusTop{display:grid;grid-template-columns:1fr 1fr;gap:6px}.iatbConsensusBox{min-width:0;padding:8px;border:1px solid #152d3a;border-radius:6px;background:#061019}.iatbConsensusBox small{display:block;color:#738a99;font-size:7.8px}.iatbConsensusBox strong{display:block;margin-top:4px;color:#ebf4f8;font-size:15px}.iatbConsensusScore{color:#2bda86!important}.iatbGauge{height:4px;margin-top:6px;border-radius:4px;overflow:hidden;background:#122a36}.iatbGauge i{display:block;width:86%;height:100%;background:linear-gradient(90deg,#17ac67,#31e18b)}.iatbConsensusSources{display:flex;align-items:center;gap:6px;margin-top:9px}.iatbConsensusSources .iatbExLogo{width:23px;height:23px;font-size:8px}
+
+  /* Fixed bottom status bar. */
+  .iatbServiceStrip{
+    position:fixed!important;z-index:90!important;left:0!important;right:0!important;bottom:0!important;height:var(--ia-status-h)!important;
+    display:flex!important;align-items:stretch!important;overflow:hidden!important;background:#061019!important;border-top:1px solid #173044!important;box-shadow:0 -8px 24px rgba(0,0,0,.18)!important;
+  }
+  .iatbSvcTitle{width:142px;flex:0 0 142px;padding:5px 8px;border-right:1px solid var(--ia-line);font-size:9px;font-weight:800;color:#dce8ee;letter-spacing:.25px;text-transform:uppercase}.iatbSvcTitle span{display:block;margin-top:2px;color:#5e7686;font-size:7px;font-weight:500;text-transform:none;letter-spacing:0}
+  .iatbSvcList{flex:1 1 auto;min-width:0;display:flex;align-items:center;gap:4px;padding:4px;overflow-x:auto;overflow-y:hidden}
+  .iatbSvc{min-width:82px;height:36px;flex:1 0 82px;padding:4px 6px;border:1px solid #122a37;border-radius:6px;background:#07131c}.iatbSvcTop{display:flex;align-items:center;gap:5px;color:#a2b3bd;font-size:7px;white-space:nowrap}.iatbSvcDot{width:7px;height:7px;border-radius:50%;background:#526c7d;flex:0 0 7px}.iatbSvcDot.ok{background:#1ed181;box-shadow:0 0 6px rgba(30,209,129,.5)}.iatbSvcDot.warn{background:#d6a537}.iatbSvcDot.bad{background:#e6535e}.iatbSvcPort{display:block;margin:2px 0 0 12px;color:#cfdee5;font-size:6.8px}
+  .iatbSvcTail{width:132px;flex:0 0 132px;padding:5px 8px;border-left:1px solid var(--ia-line);display:grid;grid-template-columns:1fr 1fr;gap:8px}.iatbSvcTail small{display:block;color:#617a8a;font-size:7px}.iatbSvcTail strong{display:block;margin-top:2px;color:#1fd681;font-size:8px}
+
+  /* Keep legacy panels alive for controllers, but out of the layout. */
+  #dynamicBottomRight{display:none!important}
+  .settingsPage,.strategyPage{top:var(--ia-top-h)!important;bottom:var(--ia-status-h)!important}
+  .iatbExchangeColumn.iatbSideCollapsed{width:48px}.iatbExchangeColumn.iatbSideCollapsed .iatbExchangeScroll{display:none}
+}
+
+/* 1280×800 target: preserve the exact three-column composition. */
+@media (min-width:981px) and (max-width:1365px){
+  :root{--ia-left-w:262px;--ia-right-w:302px;--ia-top-h:54px;--ia-status-h:46px}
+  .top{padding-left:calc(var(--ia-left-w) + 10px)!important;padding-right:10px!important}
+  .navActions{gap:5px!important}.navBtn{height:33px!important;padding:0 8px!important;font-size:10px!important}
+  .iatbChatColumn{grid-template-rows:minmax(0,1fr)}
+  .iatbCenterColumn{grid-template-rows:minmax(0,1fr) 206px}.iatbModuleLabel{height:32px;flex-basis:32px}.iatbModuleDeck{padding:6px;gap:6px}.iatbDashCard{padding:9px}.iatbBars{height:52px}.iatbDashCard h3{margin-bottom:6px}.iatbMore{left:9px;bottom:6px}
+  .iatbExchangeRow{height:42px}.iatbConsensus{padding:8px}.iatbConsensusBox{padding:7px}.iatbAddEx{margin:7px 0 8px}
+  .iatbSvcTitle{width:126px;flex-basis:126px}.iatbSvc{min-width:74px;flex-basis:74px}.iatbSvcTail{width:116px;flex-basis:116px}
+}
+
+/* Small desktop fallback. */
+@media (min-width:981px) and (max-width:1100px){
+  :root{--ia-left-w:238px;--ia-right-w:270px}
+  .navBtn{padding:0 6px!important;font-size:9px!important}
+  .iatbCenterColumn{grid-template-rows:minmax(0,1fr) 190px}.iatbModuleDeck{grid-template-columns:repeat(3,minmax(160px,1fr));overflow-x:auto}.iatbDashCard{min-width:160px}
+}
+
+/* Responsive fallback for tablets/small windows. */
+@media (max-width:980px){
+  html,body{overflow:auto!important;background:var(--ia-bg)!important}.app{height:auto!important;min-height:100vh!important;overflow:visible!important}.macbar{display:none!important}
+  .top{position:sticky!important;top:0!important;z-index:80!important;height:auto!important;min-height:54px!important;padding:7px!important;display:flex!important;flex-wrap:wrap!important;background:#030a10!important}.top>.appLogoWrap{display:none!important}.top>.tag{display:none!important}.navActions{display:flex!important;width:100%!important;gap:5px!important;overflow-x:auto!important}.navBtn{height:34px!important;white-space:nowrap!important}
+  .body[data-mosaic-root]{display:flex!important;flex-direction:column!important;height:auto!important;min-height:0!important;overflow:visible!important;padding:7px!important;gap:7px!important;background:var(--ia-bg)!important}.body[data-mosaic-root]>.left,.body[data-mosaic-root]>.right{display:none!important}
+  .iatbChatColumn,.iatbCenterColumn,.iatbExchangeColumn,.iatbServiceStrip{width:100%;min-width:0}.iatbChatColumn{height:520px;display:grid;grid-template-rows:1fr}.iatbCenterColumn{display:flex;flex-direction:column;gap:7px}.iatbCenterColumn #chartArea{height:416px!important}.iatbModuleWrap{min-height:620px}.iatbModuleDeck{grid-template-columns:1fr;gap:7px}.iatbDashCard{min-height:180px}.iatbExchangeColumn{min-height:620px}.iatbServiceStrip{position:relative!important;height:auto!important;min-height:150px!important}.iatbSvcTitle,.iatbSvcTail{display:none}.iatbSvcList{flex-wrap:wrap}.iatbSvc{flex:1 0 120px}
+}
+
+/* Strong reset against the legacy v1.8.3 mosaic coordinates after elements are
+   reparented into the v1.8.6 dashboard shell. */
+@media (min-width:981px){
+  .iatbChatColumn > .chatPrimary[data-mosaic-id="chat"]{
+    grid-column:auto!important;grid-row:auto!important;grid-area:auto!important;
+    align-self:stretch!important;justify-self:stretch!important;
+    width:100%!important;height:100%!important;min-height:0!important;max-height:none!important;
+  }
+  .iatbCenterColumn > #chartArea[data-mosaic-id="chart"]{
+    grid-column:auto!important;grid-row:1!important;grid-area:auto!important;
+    align-self:stretch!important;justify-self:stretch!important;
+  }
+}
+@media (min-width:981px){
+  .body[data-mosaic-root] .iatbChatColumn > .chatPrimary[data-mosaic-id="chat"]{
+    grid-column:auto!important;grid-row:auto!important;grid-area:auto!important;
+  }
+  .body[data-mosaic-root] .iatbCenterColumn > #chartArea[data-mosaic-id="chart"]{
+    grid-column:auto!important;grid-row:1!important;grid-area:auto!important;
+  }
+}
+
+
+/* v1.8.6 hotfix — secondary pages must never expose fragments of the
+   /ia-trading dashboard underneath them. The top navigation remains shared. */
+@media (min-width:981px){
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active .body[data-mosaic-root]{
+    display:none!important;
+  }
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active #settingsPage.settingsPage,
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active #strategyPage.strategyPage,
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active #updatesPage{
+    position:fixed!important;
+    z-index:70!important;
+    left:0!important;right:0!important;
+    top:var(--ia-top-h)!important;bottom:0!important;
+    width:auto!important;height:auto!important;
+    margin:0!important;
+    background:#070b10!important;
+  }
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active #settingsPage.settingsPage,
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active #strategyPage.strategyPage{
+    overflow:auto!important;
+  }
+  html.iatb-dashboard-v186-final.iatb-secondary-page-active .top{
+    z-index:80!important;
+  }
+}
+
+
+/* v1.8.6 hotfix — center-only scrolling on /ia-trading.
+   The left Supervisor rail, right Exchanges rail, top navbar and bottom
+   services strip remain fixed. Chart + mosaic modules form one vertical
+   scroll surface in the center column. */
+@media (min-width:981px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn{
+    display:flex!important;
+    flex-direction:column!important;
+    min-width:0!important;
+    min-height:0!important;
+    height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    scrollbar-width:thin;
+    scrollbar-color:#244b61 #07131c;
+    padding-right:2px!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn::-webkit-scrollbar{width:7px}
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn::-webkit-scrollbar-track{background:#07131c;border-radius:6px}
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn::-webkit-scrollbar-thumb{background:#244b61;border-radius:6px}
+
+  /* Keep a useful chart height instead of compressing it to make the
+     module deck fit in the remaining viewport. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > #chartArea[data-mosaic-id="chart"]{
+    order:1!important;
+    flex:0 0 416px!important;
+    width:100%!important;
+    height:416px!important;
+    min-height:416px!important;
+    max-height:none!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > .iatbModuleWrap{
+    order:2!important;
+    flex:0 0 226px!important;
+    width:100%!important;
+    min-height:226px!important;
+    height:226px!important;
+    margin-top:var(--ia-gap)!important;
+  }
+
+  /* Peripheral columns must never become part of the page scroll. Their
+     own internal message/exchange lists may still scroll independently. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn,
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbExchangeColumn{
+    height:100%!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+}
+
+/* Macro / 1280x800 target: slightly taller chart, compact modules. */
+@media (min-width:981px) and (max-width:1365px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > #chartArea[data-mosaic-id="chart"]{
+    flex-basis:400px!important;
+    height:400px!important;
+    min-height:400px!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > .iatbModuleWrap{
+    flex-basis:206px!important;
+    height:206px!important;
+    min-height:206px!important;
+  }
+}
+
+
+/* v1.8.6 hotfix — compact status bar + hard bottom boundary for all three rails.
+   The service strip is part of the viewport geometry: left/chat, center/chart+mosaics
+   and right/exchanges all terminate above it. Each rail may scroll internally. */
+@media (min-width:981px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .body[data-mosaic-root]{
+    top:var(--ia-top-h)!important;
+    bottom:var(--ia-status-h)!important;
+    height:auto!important;
+    max-height:calc(100vh - var(--ia-top-h) - var(--ia-status-h))!important;
+    overflow:hidden!important;
+    box-sizing:border-box!important;
+  }
+
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn,
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn,
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbExchangeColumn{
+    min-height:0!important;
+    height:100%!important;
+    max-height:100%!important;
+    box-sizing:border-box!important;
+  }
+
+  /* Left rail: brand/header/form remain in place; only message history scrolls. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn{
+    overflow:hidden!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn .chatPrimary{
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn .msgs{
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+  }
+
+  /* Center rail: chart + mosaic deck share one independent scroll surface. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    padding-bottom:8px!important;
+    scroll-padding-bottom:8px!important;
+    overscroll-behavior:contain!important;
+  }
+
+  /* Right rail: title stays fixed; exchanges/consensus area scrolls independently. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbExchangeColumn{
+    overflow:hidden!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbExchangeScroll{
+    flex:1 1 auto!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain!important;
+    padding-bottom:10px!important;
+  }
+
+  /* The status strip itself is exactly the reserved bottom boundary. */
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbServiceStrip{
+    top:auto!important;
+    bottom:0!important;
+    height:var(--ia-status-h)!important;
+    min-height:var(--ia-status-h)!important;
+    max-height:var(--ia-status-h)!important;
+    box-sizing:border-box!important;
+  }
+}
+
+
+/* v1.8.6 UI tuning — toolbar: price is already rendered by the chart itself.
+   Free this space for the Indicator Engine action. */
+@media (min-width:981px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn #chartArea #price,
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn #chartArea .price{
+    display:none!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn #chartArea .iatbIndBtn{
+    display:inline-flex!important;align-items:center!important;justify-content:center!important;
+    flex:0 0 auto!important;white-space:nowrap!important;order:20!important;
+  }
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn #chartArea #wsState{
+    order:30!important;margin-left:auto!important;
+  }
+}
+
+/* v1.8.6 final scroll-boundary correction.
+   The fixed service strip is a real viewport boundary. The center rail gets
+   a dedicated trailing spacer so its last mosaic can always be scrolled
+   completely above the status strip instead of ending underneath it. */
+@media (min-width:981px){
+  :root{--ia-status-safe-gap:10px}
+
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .body[data-mosaic-root]{
+    bottom:calc(var(--ia-status-h) + var(--ia-status-safe-gap))!important;
+    max-height:calc(100vh - var(--ia-top-h) - var(--ia-status-h) - var(--ia-status-safe-gap))!important;
+  }
+
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn{
+    box-sizing:border-box!important;
+    padding-bottom:0!important;
+    scroll-padding-bottom:calc(var(--ia-status-h) + 18px)!important;
+  }
+
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn:after{
+    content:''!important;
+    display:block!important;
+    flex:0 0 calc(var(--ia-status-h) + 18px)!important;
+    width:100%!important;
+    height:calc(var(--ia-status-h) + 18px)!important;
+    min-height:calc(var(--ia-status-h) + 18px)!important;
+    pointer-events:none!important;
+  }
+
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbChatColumn,
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbExchangeColumn{
+    margin-bottom:0!important;
+    max-height:100%!important;
+  }
+}
+
+/* Macro / 1280x800: make the status strip thinner while preserving all fields. */
+@media (min-width:981px) and (max-width:1365px){
+  :root{--ia-status-h:40px;--ia-status-safe-gap:6px}
+  .iatbSvcTitle{padding:3px 7px!important}
+  .iatbSvcList{padding:3px!important;gap:3px!important}
+  .iatbSvc{height:31px!important;padding:3px 5px!important}
+  .iatbSvcTop{font-size:6.7px!important}
+  .iatbSvcPort{margin-top:1px!important;font-size:6.3px!important}
+  .iatbSvcTail{padding:3px 6px!important}
+}
+
+
+/* IA-TB v1.8.10 Trading IA UI hotfix.
+   Scope intentionally limited to Trading IA: keep all mosaics/modules unchanged. */
+html.iatb-dashboard-v186-final .iatbChatColumn > .iatbBrandBox{display:none!important}
+html.iatb-dashboard-v186-final .iatbCenterColumn #chartArea > .iatbChartHead{display:none!important;height:0!important;min-height:0!important;flex-basis:0!important;border:0!important;padding:0!important}
+
+
+/* v2.0 DEBUG — Trading IA modular workspace 5 x 3
+   One grid cell = 1/5 of the available module deck width.
+   The center rail scrolls independently, so the larger deck never pushes
+   Supervisor/Exchanges outside their viewport rails. */
+@media (min-width:981px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > .iatbModuleWrap{
+    flex:0 0 430px!important;
+    height:430px!important;
+    min-height:430px!important;
+    max-height:430px!important;
+    margin-top:6px!important;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleLabel{
+    height:34px!important;
+    flex:0 0 34px!important;
+    min-height:34px!important;
+    padding:0 9px!important;
+    gap:8px!important;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleLabel span{
+    margin-left:7px;
+    color:#678191;
+    font-size:8px;
+    font-weight:500;
+    letter-spacing:0;
+    text-transform:none;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleDeck{
+    position:relative!important;
+    flex:1 1 auto!important;
+    min-height:0!important;
+    height:auto!important;
+    display:grid!important;
+    grid-template-columns:repeat(5,minmax(0,1fr))!important;
+    grid-template-rows:repeat(3,minmax(0,1fr))!important;
+    grid-auto-flow:dense!important;
+    grid-auto-columns:minmax(0,1fr)!important;
+    gap:6px!important;
+    padding:6px!important;
+    overflow:hidden!important;
+    background-color:#050f18!important;
+    background-image:
+      linear-gradient(rgba(37,91,121,.16) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(37,91,121,.16) 1px,transparent 1px)!important;
+    background-size:20% 33.333%!important;
+  }
+  html.iatb-dashboard-v186-final .iatbGridModule{
+    position:relative!important;
+    min-width:0!important;
+    min-height:0!important;
+    width:auto!important;
+    height:auto!important;
+    padding:27px 9px 9px!important;
+    overflow:auto!important;
+    resize:none!important;
+    border-color:#17384b!important;
+    transition:border-color .12s ease,box-shadow .12s ease,opacity .12s ease!important;
+    scrollbar-width:thin;
+    scrollbar-color:#244b61 #07131c;
+  }
+  html.iatb-dashboard-v186-final .iatbGridModule:hover{
+    border-color:#235b78!important;
+    box-shadow:0 0 0 1px rgba(33,156,224,.05),0 5px 16px rgba(0,0,0,.14)!important;
+  }
+  html.iatb-dashboard-v186-final .iatbGridModule.dragging{
+    opacity:.46!important;
+    border-color:#26b7ff!important;
+    box-shadow:0 0 20px rgba(31,168,255,.20)!important;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleChrome{
+    position:absolute;
+    z-index:4;
+    left:5px;
+    right:5px;
+    top:4px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    pointer-events:none;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleGrip{
+    width:20px;
+    height:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #1a4258;
+    border-radius:4px;
+    background:#071925;
+    color:#6f9eb6;
+    font-size:12px;
+    line-height:1;
+    cursor:grab;
+    user-select:none;
+    pointer-events:auto;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleGrip:hover{
+    color:#39c8ff;
+    border-color:#247ba4;
+    background:#092235;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleSize{
+    color:#587888;
+    font-size:7px;
+    font-family:Menlo,Monaco,monospace;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleNo{
+    margin-left:auto;
+    min-width:23px;
+    height:18px;
+    padding:0 5px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:1px solid #205b7a;
+    border-radius:5px;
+    background:#08243a;
+    color:#52cfff;
+    font-size:8px;
+    font-family:Menlo,Monaco,monospace;
+    font-weight:800;
+    box-shadow:0 0 8px rgba(29,170,255,.08);
+  }
+  html.iatb-dashboard-v186-final .iatbModuleResize{
+    position:absolute;
+    z-index:5;
+    right:2px;
+    bottom:2px;
+    width:19px;
+    height:19px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:0;
+    border-radius:4px;
+    background:rgba(7,26,39,.88);
+    color:#4b8da9;
+    font-size:11px;
+    cursor:nwse-resize;
+    user-select:none;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleResize:hover{color:#39c8ff;background:#0a2b42}
+  html.iatb-dashboard-v186-final .iatbGridModule h3{
+    padding-right:4px!important;
+    margin-bottom:6px!important;
+    font-size:9px!important;
+    line-height:1.2!important;
+  }
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbMetricBig strong{font-size:15px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbMetricBig span{font-size:7.5px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbBars{height:38px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbAiSummary{font-size:8px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbMiniTable{font-size:8px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule .iatbMore{left:9px;bottom:6px}
+  html.iatb-grid-resizing,html.iatb-grid-resizing *{cursor:nwse-resize!important;user-select:none!important}
+}
+
+/* 1280-ish Mac target: keep all 15 cells usable but trim the deck vertically. */
+@media (min-width:981px) and (max-width:1365px){
+  html.iatb-dashboard-v186-final:not(.iatb-secondary-page-active):not(.ia-chart-focus-mode) .iatbCenterColumn > .iatbModuleWrap{
+    flex-basis:392px!important;
+    height:392px!important;
+    min-height:392px!important;
+    max-height:392px!important;
+  }
+  html.iatb-dashboard-v186-final .iatbModuleDeck{gap:5px!important;padding:5px!important}
+  html.iatb-dashboard-v186-final .iatbGridModule{padding:25px 7px 7px!important}
+}
+
+/* On narrow desktops preserve the 5-column logic; allow the module deck itself
+   to scroll horizontally instead of collapsing the 1/5-width model. */
+@media (min-width:981px) and (max-width:1100px){
+  html.iatb-dashboard-v186-final .iatbModuleDeck{
+    grid-template-columns:repeat(5,minmax(118px,1fr))!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+  }
+}
+
+/* Tablet/mobile fallback: no drag geometry assumptions, readable single column. */
+@media (max-width:980px){
+  .iatbModuleWrap{min-height:720px!important;height:auto!important}
+  .iatbModuleDeck{grid-template-columns:1fr!important;grid-template-rows:none!important;grid-auto-rows:minmax(150px,auto)!important;overflow:visible!important}
+  .iatbGridModule{grid-column:1!important;grid-row:auto!important;min-height:150px!important;padding-top:28px!important}
+  .iatbModuleResize{display:none!important}
+}
+
+
+/* v2.0 DEBUG — universal JSON indicator reader */
+.indicatorDockBody{display:grid!important;grid-template-columns:1fr!important;gap:7px!important}
+.indicatorJsonPane{position:relative!important;height:132px!important;min-height:132px!important;border:1px solid #1e3c4d!important;border-radius:7px!important;background:#061019!important;overflow:hidden!important}
+.indicatorJsonPane canvas{position:absolute;inset:0;width:100%!important;height:100%!important}
+.indicatorReaderLatest{position:absolute;right:8px;top:7px;z-index:3;max-width:62%;padding:2px 6px;border:1px solid #1d4a61;border-radius:9px;background:rgba(5,18,27,.84);color:#8bdcff;font:8px/1.25 Menlo,Monaco,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.indicatorReaderEmpty b{color:#58cef7}
+@media(max-width:980px){.indicatorJsonPane{height:145px!important;min-height:145px!important}.indicatorReaderLatest{max-width:56%}}

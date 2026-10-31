@@ -1,0 +1,104 @@
+{
+  "schema": 1,
+  "version": "2.0",
+  "description": "Manifest-driven market provider catalogue. Add a provider here or through Provider/Custom/*.provider.json without changing Router/Core.",
+  "providers": [
+    {
+      "id": "KRAKEN",
+      "label": "Kraken",
+      "type": "CEX",
+      "module": "./kraken_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "KRAKEN",
+      "transport": "REST",
+      "defaultEnabled": true
+    },
+    {
+      "id": "BINANCE",
+      "label": "Binance",
+      "type": "CEX",
+      "module": "./binance_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "BINANCE",
+      "transport": "REST",
+      "defaultEnabled": true
+    },
+    {
+      "id": "OKX",
+      "label": "OKX",
+      "type": "CEX",
+      "module": "./okx_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "OKX",
+      "transport": "REST",
+      "defaultEnabled": true
+    },
+    {
+      "id": "BYBIT",
+      "label": "Bybit",
+      "type": "CEX",
+      "module": "./bybit_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "BYBIT",
+      "transport": "REST",
+      "defaultEnabled": true
+    },
+    {
+      "id": "GMX",
+      "label": "GMX",
+      "type": "DEX",
+      "module": "./gmx_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "GMX",
+      "transport": "REST_ORACLE",
+      "defaultEnabled": true
+    },
+    {
+      "id": "HYPERLIQUID",
+      "label": "Hyperliquid",
+      "type": "DEX",
+      "module": "./hyperliquid_provider",
+      "capabilities": [
+        "candles",
+        "ticker",
+        "symbols"
+      ],
+      "settingsKey": "HYPERLIQUID",
+      "transport": "REST",
+      "defaultEnabled": true
+    },
+    {
+      "id": "DEXSCREENER",
+      "label": "DEX Screener",
+      "type": "DEX_AGGREGATOR",
+      "module": "./dexscreener_provider",
+      "capabilities": [
+        "ticker",
+        "liquidity"
+      ],
+      "settingsKey": "DEXSCREENER",
+      "transport": "REST",
+      "defaultEnabled": true
+    }
+  ]
+}

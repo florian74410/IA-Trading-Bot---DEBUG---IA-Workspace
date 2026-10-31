@@ -1,0 +1,58 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "obv",
+  "name": "On-Balance Volume",
+  "version": "2.1",
+  "category": "volume",
+  "inputs": {
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "volume": {
+      "type": "series",
+      "default": "volume",
+      "allowed": [
+        "volume"
+      ]
+    }
+  },
+  "engine": {
+    "operation": "obv"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      },
+      "render": "area"
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": []
+    }
+  }
+}

@@ -1,0 +1,323 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stratégies · IA-TB</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#070b10;color:#d8e3ec;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:13px}button,input,select{font:inherit}.hide{display:none!important}.auth{height:100%;display:flex;align-items:center;justify-content:center}.card{width:340px;padding:24px;border:1px solid #263747;background:#0c131b;border-radius:8px}.card h1{font-size:19px;margin:0 0 8px}.muted{color:#8295a6}.card input{width:100%;margin:6px 0;padding:10px;background:#071018;border:1px solid #293b4a;color:#fff;border-radius:4px}.btn{border:0;border-radius:4px;padding:9px 12px;background:#1d70a5;color:#fff;cursor:pointer}.card .btn{width:100%;margin-top:10px}.err{color:#ff7a86;margin-top:8px;min-height:17px}.app{height:100%;display:flex;flex-direction:column;position:relative}.top{height:43px;flex:0 0 43px;border-bottom:1px solid #20303c;display:flex;align-items:center;padding:0 10px;gap:9px;background:#0a1017}.brand{font-weight:700;margin-right:auto}.tag{border:1px solid #355065;border-radius:12px;padding:3px 8px;font-size:11px;color:#9dc9e7}.body{min-height:0;flex:1;display:flex}.left{width:38%;min-width:310px;border-right:1px solid #20303c;display:flex;flex-direction:column}.consoleWrap{height:43%;min-height:145px;display:flex;flex-direction:column;border-bottom:1px solid #20303c}.panelTitle{height:31px;flex:0 0 31px;display:flex;align-items:center;padding:0 9px;background:#0d151e;border-bottom:1px solid #1c2a35;font-size:11px;text-transform:uppercase;letter-spacing:.5px}.console{flex:1;overflow:auto;padding:7px;background:#05090d;color:#88a0b3;font:11px Menlo,Monaco,monospace;white-space:pre-wrap}.console div{margin:1px 0}.console .ORDER{color:#e9c46a}.console .GMX{color:#63b3ed}.console .SYSTEM{color:#8fd6a9}.console .OPENAI{color:#bd9cff}.chat{flex:1;min-height:0;display:flex;flex-direction:column}.msgs{flex:1;overflow:auto;padding:9px}.msg{padding:7px 8px;margin:5px 0;border-radius:5px;max-width:94%;white-space:pre-wrap;line-height:1.35}.me{background:#163048;margin-left:auto}.ai{background:#172119}.local{border-left:3px solid #7f8c97}.chatForm{display:flex;gap:5px;padding:7px;border-top:1px solid #1c2a35}.chatForm input{min-width:0;flex:1;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:8px}.right{flex:1;min-width:0;display:flex;flex-direction:column}.controls{min-height:54px;flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:6px 9px;border-bottom:1px solid #20303c;flex-wrap:wrap}.controls select{background:#09121a;color:#dce9f2;border:1px solid #2a3b49;border-radius:3px;padding:6px}.price{font-size:20px;font-weight:600;margin-left:auto}.chartTools{display:flex;align-items:center;gap:8px;font-size:11px;color:#9db0bf}.chartTools label{display:flex;align-items:center;gap:3px;white-space:nowrap}.chartTools input{margin:0}.chart{position:relative;flex:1;min-height:220px}.chart canvas{display:block;width:100%;height:100%}.marketState{position:absolute;left:10px;top:8px;background:rgba(5,9,13,.80);padding:4px 7px;border-radius:3px;font-size:11px}.orders{min-height:88px;flex:0 0 auto;border-top:1px solid #20303c;padding:8px;display:flex;align-items:center;gap:8px;background:#0b1219;flex-wrap:wrap}.orders input{width:80px;background:#071018;color:#fff;border:1px solid #2a3b49;padding:6px}.orders select{background:#071018;color:#fff;border:1px solid #2a3b49;padding:6px}.orders button{padding:8px 15px;border:0;color:#fff;border-radius:4px;cursor:pointer}.buy{background:#138a5b}.sell{background:#b64552}.result{font-size:11px;color:#9bb0c0;max-width:320px}.status{font-size:11px;color:#91a5b7}.warn{color:#e9c46a}.tiny{font-size:10px;color:#8295a6}.aiHint{padding:5px 8px;border-top:1px solid #17242e;background:#091017;color:#8295a6;font-size:10px}
+
+.macbar{height:31px;flex:0 0 31px;display:flex;align-items:center;gap:7px;padding:0 8px;border-bottom:1px solid #263746;background:linear-gradient(#18222d,#111923);white-space:nowrap;overflow-x:auto;overflow-y:hidden;font-size:11px;box-shadow:inset 0 1px rgba(255,255,255,.035)}.macdots{display:flex;gap:5px;margin-right:2px}.dotmac{width:9px;height:9px;border-radius:50%;display:block}.dotred{background:#ff605c}.dotyellow{background:#ffbd44}.dotgreen{background:#00ca4e}.menuApp{font-weight:700;color:#eef6fc;margin-right:4px}.menuSep{height:16px;width:1px;background:#334654;flex:0 0 1px}.menuItem{display:flex;align-items:center;gap:4px;height:22px;padding:0 7px;border:1px solid transparent;border-radius:5px;color:#b8c8d5}.menuItem strong{color:#eef6fc;font-weight:600}.menuItem.action{cursor:pointer;border-color:#344b5c;background:#0d1720}.menuItem.action:hover{background:#182733}.statusDot{width:6px;height:6px;border-radius:50%;background:#607484;display:inline-block}.statusDot.ok{background:#43cf8e;box-shadow:0 0 5px rgba(67,207,142,.55)}.statusDot.warn{background:#e9c46a}.statusDot.bad{background:#e45d6b}.walletMenu{position:fixed;top:34px;right:10px;z-index:30;width:300px;padding:12px;border:1px solid #314758;border-radius:7px;background:#0c141d;box-shadow:0 12px 32px rgba(0,0,0,.5)}.walletMenu h3{font-size:13px;margin:0 0 8px}.walletRow{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid #1d2b36}.walletRow:last-of-type{border-bottom:0}.walletActions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.walletActions button{padding:6px 8px}.walletNote{font-size:10px;color:#7f93a4;margin-top:7px;line-height:1.35}.top{height:38px;flex:0 0 38px}.walletConnect{background:#264c67}.menuBalance{font-variant-numeric:tabular-nums}.copyable{cursor:pointer}.copyable:hover{color:#fff}
+
+
+.navActions{display:flex;align-items:center;gap:6px}.navBtn{padding:6px 10px;background:#101b25;border:1px solid #304657;color:#dce9f2;border-radius:5px;cursor:pointer}.navBtn:hover{background:#182733}.navBtn.active{border-color:#4a8ec2;background:#12304a}.gmxPanel{min-height:178px;flex:0 0 178px;border-top:1px solid #20303c;background:#0b1219;display:flex;flex-direction:column}.gmxBody{flex:1;display:grid;grid-template-columns:1fr 1.15fr;gap:9px;padding:8px;min-height:0}.gmxStats{border-right:1px solid #20303c;padding-right:8px;font-size:11px}.gmxStat{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px solid #17242e}.gmxDraft{display:grid;grid-template-columns:repeat(4,minmax(75px,1fr));gap:5px;align-content:start}.gmxDraft label{font-size:10px;color:#8295a6;display:flex;flex-direction:column;gap:3px}.gmxDraft input,.gmxDraft select{min-width:0;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:3px;padding:5px}.gmxActions{grid-column:1/-1;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.gmxActions button{padding:6px 9px}.gmxLong{background:#138a5b}.gmxShort{background:#b64552}.gmxOpen{background:#7659c7}.gmxRisk{font-size:10px;color:#e9c46a;grid-column:1/-1}.settingsPage{position:absolute;z-index:20;left:0;right:0;top:114px;bottom:0;background:#070b10;overflow:auto;padding:18px}.settingsInner{max-width:920px;margin:0 auto}.settingsHead{display:flex;align-items:center;gap:10px;margin-bottom:14px}.settingsHead h2{margin:0;font-size:20px}.settingsHead .btn{margin-left:auto}.settingsGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.settingsCard{background:#0c141d;border:1px solid #283b4b;border-radius:7px;padding:14px}.settingsCard h3{margin:0 0 10px;font-size:13px}.settingRow{display:grid;grid-template-columns:1fr 180px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid #182631}.settingRow:last-child{border-bottom:0}.settingRow select,.settingRow input{width:100%;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:7px}.settingHint{font-size:10px;color:#8295a6;margin-top:3px}.locked{color:#8fd6a9;font-size:11px}.gmxBadge{border:1px solid #5b4d97;color:#c6b7ff}.console .GMX{color:#d6b4ff}.profileBar{display:flex;gap:8px;flex-wrap:wrap;align-items:end;margin-bottom:10px}.profileBar label{display:flex;flex-direction:column;gap:4px;font-size:11px;color:#a8bbc9}.profileBar select,.profileBar input{min-width:220px;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:7px}.settingsTabs{display:flex;gap:6px;margin-bottom:10px}.settingsTabPage.hide{display:none!important}.powerDial{position:relative;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2b3f4f,#101821 70%);border:4px solid #415a6d;margin:0 auto}.powerNeedle{position:absolute;left:50%;top:50%;width:4px;height:52px;margin-left:-2px;margin-top:-52px;background:#e9c46a;transform-origin:50% 100%;border-radius:4px}.powerCenter{position:absolute;left:50%;top:50%;width:54px;height:54px;margin-left:-27px;margin-top:-27px;border-radius:50%;background:#08121a;border:2px solid #587084;display:flex;align-items:center;justify-content:center;font-weight:700}.powerTick{position:absolute;width:48px;text-align:center;font-size:11px;color:#9ab0c0;cursor:pointer}.tickEco{left:6px;top:95px}.tickNormal{left:56px;top:8px}.tickOc{right:6px;top:95px}.methodItem{display:flex;align-items:flex-start;gap:8px;padding:8px;border:1px solid #223443;border-radius:6px;background:#09121a;margin-top:7px}.methodItem input{margin-top:3px}.helpBtn{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1px solid #4a677c;color:#dce9f2;font-size:10px;cursor:pointer;background:#10202d}.tokenBoard{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.tokenStat{padding:10px;border:1px solid #223443;border-radius:7px;background:#09121a}.tokenStat b{display:block;font-size:18px;margin-top:4px}.tokenCanvasWrap{margin-top:12px;border:1px solid #223443;border-radius:7px;background:#09121a;padding:10px}.tokenCanvasWrap canvas{width:100%;height:220px;display:block}.tokenRange{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+@media(max-width:1000px){.gmxDraft{grid-template-columns:repeat(2,minmax(90px,1fr))}.gmxPanel{flex-basis:230px}.settingsGrid{grid-template-columns:1fr}.tokenBoard{grid-template-columns:1fr 1fr}}
+
+@media(max-width:820px){.body{display:block;overflow:auto}.left{width:100%;height:470px;border-right:0}.right{height:620px}.top{position:sticky;top:0;z-index:5}.price{font-size:15px;margin-left:0}.controls{min-height:88px}}
+
+.pendingOrder{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px;border-top:1px solid #6f5b20;border-bottom:1px solid #6f5b20;background:#2b2410;color:#f4dda0}.pendingActions{display:flex;gap:5px}.wideCard{grid-column:1/-1}.secretGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.secretGrid label{display:flex;flex-direction:column;gap:5px;color:#a8bbc9}.secretLine{display:flex;gap:5px}.secretLine input{flex:1;min-width:0;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:8px}.eyeBtn{width:38px;border:1px solid #2a3b49;background:#101b25;color:#dce9f2;border-radius:4px;cursor:pointer}.settingsActions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.secondary{background:#31495d}.commandHelp{font-size:11px;color:#9bb0c0;margin:9px 0}.commandDnD{display:grid;grid-template-columns:1fr 34px 1fr;gap:6px;align-items:stretch}.commandArrow{display:flex;align-items:center;justify-content:center;color:#7890a2;font-size:20px}.commandTitle{font-size:11px;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}.commandTitle.allowed{color:#62d99d}.commandTitle.denied{color:#ef7c88}.commandBox{min-height:215px;max-height:280px;overflow:auto;padding:7px;border:1px dashed #385064;border-radius:6px;background:#070d13}.commandBox.dragOver{border-color:#5fa8d8;background:#0e1a24}.commandItem{padding:7px 8px;margin:5px 0;border:1px solid #2b3f4e;border-radius:5px;background:#111c25;cursor:grab;font-size:11px}.commandItem small{display:block;color:#7890a2;margin-top:2px}.sessionBlock{margin-top:12px;padding-top:10px;border-top:1px solid #20303c}.sessionBlock h4{margin:0 0 7px;font-size:12px}.sessionBlock input{width:100%;margin:4px 0;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:7px}.recoveryBox{margin-top:10px;padding-top:9px;border-top:1px solid #293b4a}.recoveryBox input{width:100%;margin:4px 0;padding:9px;background:#071018;border:1px solid #293b4a;color:#fff;border-radius:4px}.linkBtn{border:0;background:transparent;color:#7eb9df;cursor:pointer;padding:6px 0;text-decoration:underline}.riskAuto{color:#ffbd73;font-weight:700}
+@media(max-width:1000px){.secretGrid{grid-template-columns:1fr}.wideCard{grid-column:auto}.commandDnD{grid-template-columns:1fr}.commandArrow{transform:rotate(90deg)}}
+
+
+.strategyPage{position:absolute;z-index:21;left:0;right:0;top:114px;bottom:0;background:#070b10;overflow:auto;padding:18px}.strategyInner{max-width:920px;margin:0 auto}.strategyGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.strategyCard{background:#0c141d;border:1px solid #283b4b;border-radius:7px;padding:14px}.strategyCard.wide{grid-column:1/-1}.strategyCard h3{margin:0 0 10px;font-size:13px}.strategyRow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:8px 0}.strategyRow select{flex:1;min-width:230px;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:8px}.strategyInfo{border:1px solid #223747;background:#081119;border-radius:6px;padding:11px;line-height:1.55;min-height:95px}.strategyState{font-weight:700}.strategyState.RUNNING{color:#43cf8e}.strategyState.PAUSED{color:#e9c46a}.strategyState.STOPPED{color:#9bb0c0}.strategyHash{font-family:Menlo,Monaco,monospace;font-size:10px;color:#718697;overflow-wrap:anywhere}.strategyHelp{font-size:11px;color:#90a4b4;line-height:1.5}.filePick{position:relative;overflow:hidden}.filePick input{position:absolute;left:-9999px}.strategyRun{background:#138a5b}.strategyPause{background:#a26f24}.strategyStop,.shutdownBtn{background:#9d3441}.console .STRATEGY{color:#c39df1}.strategyBadge{border-color:#6b55a6;color:#d2c7ff}.shutdownBtn{border-color:#9d3441!important}
+@media(max-width:900px){.strategyGrid{grid-template-columns:1fr}.strategyCard.wide{grid-column:auto}}
+
+
+/* IA-Trading-Bot · Strategy Engine v2 */
+:root{--f-bg:#07090b;--f-panel:#0d1115;--f-line:#303a42;--f-text:#eef1f3;--f-bluegray:#607989;--f-bluegray2:#8297a4;--f-red:#c94b50;--f-red2:#7f2f34}
+html,body{background:radial-gradient(circle at 50% -20%,#1a2228 0,#090c0f 45%,#050607 100%);color:var(--f-text)}
+.macbar,.top,.panelTitle{background:linear-gradient(180deg,#161b20,#0b0e11);border-color:var(--f-line)}.card,.settingsCard,.walletMenu,.strategyCard{background:linear-gradient(180deg,#11171b,#0b0f12);border-color:var(--f-line)}
+.btn{background:linear-gradient(180deg,#738a98,#4d6472);border:1px solid #8197a3;color:#fff;box-shadow:inset 0 1px rgba(255,255,255,.12)}.btn:hover{filter:brightness(1.08)}.navBtn{background:#0c1115;border-color:#394751;color:#dce3e7}.navBtn:hover,.navBtn.active{background:#192128;border-color:#738a98}.shutdownBtn,.dangerBtn{border-color:var(--f-red);color:#ffd7d9}.shutdownBtn:hover,.dangerBtn:hover{background:#35171a}.tag{border-color:#50616d;color:#d5dde2;background:#10161a}.riskAuto{color:#e8a4a7}
+.console{background:#050708}.console .REQUEST{color:#ff8b91}.console .ORDER{color:#d8e0e5}.console .OPENAI{color:#9db4c3}.console .GMX{color:#a9bbc6}.console .SYSTEM{color:#b9c3c9}.price{color:#f5f7f8}.marketState{background:rgba(7,9,11,.88);border:1px solid #303b43}.legacyHidden{display:none!important}
+.pendingOrder{align-items:stretch;border-color:#6e3438;background:linear-gradient(90deg,#211012,#13171a);color:#f2e6e7}.pendingMain{flex:1;min-width:0}.pendingActions{min-width:235px;flex-direction:column;justify-content:center}.manualConfirm{display:flex;gap:7px;align-items:flex-start;font-size:11px;color:#e8edef}.manualConfirm input{margin-top:2px}.requestPreview{margin-top:6px;padding:6px;border:1px solid #513337;background:#090b0d;border-radius:4px;color:#e4aeb1;font:10px Menlo,Monaco,monospace;overflow-wrap:anywhere}
+.dynamicBottomRight{flex:0 0 270px;min-height:220px;border-top:1px solid var(--f-line);background:#070a0d;padding:8px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(118px,1fr);gap:8px;overflow:auto}.dynamicModule{min-width:0;min-height:0;border:1px solid #303c45;border-radius:7px;background:linear-gradient(160deg,#12191e,#090d10 70%);padding:10px;overflow:hidden;position:relative}.dynamicModule:before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(var(--f-bluegray2),var(--f-red2))}.dynamicModule h4{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:#dce5ea}.moduleRow{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px solid #202930;font-size:11px}.moduleRow:last-child{border-bottom:0}.moduleValue{color:#f1f4f5;font-weight:600;white-space:nowrap}.moduleEmpty{grid-column:1/-1;display:flex;align-items:center;justify-content:center;color:#7e8b93;border:1px dashed #35434c;border-radius:6px}.moduleLogs{font:10px Menlo,Monaco,monospace;white-space:pre-wrap;color:#a7b3ba;max-height:90px;overflow:hidden}
+.moduleMosaic{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.moduleChoice{border:1px solid #34424b;background:#0a0e11;border-radius:8px;padding:12px;min-height:108px;display:flex;flex-direction:column;gap:7px;cursor:pointer;transition:.15s}.moduleChoice:hover{border-color:#6c8290;transform:translateY(-1px)}.moduleChoice.selected{border-color:#8da0aa;background:linear-gradient(145deg,#172127,#101417)}.moduleChoiceHead{display:flex;align-items:center;justify-content:space-between;gap:10px}.moduleChoice h4{margin:0;font-size:12px}.moduleChoice p{margin:0;color:#89979f;font-size:10px;line-height:1.4}.moduleChoice input{accent-color:#a84b50}.modulationOnly{grid-column:1/-1}.settingsTabs{border-bottom:1px solid #2a343b;padding-bottom:8px}.settingsTabs .navBtn.active{border-color:#8599a5;box-shadow:inset 0 -2px var(--f-red)}.powerNeedle{background:linear-gradient(#e9ecee,#bfc8cd);box-shadow:0 0 8px rgba(205,220,228,.4)}
+@media(max-width:1100px){.left{width:42%;min-width:285px}.dynamicBottomRight{flex-basis:300px}.settingsInner{max-width:96%}}@media(max-width:820px){.dynamicBottomRight{grid-template-columns:1fr;grid-auto-rows:minmax(120px,auto);flex-basis:360px}.moduleMosaic{grid-template-columns:1fr}.pendingOrder{flex-direction:column}.pendingActions{min-width:0}.settingsTabs{overflow-x:auto;white-space:nowrap}.top{height:auto;min-height:42px;flex-wrap:wrap}.body{display:block;overflow:auto}.left{width:100%;height:520px}.right{height:760px}}
+
+.updatePage{position:absolute;z-index:21;left:0;right:0;top:114px;bottom:0;background:#070b10;overflow:auto;padding:18px}.updateInner{max-width:980px;margin:0 auto}.updateGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.updateCard{background:linear-gradient(180deg,#11171b,#0b0f12);border:1px solid #283b4b;border-radius:7px;padding:14px}.updateCard.wide{grid-column:1/-1}.updateRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0}.updateRow input[type=text],.updateRow input[type=url]{flex:1;min-width:280px;background:#071018;color:#fff;border:1px solid #2a3b49;border-radius:4px;padding:8px}.updateFile{display:flex;flex-direction:column;gap:5px}.updateFile input[type=file]{padding:8px;border:1px dashed #395064;border-radius:6px;background:#09121a;color:#dce9f2}.updateHistory{width:100%;border-collapse:collapse;font-size:11px}.updateHistory th,.updateHistory td{padding:7px;border-bottom:1px solid #1d2b36;text-align:left;vertical-align:top}.updateHistory th{color:#9fb4c4}.updateOk{color:#8fd6a9}.updateBad{color:#ff7a86}.updateWarn{color:#e9c46a}.manifestBox{background:#05090d;border:1px solid #223443;border-radius:6px;padding:9px;white-space:pre-wrap;font:11px Menlo,Monaco,monospace;max-height:240px;overflow:auto}.dangerConfirm{display:flex;align-items:center;gap:6px;font-size:11px;color:#e9c46a}.archDiagram{white-space:pre-wrap;font:11px Menlo,Monaco,monospace;line-height:1.5;background:#05090d;border:1px solid #223443;border-radius:6px;padding:10px}@media(max-width:760px){.updateGrid{grid-template-columns:1fr}.updateCard.wide{grid-column:auto}.updateRow input[type=text],.updateRow input[type=url]{min-width:100%}}
+
+.settingsUpdateGrid{margin-top:2px}.updateCardTitle{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.updateCardTitle h3{margin-top:0}.updateDropZone{margin-top:12px;min-height:185px;border:2px dashed #405766;border-radius:10px;background:linear-gradient(180deg,#0b151c,#080d11);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:22px;text-align:center;outline:none;transition:border-color .15s,background .15s,transform .15s}.updateDropZone:hover,.updateDropZone:focus{border-color:#7f929d;background:#101b21}.updateDropZone.dragOver{border-color:#b7c5cc;background:#15242c;transform:scale(1.005)}.updateDropZone.verified{border-color:#5d9b77;background:#0c1d16}.updateDropZone.rejected{border-color:#b45d64;background:#211014}.updateDropIcon{font-size:34px;line-height:1;color:#aebbc2}.updateRemoteBox{margin-top:12px;border-top:1px solid #24323a;padding-top:10px}.updateRemoteBox summary{cursor:pointer;color:#a9b7bf}.updateProtected{margin:10px 0;line-height:1.5}.updateInstallDone{color:#8fd6a9}.updateInstallError{color:#ff7a86}
+
+
+/* v1.1.1 — Desktop App NoScroll / Modules scroll */
+@media (min-width:821px){
+  html,body{overflow:hidden!important}
+  .app{height:100%!important;max-height:100%!important;overflow:hidden!important}
+  .body{min-height:0!important;overflow:hidden!important}
+  .left,.right{min-height:0!important;overflow:hidden!important}
+  .right{height:100%!important}
+  .dynamicBottomRight{
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+}
+
+/* v1.2.1 — NoScroll global + scroll interne colonne gauche */
+@media (min-width:821px){
+  html,body{
+    overflow:hidden!important;
+  }
+  .app{
+    height:100%!important;
+    max-height:100%!important;
+    overflow:hidden!important;
+  }
+  .body{
+    min-height:0!important;
+    overflow:hidden!important;
+  }
+
+  /* Console + Chat IA : la colonne gauche défile, pas la page entière. */
+  .left{
+    min-height:0!important;
+    height:100%!important;
+    max-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+
+  /* Conserver le comportement déjà validé de la zone Modules/Mosaïque. */
+  .dynamicBottomRight{
+    min-height:0!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+  }
+}
+
+/* v1.2.2 — Scroll interne du module Chat IA.
+   La grille Mosaïque impose overflow:hidden aux modules; on réouvre
+   explicitement le module Chat et on confie le scroll au module entier. */
+@media (min-width:821px){
+  .body[data-mosaic-root] [data-mosaic-id="chat"]{
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    overscroll-behavior:contain;
+    scrollbar-gutter:stable;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+  .body[data-mosaic-root] [data-mosaic-id="chat"] .msgs{
+    flex:0 0 auto!important;
+    overflow:visible!important;
+    min-height:0!important;
+  }
+  .body[data-mosaic-root] [data-mosaic-id="chat"] .panelTitle{
+    position:sticky;
+    top:0;
+    z-index:2;
+  }
+}
+
+/* v1.7.3 — Desktop UI polish + Strategy control page */
+.appLogoWrap{height:38px;min-width:210px;max-width:290px;display:flex;align-items:center;overflow:hidden;flex:0 1 290px;margin-right:auto}.appLogo{display:block;max-height:36px;width:auto;max-width:100%;object-fit:contain;object-position:left center;filter:drop-shadow(0 0 4px rgba(0,196,255,.16))}.chatPrimary{height:100%;min-height:0}.chatPrimary .msgs{flex:1 1 auto!important;min-height:120px!important}.chatPrimary .aiHint,.chatPrimary .chatForm{flex:0 0 auto}@media(max-width:1000px){.appLogoWrap{max-width:235px;min-width:170px}.appLogo{max-height:32px}}@media(max-width:820px){.appLogoWrap{max-width:205px;min-width:150px}.appLogo{max-height:30px}}
+/* v1.7 — Indicator Engine + Communication */
+.engineIndicatorGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.engineIndicatorItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px;border:1px solid #2d3b44;border-radius:6px;background:#090e12}.engineIndicatorItem.offline{opacity:.58}.engineIndicatorMeta{min-width:0}.engineIndicatorMeta b{display:block;font-size:11px}.engineIndicatorMeta small{display:block;color:#7f909a;margin-top:2px}.engineIndicatorItem input{accent-color:#8da0aa}.engineStatusGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}.engineStatusBox{border:1px solid #2d3b44;border-radius:6px;padding:9px;background:#090e12}.engineStatusBox small{display:block;color:#7f909a}.engineStatusBox b{display:block;margin-top:3px}.engineDiag{margin-top:10px;max-height:220px;overflow:auto;white-space:pre-wrap;font:10px Menlo,Monaco,monospace;background:#05080a;border:1px solid #26343c;border-radius:6px;padding:9px;color:#9fb0b9}@media(max-width:760px){.engineIndicatorGrid{grid-template-columns:1fr}.engineStatusGrid{grid-template-columns:1fr 1fr}}
+
+/* v1.7.3 — desktop polish */
+:root{--ia-overlay-top:114px}
+.settingsPage,.strategyPage{top:var(--ia-overlay-top,114px)!important}
+.appLogoWrap{height:58px;min-width:230px;max-width:360px;flex:0 1 360px;justify-content:center;align-items:center;margin-right:auto;overflow:hidden}.appLogo{max-height:54px;max-width:100%;width:auto;height:auto;object-fit:contain;object-position:center center;filter:drop-shadow(0 0 6px rgba(0,196,255,.20))}
+.body[data-mosaic-root] [data-mosaic-id="chat"].chatPrimary{grid-column:1 / span 4!important;grid-row:1 / span 15!important;height:auto!important;min-height:0!important;overflow:hidden!important}.chatPrimary .msgs{flex:1 1 auto!important;overflow-y:auto!important;min-height:0!important}.chatPrimary .panelTitle,.chatPrimary .aiHint,.chatPrimary .chatForm{flex:0 0 auto}
+.strategyPage{padding:24px 18px 44px}.strategyInner{max-width:1100px;margin:0 auto}.strategyHead{display:flex;align-items:flex-start;gap:16px;margin:0 0 14px}.strategyHead h2{margin:3px 0 4px;font-size:22px}.strategyHead .btn{margin-left:auto}.strategyEyebrow{font-size:10px;letter-spacing:1.15px;color:#79b9de}.strategyOverview{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:12px}.strategyMetric{background:linear-gradient(180deg,#101a22,#0a1117);border:1px solid #2b3d49;border-radius:8px;padding:11px;min-height:82px;display:flex;flex-direction:column}.strategyMetric small{font-size:9px;text-transform:uppercase;letter-spacing:.75px;color:#788d9b}.strategyMetric strong{font-size:17px;margin:7px 0 2px;color:#e8f2f8}.strategyMetric span{font-size:10px;color:#8297a5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.strategyGrid{grid-template-columns:1fr 1fr;gap:12px}.strategyCard{border-radius:8px;padding:14px}.strategyCardHead{display:flex;align-items:flex-start;gap:10px}.strategyCardHead>div{flex:1}.strategyCardHead .btn{flex:0 0 auto}.strategyCard h3{font-size:13px;margin:0 0 8px}.strategyCatalog{margin-top:10px;border:1px solid #233744;border-radius:7px;overflow:hidden;background:#080f14}.strategyCatalogRow{display:grid;grid-template-columns:minmax(160px,1.7fr) .7fr .7fr .6fr minmax(180px,1.2fr);gap:9px;align-items:center;padding:9px 10px;border-bottom:1px solid #1b2b35;cursor:pointer}.strategyCatalogRow:last-child{border-bottom:0}.strategyCatalogRow:hover{background:#0d1b24}.strategyCatalogRow.selected{background:linear-gradient(90deg,rgba(37,99,137,.26),rgba(9,26,37,.5));box-shadow:inset 3px 0 #66c4ff}.strategyCatalogRow b{color:#e5f0f6}.strategyCatalogRow small{display:block;color:#728997;margin-top:2px}.strategyPill{display:inline-flex;align-items:center;border:1px solid #334b5c;border-radius:12px;padding:2px 7px;font-size:9px;color:#a9bdc9;white-space:nowrap}.strategyPill.ok{border-color:#35684e;color:#7cd8a2}.strategyPill.bad{border-color:#74404a;color:#ef939e}.strategyPill.warn{border-color:#6e5b32;color:#ddc36e}.strategyInfo{min-height:156px}.strategyInfoGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.strategyInfoCell{padding:7px;border:1px solid #213440;border-radius:5px;background:#080f14}.strategyInfoCell small{display:block;color:#748a98;font-size:9px}.strategyInfoCell b{display:block;margin-top:2px;font-size:11px}.strategyDeps{display:flex;flex-direction:column;gap:6px;min-height:156px}.strategyDep{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 8px;border:1px solid #22333e;border-radius:6px;background:#080f14}.strategyDep .ok{color:#76d49c}.strategyDep .bad{color:#ee8b96}.strategyDep small{color:#748a98}.strategyRules{min-height:156px;display:grid;grid-template-columns:1fr 1fr;gap:8px}.strategyRuleBox{border:1px solid #22333e;border-radius:6px;background:#080f14;padding:8px;min-width:0}.strategyRuleBox h4{margin:0 0 6px;font-size:10px;color:#83b9d8;text-transform:uppercase;letter-spacing:.5px}.strategyRuleBox pre{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;font:10px Menlo,Monaco,monospace;color:#9fb1bb;max-height:160px;overflow:auto}.strategyStateLegend{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 10px;font-size:9px;color:#8799a4}.strategyStateLegend span{display:flex;align-items:center;gap:4px}.strategyStateLegend i{width:7px;height:7px;border-radius:50%;background:#73818a}.strategyStateLegend i.ready{background:#70a9ce}.strategyStateLegend i.active{background:#43cf8e;box-shadow:0 0 5px rgba(67,207,142,.45)}.strategyStateLegend i.pause{background:#e9c46a}.strategyArchitecture{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.strategyArchitecture div{border:1px solid #22333e;border-radius:6px;background:#080f14;padding:9px}.strategyArchitecture b{display:block;color:#cfe0e9;margin-bottom:4px}.strategyArchitecture span{font-size:10px;color:#8195a1;line-height:1.4}.strategyResult{font-size:11px;color:#9bb0c0;max-width:none;margin-top:8px}.strategyEmpty{color:#728795;padding:10px}.strategyState.RUNNING{color:#43cf8e}.strategyState.PAUSED{color:#e9c46a}.strategyState.STOPPED{color:#9bb0c0}
+@media(max-width:1120px){.appLogoWrap{max-width:310px;min-width:200px}.appLogo{max-height:50px}.strategyOverview{grid-template-columns:1fr 1fr}.strategyArchitecture{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.appLogoWrap{max-width:260px;min-width:180px}.appLogo{max-height:44px}.strategyGrid{grid-template-columns:1fr}.strategyCard.wide{grid-column:auto}.strategyOverview{grid-template-columns:1fr 1fr}.strategyCatalogRow{grid-template-columns:1fr 1fr}.strategyArchitecture{grid-template-columns:1fr 1fr}}
+
+
+/* v1.7.4 — Header spacious layout + desktop page scroll
+   The brand and main navigation get their own vertical space. The trading
+   workspace starts strictly below the header and the whole desktop page can
+   scroll so Mosaïque modules remain reachable. */
+@media (min-width:821px){
+  html,body{
+    height:auto!important;
+    min-height:100%!important;
+    overflow-x:hidden!important;
+    overflow-y:auto!important;
+  }
+  .app{
+    height:auto!important;
+    min-height:100vh!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .top{
+    height:142px!important;
+    flex:0 0 142px!important;
+    padding:8px 14px 10px!important;
+    display:flex!important;
+    flex-wrap:wrap!important;
+    align-content:center!important;
+    align-items:center!important;
+    column-gap:9px!important;
+    row-gap:8px!important;
+  }
+  .appLogoWrap{
+    height:82px!important;
+    min-width:340px!important;
+    max-width:500px!important;
+    flex:1 1 440px!important;
+    justify-content:flex-start!important;
+    align-items:center!important;
+    margin-left:-10px!important;
+    margin-right:auto!important;
+    overflow:visible!important;
+  }
+  .appLogo{
+    display:block!important;
+    width:auto!important;
+    height:auto!important;
+    max-height:80px!important;
+    max-width:100%!important;
+    object-fit:contain!important;
+    object-position:left center!important;
+    filter:drop-shadow(0 0 7px rgba(0,196,255,.22))!important;
+  }
+  .top>.tag{flex:0 0 auto!important}
+  .navActions{
+    flex:0 0 100%!important;
+    width:100%!important;
+    justify-content:center!important;
+    margin:0!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    padding:0 2px 2px!important;
+    scrollbar-width:thin;
+  }
+  .body{
+    flex:0 0 auto!important;
+    height:auto!important;
+    min-height:622px!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .body[data-mosaic-root]{
+    height:auto!important;
+    min-height:622px!important;
+    overflow:visible!important;
+    grid-auto-rows:34px!important;
+    align-content:start!important;
+  }
+  .left,.right{
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+  .body[data-mosaic-root] [data-mosaic-id="chat"].chatPrimary{
+    min-height:0!important;
+  }
+  .dynamicBottomRight{
+    min-height:0!important;
+  }
+}
+@media (min-width:821px) and (max-width:1120px){
+  .top{height:146px!important;flex-basis:146px!important;padding-left:12px!important;padding-right:12px!important}
+  .appLogoWrap{min-width:290px!important;max-width:390px!important;flex-basis:360px!important;margin-left:-8px!important}
+  .appLogo{max-height:74px!important}
+}
+
+
+html,body{min-height:100%;height:auto!important;overflow:auto!important;background:#070b10!important}.standalonePage{position:relative!important;z-index:1!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;min-height:calc(100vh - var(--iatb-global-nav-h,52px))!important;padding-top:18px!important}.standalonePage .settingsInner,.standalonePage .strategyInner{padding-bottom:48px}body.iatb-global-nav-ready .standalonePage{margin-top:0!important}.standaloneStatus{position:fixed;right:12px;bottom:10px;z-index:50;border:1px solid #274251;background:#08131b;color:#829ba7;border-radius:5px;padding:5px 8px;font-size:10px}
+/* v2.0 DEBUG — Strategy visual refresh. Scoped: Strategy page only. */
+.iatb-page-strategies{--st-bg:#050b13;--st-panel:#091621;--st-panel2:#0b1c29;--st-line:#174a6a;--st-cyan:#19cfff;--st-blue:#278cff;--st-violet:#775cff;--st-green:#37e29a;--st-text:#edf8ff;--st-muted:#83a7bd;background:radial-gradient(circle at 72% -18%,rgba(44,91,180,.18),transparent 36%),linear-gradient(180deg,#06101b,#040a11 72%)!important;color:var(--st-text)}
+.iatb-page-strategies .standalonePage{background:transparent!important;padding-top:26px!important}
+.iatb-page-strategies .strategyInner{max-width:1120px}
+.iatb-page-strategies .strategyEyebrow{color:#35cfff;font-weight:700;letter-spacing:1.35px}
+.iatb-page-strategies .strategyHead h2{font-size:24px;color:#f3fbff;text-shadow:0 0 18px rgba(25,207,255,.08)}
+.iatb-page-strategies .muted,.iatb-page-strategies .strategyHelp{color:#8caec2}
+.iatb-page-strategies .strategyMetric,.iatb-page-strategies .strategyCard{background:linear-gradient(155deg,rgba(11,30,43,.98),rgba(6,17,26,.98));border:1px solid #1a4965;box-shadow:inset 0 1px rgba(80,205,255,.05),0 8px 26px rgba(0,0,0,.18)}
+.iatb-page-strategies .strategyMetric{border-radius:10px;position:relative;overflow:hidden}
+.iatb-page-strategies .strategyMetric:after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:linear-gradient(90deg,#1bcfff,#286eff 58%,transparent);opacity:.75}
+.iatb-page-strategies .strategyMetric small{color:#6fa7c4}.iatb-page-strategies .strategyMetric strong{color:#effaff;font-size:18px}.iatb-page-strategies .strategyMetric span{color:#7fa1b5}
+.iatb-page-strategies .strategyCard{border-radius:10px;padding:15px}.iatb-page-strategies .strategyCard h3{color:#effaff}
+.iatb-page-strategies .strategyCatalog,.iatb-page-strategies .strategyInfo,.iatb-page-strategies .strategyDep,.iatb-page-strategies .strategyRuleBox,.iatb-page-strategies .strategyArchitecture div{background:linear-gradient(145deg,#07141e,#061019);border-color:#173e56}
+.iatb-page-strategies .strategyCatalogRow{border-color:#123348}.iatb-page-strategies .strategyCatalogRow:hover{background:#0a2130}.iatb-page-strategies .strategyCatalogRow.selected{background:linear-gradient(90deg,rgba(20,143,213,.25),rgba(72,55,170,.12));box-shadow:inset 3px 0 #22cfff}
+.iatb-page-strategies .strategyPill{border-color:#285570;color:#a8d6ef}.iatb-page-strategies .strategyPill.ok{border-color:#247552;color:#5ce6a1;background:rgba(30,133,88,.08)}
+.iatb-page-strategies .strategyRow select{background:#06121c;border-color:#24506a;color:#f0f9ff;border-radius:6px}
+.iatb-page-strategies .btn{background:linear-gradient(180deg,#126b9b,#0d4f77);border:1px solid #2489bb;border-radius:6px;color:#f5fcff;box-shadow:inset 0 1px rgba(255,255,255,.09),0 0 0 rgba(25,207,255,0);transition:.16s ease}
+.iatb-page-strategies .btn:hover{filter:none;background:linear-gradient(180deg,#1682b9,#0e608e);border-color:#31c7f6;box-shadow:0 0 14px rgba(25,207,255,.13);transform:translateY(-1px)}
+.iatb-page-strategies .secondary{background:linear-gradient(180deg,#31566d,#203d50);border-color:#54788d}
+.iatb-page-strategies .strategyRun{background:linear-gradient(180deg,#159765,#0e704b);border-color:#2acb8b}.iatb-page-strategies .strategyPause{background:linear-gradient(180deg,#9a7028,#70501b);border-color:#c4933e}.iatb-page-strategies .strategyStop{background:linear-gradient(180deg,#a33d50,#762938);border-color:#d1586b}
+.iatb-page-strategies .strategyState.RUNNING{color:#3ee79a;text-shadow:0 0 9px rgba(62,231,154,.25)}.iatb-page-strategies .strategyState.PAUSED{color:#ffd068}
+.iatb-page-strategies .strategyDep .ok{color:#46e59b}.iatb-page-strategies .strategyRuleBox h4{color:#45cfff}
+.iatb-page-strategies .strategyArchitecture b{color:#dff6ff}.iatb-page-strategies .strategyArchitecture span{color:#7fa4b9}
+.iatb-page-strategies .standaloneStatus{border-color:#18506c;background:rgba(5,20,31,.94);color:#78abc6;box-shadow:0 0 16px rgba(0,174,255,.08)}
+
+
+/* v2.0 DEBUG — Strategy cockpit matching approved IA-TB visual */
+.iatb-page-strategies .strategyPage{padding:0!important}.iatb-page-strategies .strategyShell{display:grid;grid-template-columns:248px minmax(0,1fr);min-height:calc(100vh - 68px);background:radial-gradient(circle at 72% 0,rgba(32,86,190,.16),transparent 28%),#050b13}
+.iatb-page-strategies .strategySide{position:sticky;top:68px;height:calc(100vh - 68px);display:flex;flex-direction:column;border-right:1px solid #123d59;background:linear-gradient(180deg,#061426,#06101d 72%,#071729);padding:18px 12px;z-index:2}
+.strategySideBrand{display:flex;align-items:center;gap:10px;padding:0 8px 18px}.strategySideIcon{width:38px;height:38px;display:grid;place-items:center;border:1px solid #754cff;border-radius:10px;color:#a17cff;background:#101548;box-shadow:0 0 18px rgba(112,70,255,.25)}.strategySideBrand b{display:block;font-size:13px}.strategySideBrand small{display:block;color:#668da8;font-size:9px;margin-top:3px}
+.strategySideNav{display:flex;flex-direction:column;gap:5px}.strategySideNav button{display:flex;align-items:center;gap:10px;width:100%;min-height:39px;padding:0 12px;border:1px solid transparent;border-radius:7px;background:transparent;color:#bcd3e3;text-align:left;cursor:pointer}.strategySideNav button:hover{background:#0a2135;border-color:#174c6e;color:#fff}.strategySideNav button.active{background:linear-gradient(90deg,#0b67b4,#30249d);border-color:#318cff;color:#fff;box-shadow:0 0 16px rgba(32,135,255,.18)}.strategySideNav button span{font-size:12px}
+.strategyEngineFoot{margin-top:auto;padding:13px;border:1px solid #103a55;border-radius:9px;background:#071b2b;display:flex;flex-direction:column;gap:5px}.strategyEngineFoot small{color:#65a5c8;font-size:9px}.strategyEngineFoot b{color:#50e5a0;font-size:11px}.strategyEngineFoot b i,.strategyHeroState b i{display:inline-block;width:8px;height:8px;border-radius:50%;background:#34e59a;box-shadow:0 0 9px #34e59a;margin-right:5px}.strategyEngineFoot>span{font:9px Menlo,monospace;color:#789db2}
+.strategyWorkspace{padding:18px 20px 46px;min-width:0}.strategyHero{min-height:116px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 250px 230px;align-items:center;border:1px solid #164f74;border-radius:11px;background:linear-gradient(110deg,#071a2b,#08172a 58%,#111248);padding:18px 20px;margin-bottom:14px;box-shadow:inset 0 1px rgba(44,211,255,.06)}.strategyHero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 66% 50%,rgba(27,150,255,.24),transparent 22%),linear-gradient(115deg,transparent 55%,rgba(103,53,255,.11));pointer-events:none}.strategyHeroCopy{position:relative;z-index:1}.strategyHero h1{font-size:28px;margin:3px 0 5px}.strategyHero p{margin:0;color:#92b8ce}.strategyHeroOrb{position:relative;width:150px;height:100px;justify-self:center;opacity:.85}.strategyHeroOrb:before{content:"";position:absolute;left:36px;top:8px;width:80px;height:80px;border-radius:50%;border:1px solid #1fbfff;box-shadow:inset 0 0 24px rgba(23,154,255,.35),0 0 20px rgba(82,51,255,.22);background:repeating-radial-gradient(ellipse at center,transparent 0 8px,rgba(25,190,255,.16) 9px 10px)}.strategyHeroOrb i{position:absolute;left:13px;top:45px;width:125px;height:25px;border:1px solid #775cff;border-radius:50%;transform:rotate(-12deg);box-shadow:0 0 10px rgba(119,92,255,.25)}.strategyHeroOrb i:nth-child(2){transform:rotate(18deg)}.strategyHeroOrb i:nth-child(3){transform:rotate(75deg);width:86px;left:33px}
+.strategyHeroState{position:relative;z-index:1;border:1px solid #164e71;border-radius:9px;background:rgba(5,22,36,.78);padding:12px}.strategyHeroState small{display:block;color:#74a9c5;font-size:9px}.strategyHeroState b{display:block;color:#48e6a0;font-size:15px;margin:7px 0}.strategyHeroState>span{font-size:10px;color:#86a9bd}
+.iatb-page-strategies .strategyOverview{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.iatb-page-strategies .strategyMetric{min-height:98px;padding:14px;position:relative}.iatb-page-strategies .strategyMetric em{position:absolute;right:14px;top:27px;width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#092d4b;color:#22cfff;font-style:normal;font-size:19px;box-shadow:0 0 16px rgba(24,190,255,.13)}
+.strategyCockpit{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,.85fr);gap:12px}.strategyCatalogCard{grid-row:span 1}.strategyActiveCard{grid-row:span 1}.strategyControlTitle{margin-top:12px;padding-top:10px;border-top:1px solid #17394d;color:#77bddf;font-size:10px;text-transform:uppercase;letter-spacing:.6px}.strategyControlRow{margin-bottom:5px}
+.strategyFuture{min-height:190px}.strategyFuture .futureIcon{font-size:34px;color:#735cff;margin:20px 0 5px}.strategyFuture>p{color:#7698ab;font-size:10px}.strategyFuture>span{display:inline-block;margin-top:8px;padding:4px 7px;border:1px solid #594f83;border-radius:10px;color:#aa9ae8;font-size:9px}
+.futureMetricRow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:15px 0}.futureMetricRow div{padding:9px;border:1px solid #173e56;border-radius:6px;background:#06131d}.futureMetricRow small{display:block;color:#7299ae;font-size:9px}.futureMetricRow b{display:block;margin-top:4px;font-size:18px}
+.strategyLogsCard{min-height:190px}.strategyLogLine{display:grid;grid-template-columns:60px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid #153348;font-size:10px}.strategyLogLine time{color:#35cfff;font-family:Menlo,monospace}.strategyLogLine span{color:#9ab6c6}.strategyArchitectureCard{grid-column:1/-1}
+@media(max-width:1050px){.iatb-page-strategies .strategyShell{grid-template-columns:205px minmax(0,1fr)}.strategyHero{grid-template-columns:1fr 150px}.strategyHeroState{display:none}.strategyCockpit{grid-template-columns:1fr}.strategyArchitectureCard{grid-column:auto}}@media(max-width:820px){.iatb-page-strategies .strategyShell{display:block}.iatb-page-strategies .strategySide{position:relative;top:0;width:100%;height:auto}.strategySideNav{display:grid;grid-template-columns:1fr 1fr}.strategyEngineFoot{display:none}.strategyHero{grid-template-columns:1fr}.strategyHeroOrb{display:none}.iatb-page-strategies .strategyOverview{grid-template-columns:1fr 1fr}.strategyWorkspace{padding:12px}.futureMetricRow{grid-template-columns:1fr 1fr}}
+
+
+.strategyFormGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.strategyFormGrid label{font-size:9px;color:#78a6c0;text-transform:uppercase;letter-spacing:.45px}.strategyFormGrid input,.strategyFormGrid select,.strategyPerformance select{display:block;width:100%;margin-top:5px;background:#06131e;border:1px solid #1c4b67;border-radius:6px;color:#dff6ff;padding:8px;font:10px Arial}.strategyPlaceholder{margin-top:10px;padding:12px;border:1px dashed #29516b;border-radius:7px;color:#728fa2;text-align:center;font-size:10px}.strategyChartWrap{position:relative;height:190px;border:1px solid #153c54;border-radius:7px;background:linear-gradient(180deg,rgba(8,28,42,.85),rgba(4,14,22,.95));overflow:hidden}.strategyChartWrap canvas{width:100%;height:100%}.strategyChartWrap:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent 0 37px,rgba(65,130,160,.08) 38px),repeating-linear-gradient(90deg,transparent 0 89px,rgba(65,130,160,.06) 90px);pointer-events:none}.strategyChartWrap #strategyChartEmpty{position:absolute;inset:0;display:grid;place-items:center;color:#58788d;font-size:9px;letter-spacing:.7px}.strategyDataTable{margin-top:12px;border:1px solid #15394f;border-radius:7px;overflow:hidden}.strategyDataTable .head,.strategyDataTable #strategySignalRows>div{display:grid;grid-template-columns:1.2fr .7fr .7fr;gap:8px;padding:8px 10px}.strategyDataTable.tradeTable .head,.strategyDataTable #strategyTradeRows>div{grid-template-columns:.8fr 1fr .7fr .7fr}.strategyDataTable .head{background:#081d2c;color:#6ea4c0;font-size:9px;text-transform:uppercase}.strategyDataTable #strategySignalRows>div,.strategyDataTable #strategyTradeRows>div{border-top:1px solid #123247;font-size:10px}.strategyDataTable .emptyRow{display:block!important;color:#67869a;text-align:center;padding:18px!important}.strategySignalBull{color:#45e69d}.strategySignalBear{color:#ff6277}.strategySignalNeutral{color:#86a6ba}@media(max-width:820px){.strategyFormGrid{grid-template-columns:1fr}}
+
+
+/* IA-TB Strategy visual fidelity pass */
+.iatb-page-strategies .strategyWorkspace{background-image:radial-gradient(circle at 70px 70px,rgba(34,199,255,.045) 1px,transparent 1px);background-size:28px 28px}
+.iatb-page-strategies .strategyHero{box-shadow:inset 0 0 40px rgba(13,115,185,.08),0 8px 30px rgba(0,0,0,.22)}
+.iatb-page-strategies .strategyHero:after{content:"";position:absolute;right:185px;top:-38px;width:310px;height:190px;background:linear-gradient(90deg,transparent,rgba(24,160,255,.08)),repeating-linear-gradient(90deg,transparent 0 23px,rgba(38,153,255,.055) 24px),repeating-linear-gradient(0deg,transparent 0 23px,rgba(113,72,255,.05) 24px);transform:skewX(-15deg);mask-image:linear-gradient(90deg,transparent,#000,transparent);pointer-events:none}
+.strategySideNav button:first-child{color:#fff}.strategySideNav button:nth-child(2){color:#d9e9f4}.strategySideNav button:nth-child(3){color:#d9e9f4}.strategySideNav button:nth-child(4){color:#d9e9f4}.strategySideNav button:nth-child(5),.strategySideNav button:nth-child(6),.strategySideNav button:nth-child(9),.strategySideNav button:nth-child(10),.strategySideNav button:nth-child(11){color:#cabdff}
+.strategySideNav button:before{content:"";width:17px;height:17px;flex:0 0 17px;border:1.5px solid currentColor;border-radius:4px;box-shadow:0 0 8px color-mix(in srgb,currentColor 25%,transparent);background:linear-gradient(135deg,transparent 35%,currentColor 36% 43%,transparent 44% 58%,currentColor 59% 66%,transparent 67%);opacity:.95}.strategySideNav button:nth-child(1):before{border-radius:50% 50% 4px 4px}.strategySideNav button:nth-child(3):before{border-radius:50%;background:radial-gradient(circle,currentColor 0 25%,transparent 27%)}.strategySideNav button:nth-child(4):before{background:linear-gradient(90deg,transparent 10%,currentColor 11% 20%,transparent 21% 40%,currentColor 41% 50%,transparent 51% 70%,currentColor 71% 80%,transparent 81%)}.strategySideNav button span{margin-left:1px}.strategySideNav button{font-size:0}.strategySideNav button>span{font-size:12px}
+.strategyMetric:nth-child(1){border-color:#1469a2}.strategyMetric:nth-child(1) em{color:#41a7ff;background:#0a2c59}.strategyMetric:nth-child(2){border-color:#177966}.strategyMetric:nth-child(2) em{color:#2ee6bd;background:#073e42}.strategyMetric:nth-child(3){border-color:#198763}.strategyMetric:nth-child(3) em{color:#49e69c;background:#073c32}.strategyMetric:nth-child(4){border-color:#573cb1}.strategyMetric:nth-child(4) em{color:#9b7cff;background:#25165c}
+.strategyMetric strong{letter-spacing:.15px}.strategyMetric:nth-child(2) strong,.strategyMetric:nth-child(3) strong{color:#4ce8ad}
+.strategyCard{position:relative;overflow:hidden}.strategyCard:before{content:"";position:absolute;left:0;top:0;width:42%;height:1px;background:linear-gradient(90deg,#22cfff,transparent);opacity:.55}.strategyCatalogCard:before{background:linear-gradient(90deg,#1fa8ff,transparent)}.strategyActiveCard:before{background:linear-gradient(90deg,#32e7a3,transparent)}
+.strategyCatalogRow{transition:.15s ease}.strategyCatalogRow.selected{border-left-color:#1ee6ff!important;box-shadow:inset 4px 0 #1ee6ff,0 0 14px rgba(31,193,255,.06)}.strategyCatalogRow.selected b{color:#eaffff}.strategyPill.ok{box-shadow:0 0 9px rgba(52,229,154,.12)}
+.strategyRun{box-shadow:0 0 11px rgba(41,224,145,.12)!important}.strategyStop{box-shadow:0 0 11px rgba(255,73,98,.12)!important}
+.strategyChartWrap{box-shadow:inset 0 0 28px rgba(12,89,124,.12)}.strategyPerformance .futureMetricRow div:nth-child(1) b{color:#41e4a4}.strategyPerformance .futureMetricRow div:nth-child(4) b{color:#ff6578}
+.strategySignalsCard h3{color:#d9c8ff}.strategyTradesCard h3{color:#55cfff}.strategyLogsCard h3{color:#b99cff}
+.strategyHeroOrb:after{content:"";position:absolute;left:54px;top:25px;width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(73,220,255,.3),rgba(29,80,210,.12) 45%,rgba(100,48,255,.14));box-shadow:0 0 35px rgba(33,158,255,.35)}
+.strategyHeroOrb{filter:drop-shadow(0 0 10px rgba(34,179,255,.25))}
+.strategyEngineFoot,.strategyHeroState{box-shadow:inset 0 0 18px rgba(19,122,173,.09)}
+
+</style>
+<link rel="stylesheet" href="/assets/companion_v1.0.css"><link rel="stylesheet" href="/assets/global_navigation_v2.0.css?v=2013"><script defer src="/assets/global_navigation_v2.0.js?v=3020"></script></head><body class="iatb-page-strategies"><div class="strategyPage standalonePage" id="strategyPage">
+<div class="strategyShell">
+<aside class="strategySide">
+  <div class="strategySideBrand"><span class="strategySideIcon">◇</span><div><b>STRATEGY ENGINE</b><small>v2 · Router CP/1</small></div></div>
+  <nav class="strategySideNav">
+    <button class="active" data-target="strategyOverviewAnchor">⌂ <span>Vue d'ensemble</span></button>
+    <button data-target="strategyCatalogAnchor">▤ <span>Catalogue des stratégies</span></button>
+    <button data-target="strategyInstanceAnchor">◉ <span>Instance active</span></button>
+    <button data-target="strategySignalsAnchor">⌁ <span>Indicateurs & signaux</span></button>
+    <button data-target="strategyBacktestAnchor">◫ <span>Backtest</span></button>
+    <button data-target="strategyBacktestAnchor">✦ <span>Optimisation</span></button>
+    <button data-target="strategyInstanceAnchor">◇ <span>Gestion des risques</span></button>
+    <button data-target="strategyPerformanceAnchor">▣ <span>Historique des trades</span></button>
+    <button data-target="strategyCatalogAnchor">↥ <span>Imports / Exports</span></button>
+    <button data-target="strategyLogsAnchor">◇ <span>Diagnostics</span></button>
+    <button data-target="strategyLogsAnchor">▤ <span>Logs</span></button>
+  </nav>
+  <div class="strategyEngineFoot"><small>STRATEGY ENGINE</small><b><i></i> <span id="strategySideState">CONNECTING</span></b><span>PORT : 8018</span></div>
+</aside>
+<main class="strategyWorkspace">
+<section class="strategyHero" id="strategyOverviewAnchor"><div class="strategyHeroCopy"><div class="strategyEyebrow">STRATEGY ENGINE · INSTANCE MANAGER</div><h1>Stratégies - IA-TB</h1><p>Gestionnaire de stratégies du Strategy Engine v2 · catalogue, instance RAM et dépendances.</p></div><div class="strategyHeroOrb" aria-hidden="true"><i></i><i></i><i></i></div><div class="strategyHeroState"><small>STRATEGY ENGINE</small><b><i></i><span id="strategyHeroState">--</span></b><span id="strategyHeroMeta">Connexion Router…</span></div></section>
+<section class="strategyOverview">
+ <div class="strategyMetric"><small>STRATÉGIES</small><strong id="strategyCatalogCount">0</strong><span>sauvegardées</span><em>▥</em></div>
+ <div class="strategyMetric"><small>INSTANCE ACTIVE</small><strong id="strategyRuntimeState">AUCUNE</strong><span id="strategyRuntimeName">aucune stratégie chargée</span><em>▶</em></div>
+ <div class="strategyMetric"><small>READINESS</small><strong id="strategyReadyState">--</strong><span id="strategyReadyMeta">dépendances non évaluées</span><em>✓</em></div>
+ <div class="strategyMetric"><small>MODE</small><strong>READ ONLY</strong><span>UI via Router CP/1</span><em>⇄</em></div>
+</section>
+<section class="strategyCockpit">
+<div class="strategyCard strategyCatalogCard" id="strategyCatalogAnchor"><div class="strategyCardHead"><div><h3>▤ Catalogue des stratégies</h3><div class="strategyHelp">Définitions persistantes disponibles dans Strategy Engine v2.</div></div><button class="btn secondary" id="strategyRefresh">↻ Actualiser</button></div><div class="strategyRow"><select id="strategyList"><option value="">-- stratégies Strategy v2 --</option></select><button class="btn" id="strategyLoad">Ouvrir</button><button class="btn secondary" id="strategyReload">Recharger</button><label class="btn secondary filePick">Importer JSON<input accept=".json,.dat,application/json" id="strategyFile" type="file"/></label><button class="btn secondary" id="strategySave">Exporter RAM</button></div><div class="strategyCatalog" id="strategyCatalog"><div class="strategyEmpty">Chargement du catalogue…</div></div><div class="strategyResult" id="strategyMsg"></div></div>
+<div class="strategyCard strategyActiveCard" id="strategyInstanceAnchor"><div class="strategyCardHead"><div><h3>▶ Instance active</h3><div class="strategyHelp">État réel exposé par Strategy Engine.</div></div><span class="strategyPill ok" id="strategyInstanceBadge">--</span></div><div class="strategyInfo" id="strategyInfo">Aucune stratégie chargée en RAM.</div><div class="strategyControlTitle">Contrôle de l'instance</div><div class="strategyRow strategyControlRow"><button class="btn strategyRun" id="strategyStart">▶ Démarrer</button><button class="btn strategyPause" id="strategyPause">Ⅱ Pause</button><button class="btn strategyStop" id="strategyStop">■ Arrêter</button></div><div class="strategyHelp">Commandes protégées : cette UI reste READ_ONLY tant que Supervisor/Admin ne les autorise pas.</div></div>
+<div class="strategyCard" id="strategySignalsAnchor"><h3>⌁ Indicateurs & signaux</h3><div class="strategyDeps" id="strategyDeps"><div class="strategyEmpty">Charge une stratégie pour contrôler ses dépendances.</div></div><div class="strategyRules" id="strategyRules"><div class="strategyEmpty">Les paramètres de la stratégie apparaîtront ici.</div></div></div>
+<div class="strategyCard" id="strategyBacktestAnchor"><div class="strategyCardHead"><div><h3>✦ Backtest & optimisation</h3><div class="strategyHelp">Interface prête pour Strategy Backtest/Optimizer.</div></div><span class="strategyPill" id="strategyBacktestStatus">WAITING</span></div><div class="strategyFormGrid"><label>Période<select id="strategyBacktestPeriod"><option>30 jours</option><option>90 jours</option><option>1 an</option></select></label><label>Capital initial<input id="strategyBacktestCapital" type="number" value="10000" min="0"/></label><label>Source<select id="strategyBacktestSource"><option>Market Data Collector</option></select></label><label>Mode<select id="strategyOptimizeMode"><option>Backtest simple</option><option>Optimisation paramètres</option></select></label></div><div class="strategyRow"><button class="btn" id="strategyBacktestRun">▶ Lancer</button><button class="btn secondary" id="strategyOptimizeRun">✦ Optimiser</button></div><div class="strategyPlaceholder" id="strategyBacktestResult">Backend non branché · configuration UI prête.</div></div>
+<div class="strategyCard strategyPerformance" id="strategyPerformanceAnchor"><div class="strategyCardHead"><div><h3>⌁ Performance</h3><div class="strategyHelp">Flux prêt pour P&amp;L et statistiques Strategy.</div></div><select id="strategyPerformancePeriod"><option value="7d">7 jours</option><option value="30d">30 jours</option><option value="90d">90 jours</option></select></div><div class="futureMetricRow"><div><small>P&amp;L</small><b id="strategyPnl">--</b></div><div><small>Trades</small><b id="strategyTrades">--</b></div><div><small>Win rate</small><b id="strategyWinRate">--</b></div><div><small>Drawdown</small><b id="strategyDrawdown">--</b></div></div><div class="strategyChartWrap"><canvas id="strategyPerformanceChart" width="700" height="190"></canvas><div id="strategyChartEmpty">EN ATTENTE DES DONNÉES PERFORMANCE</div></div></div>
+<div class="strategyCard strategySignalsCard"><div class="strategyCardHead"><div><h3>⌁ Indicateurs temps réel</h3><div class="strategyHelp">Contrat prêt pour Indicator Engine.</div></div><span class="strategyPill" id="strategySignalsStatus">WAITING</span></div><div class="strategyDataTable"><div class="head"><span>Indicateur</span><span>Valeur</span><span>Signal</span></div><div id="strategySignalRows"><div class="emptyRow">Aucune donnée Indicator Engine reçue.</div></div></div></div>
+<div class="strategyCard strategyTradesCard"><div class="strategyCardHead"><div><h3>▣ Historique des trades</h3><div class="strategyHelp">Réception future des exécutions attribuées à cette stratégie.</div></div><span class="strategyPill" id="strategyTradesStatus">WAITING</span></div><div class="strategyDataTable tradeTable"><div class="head"><span>Heure</span><span>Paire</span><span>Sens</span><span>P&amp;L</span></div><div id="strategyTradeRows"><div class="emptyRow">Aucun historique reçu.</div></div></div></div>
+<div class="strategyCard strategyLogsCard" id="strategyLogsAnchor"><div class="strategyCardHead"><div><h3>▤ Diagnostics & logs</h3><div class="strategyHelp">Event stream prêt pour Strategy/Router/Supervisor.</div></div><button class="btn secondary" id="strategyLogsClear">Effacer UI</button></div><div id="strategyLogRows"><div class="strategyLogLine"><time>LIVE</time><span>Communication via Router CP/1</span></div><div class="strategyLogLine"><time>ENGINE</time><span>Strategy Engine v2 · port 8018</span></div><div class="strategyLogLine"><time>UI</time><span>READ_ONLY · aucune commande de trading directe</span></div></div></div>
+<div class="strategyCard wide strategyArchitectureCard"><h3>◇ Architecture</h3><div class="strategyArchitecture"><div><b>Strategy Engine</b><span>Processus unique pour les données et calculs communs.</span></div><div><b>Strategy Instances</b><span>Contextes légers et indépendants préparés pour le multi-stratégie.</span></div><div><b>Supervisor ownership</b><span>Contrôle futur des instances et autorisations d'action.</span></div><div><b>Persistance</b><span>FileStrategyStore · définitions persistantes hors navigateur.</span></div></div></div>
+</section>
+</main></div></div><div id="standaloneStatus" class="standaloneStatus">UI v2.0 · page autonome</div><script defer src="/assets/strategy_controller_v2.0.js?v=2001"></script><script src="/assets/companion_v1.0.js"></script></body></html>

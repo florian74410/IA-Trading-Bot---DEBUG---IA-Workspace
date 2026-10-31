@@ -1,0 +1,115 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "stochastic",
+  "name": "Stochastic Oscillator",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "k_period": {
+      "type": "integer",
+      "default": 14,
+      "min": 2,
+      "max": 200
+    },
+    "k_smoothing": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 50
+    },
+    "d_period": {
+      "type": "integer",
+      "default": 3,
+      "min": 1,
+      "max": 50
+    }
+  },
+  "engine": {
+    "operation": "stochastic"
+  },
+  "outputs": {
+    "k": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    },
+    "d": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#fcaf57",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": 0,
+    "max": 100,
+    "visual": {
+      "layers": [],
+      "levels": [
+        {
+          "value": 20,
+          "color": "#b38cff"
+        },
+        {
+          "value": 80,
+          "color": "#b38cff"
+        }
+      ],
+      "zones": [
+        {
+          "min": 0,
+          "max": 20,
+          "color": "#a36dff",
+          "opacity": 0.11
+        },
+        {
+          "min": 80,
+          "max": 100,
+          "color": "#a36dff",
+          "opacity": 0.11
+        }
+      ]
+    }
+  }
+}

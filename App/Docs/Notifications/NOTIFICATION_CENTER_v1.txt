@@ -1,0 +1,13 @@
+IA-TB Notification Center v1 - v1.12 DEBUG
+==========================================
+Purpose: one user-facing notification policy above Engine/CP1 events. Logs remain technical and independent.
+
+Channels implemented: WEB (IA-TB UI/history), APPLICATION (browser/OS Notification API when permitted), SOUND preference flag. External Email/Telegram/Discord/Push are reserved adapters.
+
+Severities: INFO, NOTICE, WARNING, CRITICAL.
+Families: security/firewall, risk, trade executed, trade failed, strategy, indicator, fundamental, portfolio, market data, engine status, updates, system errors.
+
+Per-user SQLite stores settings and bounded history. Settings include global enable, minimum severity, anti-spam window, history size, quiet hours, global channel switches and per-family enabled/web/app/sound routing.
+CRITICAL is intended to bypass quiet mode at delivery time.
+
+This commit provides the persistent backend contract and Settings UI. Existing Engines are not modified to invent events they do not currently emit; integration should map real CP1 events to these families as each Engine event contract is confirmed.

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 150">
+<defs>
+ <radialGradient id="bg" cx=".72" cy=".3" r=".9"><stop stop-color="#0a5581"/><stop offset=".45" stop-color="#08243b"/><stop offset="1" stop-color="#051523"/></radialGradient>
+ <filter id="gl"><feGaussianBlur stdDeviation="4"/></filter>
+</defs>
+<rect width="720" height="150" rx="18" fill="url(#bg)"/>
+<g transform="translate(160 -12) scale(.48)" opacity=".9"><use href="#m"/></g>
+<g id="m" fill="none" stroke="#29d0ff" stroke-width="2" opacity=".58">
+ <path d="M40 106c80-62 132-29 196-72 75-49 149-39 217 15 57 46 115 44 183 9"/>
+ <path d="M101 132c45-32 100-21 144-51 57-39 113-40 170-9 61 33 117 31 172 7"/>
+</g>
+<g fill="#34e6b2" stroke="#a7fff0" stroke-width="1">
+ <circle cx="210" cy="101" r="5"/><circle cx="328" cy="61" r="4"/><circle cx="447" cy="96" r="5"/><circle cx="554" cy="49" r="4"/>
+</g>
+<g fill="#2ccaff" filter="url(#gl)" opacity=".25"><circle cx="328" cy="61" r="22"/><circle cx="447" cy="96" r="26"/></g>
+<g transform="translate(270 20) scale(.32)" opacity=".72"><path d="M109 130l39-44 78-23 78 10 42 34-13 38-60 18-13 26-52 3-21 32-49-7-22-45zm216 133 32-16 38 17 27 41-3 56-20 47-25 13-17-28-8-49-30-45zm146-180 70-24 113 4 58 30 55 5 24 31-33 27-86 2-31 25-63-9-38-31-70-10zm167 120 41 7 28 37 51 9 37 38-7 64-35 51-38 6-25-35-26-17-25-42-8-47zm179-126 93 4 64 29 36 38-23 37-53 5-35 30-39-4-37-31-38-17-7-33zm89 211 53 1 42 25 16 42-29 25-69 4-37-21 1-37z" fill="#14bdf0" opacity=".18"/></g>
+</svg>

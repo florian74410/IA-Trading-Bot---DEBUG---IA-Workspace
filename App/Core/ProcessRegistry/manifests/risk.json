@@ -1,0 +1,26 @@
+{
+  "id": "risk",
+  "label": "Risk Manager Engine",
+  "type": "ENGINE",
+  "order": 90,
+  "port": 8019,
+  "healthPath": "/health",
+  "marker": "IA-TB Risk Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Risk/Engine/risk_service.js",
+  "log": ".runtime/logs/risk.log",
+  "env": {
+    "IATB_RISK_ENGINE_PORT": "8019",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": [
+    "marketdata",
+    "indicator",
+    "portfolio"
+  ],
+  "versionSource": "RUNTIME_HEALTH"
+}

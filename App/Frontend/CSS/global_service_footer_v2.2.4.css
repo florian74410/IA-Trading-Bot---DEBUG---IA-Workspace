@@ -1,0 +1,14 @@
+/* IA-TB v2.2.4 — persistent read-only health footer */
+body.iatb-global-service-footer{padding-bottom:66px!important}
+#iatbServiceStrip.iatbGlobalServiceFooter{position:fixed!important;bottom:0!important;left:0!important;right:0!important;z-index:95!important;box-sizing:border-box!important;height:57px!important;display:flex!important;align-items:stretch!important;background:#06131d!important;border-top:1px solid #1a4d67!important;color:#b7d9ed!important;box-shadow:0 -6px 22px #0006!important;font:10px Arial,sans-serif}
+.iatbGlobalServiceFooter .iatbSvcTitle{display:flex;align-items:center;flex:0 0 136px;padding:8px 12px;border-right:1px solid #21445a;font-weight:700;letter-spacing:.3px}
+.iatbGlobalServiceFooter .iatbSvcList{display:flex;align-items:center;flex:1;min-width:0;gap:6px;padding:6px 10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.iatbGlobalServiceFooter .iatbSvcList::-webkit-scrollbar{display:none}
+.iatbGlobalServiceFooter .iatbSvc{display:flex;gap:5px;align-items:center;min-width:99px;flex:1 0 99px;height:33px;padding:5px 7px;border:1px solid #1a4257;border-radius:6px;background:#092131;white-space:nowrap;font-size:9px}
+.iatbGlobalServiceFooter .iatbSvcDot{display:inline-block;width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:#718393}
+.iatbGlobalServiceFooter .iatbSvcDot.ok{background:#24d788;box-shadow:0 0 7px #24d78899}
+.iatbGlobalServiceFooter .iatbSvcDot.bad{background:#e45b67}
+@media(max-width:800px){.iatbGlobalServiceFooter .iatbSvcTitle{flex-basis:76px;font-size:8px}.iatbGlobalServiceFooter .iatbSvc{flex-basis:88px;min-width:88px;font-size:8px}}
+
+/* Portfolio legacy footer is replaced by the shared status bar; avoid duplicates. */
+body.iatb-global-service-footer .portfolioApp>.statusBar{display:none!important}

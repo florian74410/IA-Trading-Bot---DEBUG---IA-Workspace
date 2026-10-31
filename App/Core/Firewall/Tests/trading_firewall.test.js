@@ -1,0 +1,11 @@
+'use strict';
+var assert=require('assert'),F=require('../Protection/trading_firewall');
+var cfg=F.defaults(),fw=new F.TradingFirewall({getConfig:function(){return cfg;}}),base={protocol:'CP/1',request_id:'x1',timestamp:Date.now(),target:'trading',action:'trading.cancel',arguments:{symbol:'BTC/EUR',exchange:'KRAKEN',exchange_order_id:'1'}};
+var a=fw.inspect(base,{cpAuthenticated:true,signatureValid:true});assert.equal(a.decision,'PASS');
+var b=fw.inspect(base,{cpAuthenticated:true,signatureValid:true});assert.equal(b.decision,'REJECT');assert.equal(b.code,'DUPLICATE_REQUEST_ID');
+var h=fw.inspect({protocol:'CP/1',request_id:'x2',timestamp:Date.now(),target:'trading',action:'trading.history',arguments:{}},{cpAuthenticated:true,signatureValid:true});assert.equal(h.decision,'PASS');
+var bad=fw.inspect({protocol:'CP/1',request_id:'x3',timestamp:Date.now(),target:'trading',action:'trading.execute',arguments:{symbol:'DOGE/EUR',exchange:'KRAKEN',side:'BUY'}},{cpAuthenticated:true,signatureValid:true});assert.equal(bad.decision,'REJECT');assert.equal(bad.code,'PAIR_NOT_WHITELISTED');
+var staleCfg=F.defaults(),staleFw=new F.TradingFirewall({getConfig:function(){return staleCfg;}}),stale={protocol:'CP/1',request_id:'stale1',timestamp:Date.now()-3600000,target:'trading',action:'trading.history',arguments:{}};
+var expired=staleFw.inspect(stale,{cpAuthenticated:true,signatureValid:true});assert.equal(expired.decision,'REJECT');assert.equal(expired.code,'MESSAGE_EXPIRED');
+staleCfg.security.verifyTimestamp=false;var bypassed=staleFw.inspect({protocol:'CP/1',request_id:'stale2',timestamp:Date.now()-3600000,target:'trading',action:'trading.history',arguments:{}},{cpAuthenticated:true,signatureValid:true});assert.equal(bypassed.decision,'PASS');
+console.log('PASS Trading Firewall whitelist + replay + configurable timestamp protection');

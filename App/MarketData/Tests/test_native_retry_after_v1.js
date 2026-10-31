@@ -1,0 +1,11 @@
+"use strict";
+const assert=require("assert");
+const Budget=require("../Orchestrator/request_budget");
+const b=new Budget({mode:"NATIVE"});
+b.configure("TEST",{shortLimit:1,shortWindowMs:60000,longLimit:10,longWindowMs:60000});
+assert.strictEqual(b.admit({provider:"TEST",cost:1}).allowed,true);
+const denied=b.admit({provider:"TEST",cost:1});
+assert.strictEqual(denied.allowed,false);
+assert(denied.retryAfterMs>0);
+assert(denied.retryAfterMs<=60000);
+console.log("PASS NATIVE retryAfterMs");

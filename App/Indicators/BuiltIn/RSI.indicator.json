@@ -1,0 +1,86 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "rsi",
+  "name": "Relative Strength Index",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "source": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "open",
+        "high",
+        "low",
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 14,
+      "min": 2,
+      "max": 200
+    }
+  },
+  "engine": {
+    "operation": "rsi"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#b08bff",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": 0,
+    "max": 100,
+    "visual": {
+      "levels": [
+        {
+          "value": 30,
+          "color": "#aa8dff"
+        },
+        {
+          "value": 50,
+          "color": "#637c90"
+        },
+        {
+          "value": 70,
+          "color": "#aa8dff"
+        }
+      ],
+      "zones": [
+        {
+          "min": 0,
+          "max": 30,
+          "color": "#a36dff",
+          "opacity": 0.1
+        },
+        {
+          "min": 70,
+          "max": 100,
+          "color": "#a36dff",
+          "opacity": 0.1
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,11 @@
+'use strict';
+/* IA-TB Process Registry v2.0 — manifest-driven process inventory. */
+var fs=require('fs'),path=require('path'),SettingsStore=require('../Settings/sqlite_settings_store'),LEGACY_IDS={indicator:'indicators'};
+function ProcessRegistry(root,opts){opts=opts||{};this.root=path.resolve(root);this.dir=path.join(__dirname,'manifests');this.settings=opts.settingsStore||new SettingsStore(this.root,opts.settings||{});this.manifests={};this.reload();}
+ProcessRegistry.prototype.reload=function(){var self=this,out={};var names=[];try{names=fs.readdirSync(this.dir).filter(function(n){return /\.json$/i.test(n);});}catch(e){}names.sort().forEach(function(n){try{var x=JSON.parse(fs.readFileSync(path.join(self.dir,n),'utf8'));if(!x||!x.id||!x.type)return;out[String(x.id).toLowerCase()]=x;}catch(e){}});this.manifests=out;return this.list();};
+ProcessRegistry.prototype.list=function(){var self=this;return Object.keys(this.manifests).sort(function(a,b){return (self.manifests[a].order||999)-(self.manifests[b].order||999);}).map(function(id){var x=Object.assign({},self.manifests[id]);x.installed=!x.script||fs.existsSync(path.join(self.root,x.script));x.enabled=self.isEnabled(id,x.defaultEnabled!==false);return x;});};
+ProcessRegistry.prototype.get=function(id){id=String(id||'').toLowerCase();return this.manifests[id]||null;};
+ProcessRegistry.prototype.isEnabled=function(id,def){id=String(id);var v=this.settings.get('process_registry',id+'.enabled',null),legacy=LEGACY_IDS[id];if(v===null&&legacy){var old=this.settings.get('process_registry',legacy+'.enabled',null);if(old!==null){v=old===true;this.settings.set('process_registry',id+'.enabled',v);}}return v===null?!!def:v===true;};
+ProcessRegistry.prototype.setEnabled=function(id,value){if(!this.get(id))throw new Error('PROCESS_INVALID');this.settings.set('process_registry',String(id)+'.enabled',value===true);return value===true;};
+ProcessRegistry.prototype.summary=function(){var a=this.list(),o={installed:0,enabled:0,engines:0,firewalls:0,services:0,core:0,addons:0};a.forEach(function(x){if(x.installed)o.installed++;if(x.enabled)o.enabled++;var k=String(x.type||'').toUpperCase();if(k==='ENGINE')o.engines++;else if(k==='FIREWALL')o.firewalls++;else if(k==='CORE')o.core++;else if(k==='ADDON')o.addons++;else o.services++;});return o;};
+module.exports=ProcessRegistry;

@@ -1,0 +1,12 @@
+{
+  "id": "core",
+  "label": "Core Server",
+  "type": "CORE",
+  "order": 10,
+  "port": 8001,
+  "healthPath": "/api/health",
+  "marker": "IA-Trading-Bot",
+  "restartable": false,
+  "defaultEnabled": true,
+  "versionSource": "RUNTIME_HEALTH"
+}

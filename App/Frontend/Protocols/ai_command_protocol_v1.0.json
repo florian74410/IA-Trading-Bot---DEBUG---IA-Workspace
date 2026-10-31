@@ -1,0 +1,321 @@
+{
+  "version": "1.0",
+  "security_principle": "Le Chat IA agit par commandes déclaratives validées côté serveur. Les secrets, permissions, retraits, transferts et signatures wallet restent hors de son contrôle.",
+  "market": {
+    "renderer": "IA-TB Native Chart Engine v1.1 (Canvas2D)",
+    "source": "GMX",
+    "network": "Arbitrum One",
+    "catalog": "Catalogue dynamique des marchés perpétuels USD via GMX /pairs.",
+    "candles": "Oracle GMX /prices/candles",
+    "timeframes": [
+      "1m",
+      "5m",
+      "15m",
+      "1h",
+      "4h",
+      "1d"
+    ],
+    "volume": "Indisponible sur les bougies Oracle GMX; IA-Trading-Bot retourne null/N/A et ne l'invente pas.",
+    "fallback": "Le canvas historique minimal reste disponible si le moteur natif IA-TB ne charge pas."
+  },
+  "command_families": {
+    "chart": [
+      {
+        "type": "chart.set_source",
+        "source": "GMX"
+      },
+      {
+        "type": "chart.set_symbol",
+        "symbol": "LINKUSD"
+      },
+      {
+        "type": "chart.set_timeframe",
+        "timeframe": "5m"
+      },
+      {
+        "type": "chart.fit"
+      },
+      {
+        "type": "chart.focus"
+      },
+      {
+        "type": "chart.restore"
+      },
+      {
+        "type": "chart.clear_analysis"
+      },
+      {
+        "type": "chart.add_level",
+        "id": "entry",
+        "price": 10.5,
+        "title": "Entrée"
+      },
+      {
+        "type": "chart.remove_level",
+        "id": "entry"
+      }
+    ],
+    "mosaic": [
+      {
+        "type": "mosaic.move",
+        "module": "chart",
+        "col": 1,
+        "row": 1,
+        "order": 0
+      },
+      {
+        "type": "mosaic.resize",
+        "module": "chart",
+        "w": 8,
+        "h": 10
+      },
+      {
+        "type": "mosaic.show",
+        "module": "chat"
+      },
+      {
+        "type": "mosaic.hide",
+        "module": "console"
+      },
+      {
+        "type": "mosaic.swap",
+        "a": "chat",
+        "b": "chart"
+      },
+      {
+        "type": "mosaic.reset"
+      },
+      {
+        "type": "mosaic.bottom_modules",
+        "modules": [
+          "strategy",
+          "market",
+          "wallet",
+          "logs"
+        ]
+      },
+      {
+        "type": "mosaic.custom.create",
+        "definition": "Crypto Chart Viewer IA Trader_MOSAIC_V1"
+      }
+    ],
+    "strategy": [
+      {
+        "type": "strategy.list"
+      },
+      {
+        "type": "strategy.open"
+      },
+      {
+        "type": "strategy.load",
+        "filename": "Test LINK-USDT.dat"
+      },
+      {
+        "type": "strategy.reload"
+      },
+      {
+        "type": "strategy.save"
+      },
+      {
+        "type": "strategy.visualize"
+      },
+      {
+        "type": "strategy.start"
+      },
+      {
+        "type": "strategy.pause"
+      },
+      {
+        "type": "strategy.stop"
+      }
+    ],
+    "wallet": [
+      {
+        "type": "wallet.connect"
+      },
+      {
+        "type": "wallet.refresh"
+      },
+      {
+        "type": "wallet.switch_arbitrum"
+      },
+      {
+        "type": "wallet.open"
+      }
+    ],
+    "gmx": [
+      {
+        "type": "gmx.refresh"
+      },
+      {
+        "type": "gmx.market"
+      },
+      {
+        "type": "gmx.positions"
+      },
+      {
+        "type": "gmx.orders"
+      },
+      {
+        "type": "gmx.draft",
+        "market": "LINK/USD",
+        "direction": "long",
+        "collateralToken": "USDC",
+        "collateralUsd": 20,
+        "leverage": 3
+      }
+    ],
+    "settings": [
+      {
+        "type": "settings.open"
+      },
+      {
+        "type": "settings.close"
+      },
+      {
+        "type": "settings.profile_select",
+        "filename": "DefaultAppSettings.dat"
+      },
+      {
+        "type": "settings.power_mode",
+        "modeId": 2
+      },
+      {
+        "type": "settings.test_openai"
+      },
+      {
+        "type": "settings.test_gmx"
+      }
+    ],
+    "system": [
+      {
+        "type": "system.refresh"
+      },
+      {
+        "type": "system.logs_refresh"
+      },
+      {
+        "type": "system.tokens_refresh"
+      },
+      {
+        "type": "system.shutdown"
+      }
+    ],
+    "update": [
+      {
+        "type": "update.open"
+      },
+      {
+        "type": "update.ai.build",
+        "request": "demande utilisateur originale"
+      },
+      {
+        "type": "update.ai.build_install",
+        "request": "demande utilisateur originale"
+      },
+      {
+        "type": "update.ai.build_install_restart",
+        "request": "demande utilisateur originale"
+      }
+    ],
+    "registry": [
+      {
+        "type": "marketdata.registry.search",
+        "term": "BTC",
+        "limit": 20
+      },
+      {
+        "type": "marketdata.registry.asset",
+        "term": "BTC"
+      },
+      {
+        "type": "marketdata.registry.list",
+        "offset": 0,
+        "limit": 100
+      },
+      {
+        "type": "marketdata.registry.query",
+        "action": "markets",
+        "arguments": {
+          "term": "ETH"
+        }
+      },
+      {
+        "type": "marketdata.registry.query",
+        "action": "where_listed",
+        "arguments": {
+          "term": "SOL"
+        }
+      }
+    ]
+  },
+  "trade_execution": {
+    "exchange": "GMX",
+    "mode": "PREPARE_ONLY",
+    "description": "Le Chat peut préparer un brouillon GMX. La signature finale de la transaction reste dans Trust Wallet/GMX.",
+    "never_exposed": [
+      "retraits",
+      "transferts",
+      "clés/secrets API",
+      "seed ou clé privée Trust Wallet",
+      "mot de passe utilisateur",
+      "e-mail utilisateur",
+      "auto-modification des permissions IA"
+    ]
+  },
+  "legacy_strategy_compatibility": {
+    "rule": "Les stratégies existantes marquées BINANCE ne déclenchent aucun appel Binance. Elles sont compilées en mémoire vers GMX et leurs symboles USDT/USDC sont normalisés en USD, sans réécrire le fichier utilisateur.",
+    "example": "LINKUSDT -> LINKUSD"
+  },
+  "external_confirmations": "Trust Wallet peut imposer sa propre fenêtre d'autorisation/signature. IA-Trading-Bot ne contourne pas ces confirmations.",
+  "strategy_visualization": "Analyse visuelle uniquement; strategy.visualize ne déclenche pas d'ordre.",
+  "strategy_storage": {
+    "official_folder": "Annexes/Strategies",
+    "accepted_extensions": [
+      ".dat",
+      ".json"
+    ],
+    "dat_rule": "Un fichier DAT enrichi peut contenir iatb_executable (schema_version=1) pour être chargeable par StrategyManager."
+  },
+  "openai_transport": {
+    "endpoint": "/v1/responses",
+    "structured_output": "compact json_schema",
+    "retry_on_incomplete": true,
+    "fallback": "local command parser after one failed retry",
+    "chart_viewer": "local-first: aucun appel OpenAI pour les commandes simples; appel Responses API uniquement pour les demandes complexes."
+  },
+  "mosaic_storage": {
+    "folder": "Annexes/Mosaiques",
+    "pattern": "*.moz.json",
+    "schema": "Crypto Chart Viewer IA Trader_MOSAIC_V1",
+    "modes": {
+      "4": "4 informations enrichies, icônes/images HTTPS/sparklines possibles",
+      "8": "8 informations texte compactes sur deux lignes, sans icônes"
+    },
+    "security": "Déclaratif uniquement; HTML/CSS/JS interdits."
+  },
+  "update_transport": {
+    "manual": "Paramètres > Mise à jour > drag & drop d’une archive .zip",
+    "ai_builder": "Création/installation/redémarrage uniquement selon les trois permissions explicites de l'utilisateur.",
+    "rollback": "launcher.js supervise la nouvelle release et restaure la précédente si le health-check échoue."
+  },
+  "chart_viewer": {
+    "route": "/chart-viewer",
+    "renderer": "TradingView Advanced Real-Time Chart (iframe)",
+    "separation": "Module indépendant de Trading IA dans la même application/serveur local.",
+    "simple_commands": "Paire, exchange, timeframe, thème, rechargement, plein écran et ouverture des réglages sont traités localement dans le navigateur sans appel OpenAI.",
+    "complex_commands": "Analyse, stratégie, indicateurs, Pine Script et demandes non reconnues localement passent par /api/chart-viewer/chat et utilisent la clé OpenAI chiffrée existante.",
+    "iframe_limit": "Le DOM et l’échelle du widget TradingView gratuit sont isolés; IA-Trading-Bot ne prétend pas voir les bougies et ne peut pas injecter automatiquement des dessins/Pine Script dans le widget.",
+    "strategy_output": "Le Chat peut produire une carte stratégie et un Pine Script copiable, sans exécution d’ordre."
+  },
+  "market_registry": {
+    "transport": "CP/1",
+    "target": "marketdata",
+    "shared_consumers": [
+      "Paramètres > Market Data > Registry",
+      "Chat IA Trading",
+      "Supervisor"
+    ],
+    "principle": "Une seule implémentation Registry; UI et IA consomment les mêmes commandes read-only."
+  }
+}

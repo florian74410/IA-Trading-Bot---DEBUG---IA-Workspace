@@ -1,0 +1,31 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const registry=require('../../Indicators/Engine/indicator_registry');
+const root=path.resolve(__dirname,'../..');
+const nativeNames=fs.readdirSync(path.join(root,'Indicators/BuiltIn')).filter(x=>x.endsWith('.indicator.json')).map(x=>x.slice(0,-'.indicator.json'.length));
+assert.equal(nativeNames.length,21,'all 21 native definitions must be covered');
+for(const name of nativeNames){
+ const def=JSON.parse(fs.readFileSync(path.join(root,'Indicators/BuiltIn',name+'.indicator.json'),'utf8'));
+ const validity=registry.validateDefinition(def,'BuiltIn',null,false);
+ assert.equal(validity.ok,true,name+': '+validity.errors.join('; '));
+ assert.ok(def.display.visual);
+}
+const src=fs.readFileSync(path.join(root,'Frontend/JS/indicator_visual_renderer_v2.js'),'utf8');
+const window={};
+vm.runInNewContext(src,{window});
+const engine=window.IATBIndicatorVisualV2;
+assert.equal(engine.stamp(1700000000000),1700000000);
+const rows=Array.from({length:5},(_,i)=>({time:1700000000+i*60}));
+const result={ok:true,result:{id:'ichimoku_cloud',times:rows.map(x=>x.time*1000),display:{pane:'price',visual:{layers:[{type:'cloud',upper:'span_a',lower:'span_b',opacity:.2}]}},values:{span_a:[null,1,3,2,2],span_b:[null,2,2,2,3]}}};
+let fills=0;
+const ctx={save(){},restore(){},beginPath(){},rect(){},clip(){},moveTo(){},lineTo(){},closePath(){},fill(){fills++}};
+engine.drawPrice(ctx,[result],rows,{L:0,priceTop:0,cw:400,priceH:100,lo:0,hi:5});
+assert.ok(fills>=1,'cloud area was not drawn');
+result.result.display.pane='separate';
+fills=0;
+engine.drawPrice(ctx,[result],rows,{L:0,priceTop:0,cw:400,priceH:100,lo:0,hi:5});
+assert.equal(fills,0,'separate indicator must not draw on price pane');
+console.log('INDICATOR VISUAL V2 CONTRACT PASS');

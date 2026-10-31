@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "mode": "PROTECTION",
+  "rules": {
+    "payloadSize": true,
+    "providerWhitelist": true,
+    "typeWhitelist": true,
+    "provenance": true,
+    "timestamp": true,
+    "symbol": true,
+    "ohlcSchema": true,
+    "positivePrice": true,
+    "priceJump": true,
+    "bidAsk": true,
+    "spread": true,
+    "duplicateProtection": true,
+    "liquiditySchema": true
+  },
+  "maxMessageAgeMs": 30000,
+  "maxFutureSkewMs": 5000,
+  "maxPayloadBytes": 524288,
+  "duplicateWindowMs": 5000,
+  "maxPriceJumpPct": 20,
+  "maxSpreadPct": 10,
+  "requireProvenance": true
+}

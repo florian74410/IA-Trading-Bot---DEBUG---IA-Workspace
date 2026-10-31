@@ -1,0 +1,94 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "williams_r",
+  "name": "Williams %R",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 14,
+      "min": 2,
+      "max": 200
+    }
+  },
+  "engine": {
+    "operation": "williams_r"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": -100,
+    "max": 0,
+    "visual": {
+      "layers": [],
+      "levels": [
+        {
+          "value": -80,
+          "color": "#b38cff"
+        },
+        {
+          "value": -20,
+          "color": "#b38cff"
+        }
+      ],
+      "zones": [
+        {
+          "min": -100,
+          "max": -80,
+          "color": "#a36dff",
+          "opacity": 0.11
+        },
+        {
+          "min": -20,
+          "max": 0,
+          "color": "#a36dff",
+          "opacity": 0.11
+        }
+      ]
+    }
+  }
+}

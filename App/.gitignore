@@ -1,0 +1,24 @@
+# IA-TB v1.12 DEBUG - generated/runtime data
+
+# Dependencies
+node_modules/
+
+# Runtime state
+**/.runtime/
+*.pid
+
+# Logs
+*.log
+logs.dat
+
+# SQLite transient/runtime files
+*-wal
+*-shm
+Fundamental/Data/*
+!Fundamental/Data/.gitkeep
+
+# OS/editor noise
+.DS_Store
+
+# Local bundled Node runtime
+.node/

@@ -1,0 +1,211 @@
+{
+  "id": "trading",
+  "label": "Trading Engine",
+  "type": "ENGINE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8017,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "trading.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "trading.capabilities",
+        "arguments": {
+          "allowed": [
+            "exchange"
+          ]
+        }
+      },
+      {
+        "name": "trading.account.positions",
+        "arguments": {
+          "allowed": [
+            "exchange",
+            "address",
+            "account",
+            "chain"
+          ],
+          "required": [
+            "exchange"
+          ]
+        },
+        "description": "Read account positions through the selected exchange executor."
+      },
+      {
+        "name": "trading.account.orders",
+        "arguments": {
+          "allowed": [
+            "exchange",
+            "address",
+            "account",
+            "chain"
+          ],
+          "required": [
+            "exchange"
+          ]
+        },
+        "description": "Read account orders through the selected exchange executor."
+      },
+      {
+        "name": "trading.account.balances",
+        "arguments": {
+          "allowed": [
+            "exchange",
+            "address",
+            "account",
+            "chain"
+          ],
+          "required": [
+            "exchange"
+          ]
+        },
+        "description": "Read account balances through the selected exchange executor."
+      },
+      {
+        "name": "trading.execute",
+        "arguments": {
+          "allowed": [
+            "risk_approval_id",
+            "exchange",
+            "market_type",
+            "symbol",
+            "side",
+            "order_type",
+            "quantity",
+            "quote_quantity",
+            "price",
+            "stop_price",
+            "leverage",
+            "reduce_only",
+            "time_in_force",
+            "client_order_id",
+            "position_side",
+            "chain",
+            "account",
+            "slippage_bps",
+            "metadata"
+          ],
+          "required": [
+            "risk_approval_id",
+            "exchange",
+            "symbol",
+            "side"
+          ]
+        }
+      },
+      {
+        "name": "trading.cancel",
+        "arguments": {
+          "allowed": [
+            "risk_approval_id",
+            "exchange",
+            "market_type",
+            "symbol",
+            "exchange_order_id",
+            "client_order_id",
+            "chain",
+            "account",
+            "metadata"
+          ],
+          "required": [
+            "risk_approval_id",
+            "exchange",
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "trading.close_position",
+        "arguments": {
+          "allowed": [
+            "risk_approval_id",
+            "exchange",
+            "market_type",
+            "symbol",
+            "position_side",
+            "quantity",
+            "leverage",
+            "chain",
+            "account",
+            "slippage_bps",
+            "metadata"
+          ],
+          "required": [
+            "risk_approval_id",
+            "exchange",
+            "symbol",
+            "position_side",
+            "quantity"
+          ]
+        }
+      },
+      {
+        "name": "trading.history",
+        "arguments": {
+          "allowed": [
+            "limit",
+            "since",
+            "exchange",
+            "symbol"
+          ]
+        }
+      },
+      {
+        "name": "trading.admin.command",
+        "arguments": {
+          "allowed": [
+            "command",
+            "command_id",
+            "timestamp",
+            "confirmed",
+            "proof",
+            "params"
+          ],
+          "required": [
+            "command",
+            "command_id",
+            "timestamp",
+            "confirmed",
+            "proof"
+          ]
+        },
+        "description": "Authenticated ADMIN maintenance with durable emergency halt. P5 real broker mutations and recovery remain unqualified and disabled. Optional params are bound to the signed proof."
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "trading.order.request",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "trading.execution.result",
+        "direction": "PRODUCE"
+      },
+      {
+        "name": "portfolio.execution.event",
+        "direction": "PRODUCE"
+      }
+    ],
+    "events": []
+  },
+  "description": "Logical Trading CP/1 target. Mutating requests enter the Firewall security boundary on 8017 before reaching Trading Engine on 8016.",
+  "routing": {
+    "via": "FIREWALL",
+    "processHost": "127.0.0.1",
+    "processPort": 8016,
+    "processHealthPath": "/health",
+    "securityBoundary": true
+  },
+  "registration": {
+    "dynamic": false
+  }
+}

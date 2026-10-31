@@ -1,0 +1,22 @@
+{
+  "create": {
+    "method": "POST",
+    "path": "/0/private/AddOrder"
+  },
+  "amend": {
+    "method": "POST",
+    "path": "/0/private/AmendOrder"
+  },
+  "cancel": {
+    "method": "POST",
+    "path": "/0/private/CancelOrder"
+  },
+  "get": {
+    "method": "POST",
+    "path": "/0/private/QueryOrders"
+  },
+  "open": {
+    "method": "POST",
+    "path": "/0/private/OpenOrders"
+  }
+}

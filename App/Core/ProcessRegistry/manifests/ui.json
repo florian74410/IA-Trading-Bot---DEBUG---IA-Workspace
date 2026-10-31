@@ -1,0 +1,29 @@
+{
+  "id": "ui",
+  "label": "Graphical UI Service",
+  "type": "UI",
+  "order": 140,
+  "port": 8000,
+  "healthPath": "/ui-health",
+  "marker": "IA-TB UI Service",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "UI/Gateway/ui_service.js",
+  "log": "UI/Logs/ui.log",
+  "env": {
+    "IATB_UI_PORT": "8000",
+    "CORE_PUBLIC_PORT": "8001",
+    "ROUTER_PORT": "8021",
+    "IATB_AUTH_MODE": "disabled",
+    "IATB_UI_BYPASS_ROLE": "SUPERADMIN",
+    "IATB_FIREWALL_PORT": "8017"
+  },
+  "dependencies": [
+    "core",
+    "router"
+  ],
+  "versionSource": "RUNTIME_HEALTH",
+  "optionalDependencies": [
+    "supervisor"
+  ]
+}

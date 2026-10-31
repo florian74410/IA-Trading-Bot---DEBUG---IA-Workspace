@@ -1,0 +1,102 @@
+{
+  "schema": "iatb.auth.account-transfer-envelope-proposal/1",
+  "status": "SUPERSEDED_DO_NOT_IMPLEMENT",
+  "warning": "HISTORICAL ARCHIVE ONLY: P1.8 automated DEBUG↔RELEASE account portability explicitly cancelled by Overflow 2026-10-14. Do not use this as a runtime or implementation specification.",
+  "source_environment": "DEBUG",
+  "destination_environment": "RELEASE",
+  "format_version": 1,
+  "approved_auth_schema_version": 1,
+  "approved_auth_protocol_version": 1,
+  "approved_permissions_version": 1,
+  "header_authenticated_fields": [
+    "format_version",
+    "bundle_id",
+    "source_environment",
+    "destination_environment",
+    "recipient_key_id",
+    "issued_at",
+    "expires_at",
+    "account_count",
+    "approval_policy_version"
+  ],
+  "envelope_sample_metadata": {
+    "bundle_id": "<random-opaque-bundle-id>",
+    "recipient_key_id": "<target-public-key-fingerprint>",
+    "issued_at": "<ISO-8601-UTC>",
+    "expires_at": "<ISO-8601-UTC>",
+    "account_count": "<bounded-integer>",
+    "approval_policy_version": 1,
+    "ciphertext_sha256_transport_only": "<digest-of-ciphertext-for-transfer-check-not-AAD>"
+  },
+  "crypto_candidate": {
+    "recipient_key_exchange": "X25519 (candidate, vetted implementation required)",
+    "key_derivation": "HKDF-SHA256 (candidate)",
+    "authenticated_encryption": "AES-256-GCM or vetted age library (to select/benchmark)",
+    "sender_authentication": "trusted source signature if approved (Ed25519 candidate)",
+    "must_bind_header_as_authenticated_data": true,
+    "must_reject_unknown_or_incompatible_algorithms": true,
+    "never_copy_source_master_key": true,
+    "never_store_plaintext_archive_at_rest": true,
+    "transport_checksum_note": "Ciphertext SHA-256 for corruption detection only, not an AEAD AAD header field and not proof of authenticity; AEAD verifies ciphertext."
+  },
+  "encrypted_account_record_fields_only": [
+    "source_client_id_for_audit_only",
+    "first_name",
+    "last_name",
+    "username",
+    "email",
+    "source_account_status_for_review"
+  ],
+  "always_excluded": [
+    "passwords",
+    "password_hashes",
+    "password_salts",
+    "recovery_tokens",
+    "session_ids",
+    "session_cookies",
+    "wallet_private_keys",
+    "wallet_master_key",
+    "client_master_key",
+    "cp1_machine_secrets",
+    "auth_signing_private_keys",
+    "api_keys",
+    "client_wallets",
+    "wallet_addresses",
+    "trading_orders",
+    "positions",
+    "strategy_private_data",
+    "service_logs",
+    "settings_secrets",
+    "source_hmac_identity_hashes"
+  ],
+  "destination": {
+    "allocate_new_client_id": true,
+    "derive_destination_identity_indexes_under_destination_key": true,
+    "do_not_merge_existing_users": true,
+    "target_account_state": "DISABLED_PENDING_ENROLLMENT",
+    "target_role": "PENDING_EXPLICIT_TARGET_APPROVAL",
+    "auto_admin": false,
+    "require_dry_run": true,
+    "require_target_operator_confirmation": true,
+    "require_fresh_password_enrollment": true,
+    "single_use_bundle_id": true,
+    "atomic_import_or_no_effect": true,
+    "no_source_sessions_restored": true,
+    "never_derive_roles_from_client_supplied_data": true
+  },
+  "operation": {
+    "transport": "SSH CLI only",
+    "web_endpoint": "FORBIDDEN",
+    "auto_sync": false,
+    "gen1_operations_allowed_during_P1_8": false,
+    "expiry_hours_candidate": 24,
+    "requires_vetted_crypto_and_fake_account_end_to_end_tests": true
+  },
+  "cancellation": {
+    "date": "2026-10-14",
+    "decision": "NO_ACCOUNT_EXPORT_IMPORT_DEBUG_RELEASE_IN_AUTH_2_1",
+    "release_admin": "CREATE_SEPARATELY_VIA_AUTHORIZED_NATIVE_SSH_CLI",
+    "future_3x": "MANUAL_DB_REVIEW_ONLY_IF_NEEDED_IN_SEPARATE_PROJECT",
+    "wallet_data": "UNCHANGED"
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "version": "1.8.11",
+  "framework": "Unified Admin Console / Debug Control Framework v1",
+  "console": "Console Générale Admin",
+  "shell": false,
+  "syntax": "debug <target> <action> [key=value]",
+  "targets": "dynamic: server, client, router + ProcessRegistry services",
+  "actions": [
+    {
+      "action": "capabilities",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Liste cibles/actions"
+    },
+    {
+      "action": "status",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Etat runtime"
+    },
+    {
+      "action": "health",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Health-check actif"
+    },
+    {
+      "action": "self-test",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Test actif non destructif"
+    },
+    {
+      "action": "metrics",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Metriques"
+    },
+    {
+      "action": "dependencies",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Dependances"
+    },
+    {
+      "action": "dump-state",
+      "mode": "observation",
+      "risk": "medium",
+      "description": "Etat interne controle"
+    },
+    {
+      "action": "logs",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Logs cible"
+    },
+    {
+      "action": "errors",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Erreurs filtrees"
+    },
+    {
+      "action": "trace-status",
+      "mode": "observation",
+      "risk": "low",
+      "description": "Etat trace"
+    },
+    {
+      "action": "trace-on",
+      "mode": "command",
+      "risk": "medium",
+      "description": "Active trace temporaire"
+    },
+    {
+      "action": "trace-off",
+      "mode": "command",
+      "risk": "low",
+      "description": "Desactive trace"
+    },
+    {
+      "action": "start",
+      "mode": "command",
+      "risk": "high",
+      "confirm": true,
+      "description": "Demarre service gere"
+    },
+    {
+      "action": "stop",
+      "mode": "command",
+      "risk": "high",
+      "confirm": true,
+      "description": "Arrete service autorise"
+    },
+    {
+      "action": "restart",
+      "mode": "command",
+      "risk": "high",
+      "confirm": true,
+      "description": "Redemarre cible"
+    },
+    {
+      "action": "reset-safe",
+      "mode": "command",
+      "risk": "high",
+      "confirm": true,
+      "description": "Redemarrage sur sans effacement"
+    }
+  ]
+}

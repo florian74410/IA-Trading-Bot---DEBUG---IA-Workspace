@@ -1,0 +1,43 @@
+:root{--iatb-nav-h:68px;--iatb-nav-gap:6px;--iatb-cyan:#12c8ff;--iatb-blue:#158cff;--iatb-line:#164f73;--iatb-nav-bg:#06111d}
+html{scroll-padding-top:calc(var(--iatb-nav-h) + var(--iatb-nav-gap))}
+body{padding-top:0!important}
+#iatb-global-nav{position:fixed;z-index:2147483000;left:0;right:0;top:0;height:var(--iatb-nav-h);display:flex;align-items:center;justify-content:center;padding:5px 16px;background:linear-gradient(180deg,#071725 0%,#040d17 100%);border-bottom:1px solid #11618a;box-shadow:0 7px 24px #0009,0 1px 20px #00a9ff18;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+.iatb-nav-frame{width:100%;height:58px;display:grid;grid-template-columns:minmax(180px,260px) minmax(560px,1fr) minmax(300px,430px);align-items:stretch;border:1px solid #1479a8;border-radius:18px;background:linear-gradient(180deg,#071928 0%,#06111c 55%,#071521 100%);box-shadow:inset 0 0 0 1px #0a3048,inset 0 1px 0 #2cc9ff35,0 0 22px #00a9ff18;overflow:hidden;position:relative}
+.iatb-nav-frame:before,.iatb-nav-frame:after{content:"";position:absolute;top:0;width:130px;height:2px;background:linear-gradient(90deg,transparent,#16cfff,transparent);box-shadow:0 0 12px #16cfff}.iatb-nav-frame:before{left:20px}.iatb-nav-frame:after{right:20px}
+.iatb-nav-brand{display:flex;align-items:center;gap:12px;padding:0 22px;text-decoration:none;border-right:1px solid #173b53;color:#effaff}.iatb-nav-brand img{width:116px;max-height:48px;object-fit:contain}.iatb-nav-brand-fallback{font-size:25px;font-weight:800;color:#29bfff;letter-spacing:1px}.iatb-nav-brand small{display:block;color:#658ba5;font-size:8px;letter-spacing:.6px}
+.iatb-nav-links{display:grid;grid-template-columns:repeat(8,minmax(68px,1fr));height:100%}.iatb-nav-link{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-decoration:none;color:#c4d5e2;border-right:1px solid #102d41;transition:.18s ease;background:linear-gradient(180deg,transparent,#06131e55)}.iatb-nav-link:hover{color:#fff;background:#0b2335;box-shadow:inset 0 0 18px #11bfff0b}.iatb-nav-icon{width:24px;height:24px;display:grid;place-items:center;color:#7bbce1;line-height:1;flex:0 0 24px}
+.iatb-nav-icon .navSvg{width:23px;height:23px;display:block;overflow:visible}
+.iatb-nav-icon .navSvgOpenAI{width:24px;height:24px}
+.iatb-nav-link:hover .iatb-nav-icon,.iatb-nav-link.active .iatb-nav-icon{color:#27d4ff;filter:drop-shadow(0 0 4px rgba(22,202,255,.42))}.iatb-nav-label{font-size:12px;font-weight:650;white-space:nowrap}.iatb-nav-link.active{color:#20d2ff;background:linear-gradient(180deg,#0c2a40,#0a2133);box-shadow:inset 0 0 22px #00bfff20,0 0 18px #00bfff18}.iatb-nav-link.active:before{content:"";position:absolute;top:0;left:20%;right:20%;height:2px;background:#21d5ff;box-shadow:0 0 10px #21d5ff}.iatb-nav-link.active:after{content:"";position:absolute;bottom:0;left:13%;right:13%;height:2px;background:#1bcaff;box-shadow:0 0 8px #1bcaff}
+.iatb-nav-actions{display:flex;align-items:center;justify-content:flex-end;gap:9px;padding:0 16px}.iatb-nav-action{height:38px;display:inline-flex;align-items:center;justify-content:center;padding:0 13px;border:1px solid #1678aa;border-radius:9px;background:#071724;color:#d8f5ff;text-decoration:none;font-size:11px;font-weight:650;white-space:nowrap;box-shadow:inset 0 0 12px #00b7ff0c;transition:.18s}.iatb-nav-action:hover{border-color:#20caff;color:#fff;background:#0a2234;box-shadow:0 0 13px #00bfff20}.iatb-wallet{color:#21ceff}.iatb-nav-status{width:38px;height:38px;border:1px solid #146e98;border-radius:50%;display:grid;place-items:center;background:#06131d}.iatb-nav-status i{width:12px;height:12px;border-radius:50%;background:#24e59a;box-shadow:0 0 12px #24e59a}
+body.iatb-global-nav-ready>header.topbar,body.iatb-global-nav-ready>header.top,body.iatb-global-nav-ready>.page>header.topbar,body.iatb-global-nav-ready>.portfolioApp>header.topbar,body.iatb-global-nav-ready>.app>header.top{display:none!important}
+@media(max-width:1100px){.iatb-nav-frame{grid-template-columns:150px 1fr 210px}.iatb-nav-brand{padding:0 12px}.iatb-nav-brand img{width:105px}.iatb-nav-label{font-size:10px}.iatb-nav-actions{padding:0 8px}.iatb-wallet{display:none}}
+@media(max-width:820px){:root{--iatb-nav-h:76px}#iatb-global-nav{height:var(--iatb-nav-h);padding:6px}.iatb-nav-frame{height:64px;grid-template-columns:90px 1fr 52px;border-radius:13px}.iatb-nav-brand{padding:0 8px}.iatb-nav-brand img{width:78px}.iatb-nav-links{overflow-x:auto;grid-template-columns:repeat(8,74px)}.iatb-nav-action{display:none}.iatb-nav-status{width:32px;height:32px}.iatb-nav-actions{justify-content:center}.iatb-nav-icon{width:21px;height:21px;flex-basis:21px}.iatb-nav-icon .navSvg{width:20px;height:20px}.iatb-nav-label{font-size:9px}}
+
+/* Layout contract: global nav owns the first viewport band; page roots fill only the remainder. */
+body.iatb-global-nav-ready>.portfolioApp,
+body.iatb-global-nav-ready>.page,
+body.iatb-global-nav-ready>.shell,
+body.iatb-global-nav-ready>.app{margin-top:0!important}
+body.iatb-global-nav-ready>.portfolioApp{height:calc(100vh - var(--iatb-nav-h) - var(--iatb-nav-gap))!important;grid-template-rows:minmax(0,1fr) var(--status)!important}
+body.iatb-global-nav-ready>.portfolioApp>.workspace{min-height:0!important;height:auto!important;display:block!important}
+body.iatb-global-nav-ready>.portfolioApp>.statusBar{grid-row:2!important}
+body.iatb-global-nav-ready>.shell{height:calc(100vh - var(--iatb-nav-h) - var(--iatb-nav-gap))!important}
+body.iatb-global-nav-ready>.page{min-height:calc(100vh - var(--iatb-nav-h) - var(--iatb-nav-gap))!important}
+body.iatb-global-nav-ready>.page>.fundSidebar{top:calc(var(--iatb-nav-h) + var(--iatb-nav-gap))!important}
+body.iatb-global-nav-ready>.app{height:calc(100vh - var(--iatb-nav-h) - var(--iatb-nav-gap))!important}
+body.iatb-global-nav-ready>.adminShell{margin-top:0!important;height:calc(100vh - var(--iatb-nav-h) - var(--iatb-nav-gap))!important;min-height:0!important}
+
+/* Breathing space below the fixed application chrome. */
+body.iatb-global-nav-ready{background:#040d17}
+
+#iatb-global-nav-spacer{display:block!important;width:100%;height:calc(var(--iatb-nav-h) + var(--iatb-nav-gap));min-height:calc(var(--iatb-nav-h) + var(--iatb-nav-gap));flex:0 0 calc(var(--iatb-nav-h) + var(--iatb-nav-gap));pointer-events:none}
+
+/* v2.0 DEBUG — eighth primary tab: Statistiques */
+@media(max-width:1280px) and (min-width:821px){.iatb-nav-frame{grid-template-columns:145px minmax(0,1fr) 185px}.iatb-nav-label{font-size:9px}.iatb-nav-link{gap:4px}.iatb-nav-actions{padding:0 7px}.iatb-nav-action{padding:0 9px}}
+
+/* v2.2.4: guest navigation automatically fills the former Settings slot */
+#iatb-global-nav .iatb-nav-links:has(>a[href="/settings"][style*="none"]){grid-template-columns:repeat(7,minmax(68px,1fr))}
+
+/* R1: reserve stable room for sign-out and ADMIN buttons; no redundant beacon. */
+@media(min-width:821px){.iatb-nav-frame{grid-template-columns:minmax(135px,13%) minmax(0,1fr) minmax(230px,max-content)!important}.iatb-nav-actions{min-width:230px;gap:8px;padding:0 11px;flex-wrap:nowrap}.iatb-nav-actions .iatb-nav-action{flex:0 0 auto;min-width:max-content;padding-inline:12px;font-size:11px}.iatb-nav-links{min-width:0}.iatb-nav-label{font-size:clamp(9px,.83vw,12px)}}

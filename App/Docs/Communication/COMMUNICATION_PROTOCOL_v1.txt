@@ -1,0 +1,53 @@
+IA-TB — COMMUNICATION PROTOCOL CP/1 — Runtime v2.0
+=================================================
+
+Nature
+------
+CP/1 est le protocole JSON interne commun d'IA-TB. Ce n'est ni un moteur ni un service autonome.
+Il relie Router, Engines, Supervisor et services logiques.
+
+Contrat
+-------
+Requete  : protocol, request_id, timestamp, target, action, detail, arguments.
+Reponse  : protocol, request_id, engine, action, status, schema, generated_at, duration_ms, data_hash, data, warnings.
+Evenement: protocol, event_id, timestamp, source, type, schema, severity, data_hash, data.
+
+Niveaux de detail
+-----------------
+summary  : reponse compacte.
+analysis : resultat normalise complet.
+evidence : donnees justificatives lourdes uniquement sur demande.
+
+Regles v2
+---------
+- le Router ne transforme pas le resultat metier d'un Engine ;
+- chaque action doit etre declaree dans Protocol Registry ;
+- les arguments sont valides par cible/action ;
+- les echanges internes sont authentifies et lies a 127.0.0.1 ;
+- les donnees externes restent non fiables et ne deviennent jamais directement des commandes executables ;
+- les operations Trading mutantes traversent obligatoirement le Firewall ;
+- Market Data valide les donnees externes via le Data Firewall avant distribution.
+
+Canaux navigateur
+-----------------
+Le navigateur n'accede jamais aux endpoints CP/1 internes generiques.
+Le UI Gateway expose seulement :
+- POST /communication/v1/ui/read
+- POST /communication/v1/ui/write
+avec allowlists strictes d'actions et d'arguments.
+
+Securite
+--------
+- secret machine-to-machine local ;
+- whitelist action/arguments ;
+- request_id/event_id et anti-replay ;
+- fenetre temporelle ;
+- limites de taille/profondeur JSON ;
+- timeout de routage ;
+- SHA-256 deterministe sur les donnees ;
+- journal d'audit sans secret.
+
+Transport
+---------
+En local, CP/1 circule sur localhost via Router :8021.
+Le contrat reste transport-agnostique pour un futur deploiement prive TLS/mTLS.

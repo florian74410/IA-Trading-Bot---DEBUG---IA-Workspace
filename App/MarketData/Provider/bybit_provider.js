@@ -1,0 +1,16 @@
+'use strict';
+var get=require('./http_json'),S=require('../Normalizer/symbols'),T=require('../Normalizer/timeframes');
+var MAP={'1m':'1','5m':'5','15m':'15','30m':'30','1h':'60','4h':'240','1d':'D','1w':'W'};
+function pair(symbol){var p=S.split(symbol),q=(p.quote==='USDC'?'USDC':'USDT');return p.base+q;}
+function P(o){o=o||{};this.base=String(o.base||process.env.IATB_BYBIT_PUBLIC_BASE||'https://api.bybit.com').replace(/\/$/,'');this.id='BYBIT';this.symbolMap=Object.create(null);this.symbolMeta=Object.create(null);}
+P.prototype.getCandles=function(symbol,tf,cb){
+ var nt=T.normalize(tf),key=S.clean(symbol),ps=this.symbolMap[key]||pair(symbol),meta=this.symbolMeta[key]||null,iv=MAP[nt]||'60',url=this.base+'/v5/market/kline?category=linear&symbol='+encodeURIComponent(ps)+'&interval='+encodeURIComponent(iv)+'&limit=500';
+ get(url,{timeout:10000},function(e,o){if(e)return cb(e);if(!o||+o.retCode!==0)return cb(new Error('BYBIT_API_'+String(o&&o.retCode||'INVALID')+':'+String(o&&o.retMsg||'')));
+  var rows=o.result&&Array.isArray(o.result.list)?o.result.list:[],out=[];
+  for(var i=0;i<rows.length;i++){var x=rows[i];if(!Array.isArray(x)||x.length<6)continue;var r=[+x[0],+x[1],+x[2],+x[3],+x[4],+x[5]];if(r.every(isFinite))out.push(r);}
+  out.sort(function(a,b){return a[0]-b[0]});if(!out.length)return cb(new Error('BYBIT_OHLCV_EMPTY'));
+  cb(null,{ok:true,provider:'BYBIT_PUBLIC',exchange:'BYBIT',marketType:'PERPETUAL',canonicalSymbol:meta?(meta.baseAsset+'/'+meta.quoteAsset):S.canonical(symbol),providerPair:ps,timeframe:nt,candles:out,volumeAvailable:true,volumeSource:'BYBIT_LINEAR_NATIVE',priceSource:'BYBIT_PUBLIC',timestampUnit:'ms'});
+ });
+};
+P.prototype.listSymbols=function(cb){var self=this,out=[],seen=Object.create(null),cursor='',pages=0;function page(){pages++;var url=self.base+'/v5/market/instruments-info?category=linear&status=Trading&limit=1000'+(cursor?'&cursor='+encodeURIComponent(cursor):'');get(url,{timeout:12000,maxBytes:16*1024*1024},function(e,o){if(e)return cb(e);if(!o||+o.retCode!==0)return cb(new Error('BYBIT_INSTRUMENTS_'+String(o&&o.retCode||'INVALID')+':'+String(o&&o.retMsg||'')));var result=o.result||{},rows=Array.isArray(result.list)?result.list:[];for(var i=0;i<rows.length;i++){var x=rows[i]||{},status=String(x.status||''),contract=String(x.contractType||''),base=String(x.baseCoin||'').toUpperCase().replace(/[^A-Z0-9]/g,''),quote=String(x.quoteCoin||'').toUpperCase().replace(/[^A-Z0-9]/g,''),ps=S.clean(x.symbol||base+quote),symbol=S.clean(base+quote);if(status&&status!=='Trading')continue;if(contract&&contract.toLowerCase().indexOf('perpetual')<0)continue;if(!base||!quote||!ps||!symbol||seen[symbol])continue;seen[symbol]=1;self.symbolMap[symbol]=ps;self.symbolMeta[symbol]={baseAsset:base,quoteAsset:quote,providerPair:ps};out.push({symbol:symbol,baseAsset:base,quoteAsset:quote,market:base+'/'+quote,marketType:'PERPETUAL',status:status||'Trading',providerPair:ps});}cursor=String(result.nextPageCursor||'');if(cursor&&pages<10)return page();out.sort(function(a,b){return a.symbol.localeCompare(b.symbol);});if(!out.length)return cb(new Error('BYBIT_SYMBOLS_EMPTY'));cb(null,{ok:true,exchange:'BYBIT',providerId:'BYBIT',dynamic:true,endpoint:'/v5/market/instruments-info?category=linear',symbols:out});});}page();};
+module.exports=P;

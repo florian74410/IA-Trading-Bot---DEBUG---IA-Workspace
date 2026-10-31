@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "name": "Nouvelle Strategie",
+  "version": "1.0",
+  "exchange": "GMX",
+  "symbol": "BTCUSD",
+  "timeframe": "5m",
+  "indicators": {
+    "rsi": {
+      "period": 14
+    },
+    "ema": {
+      "period": 50
+    }
+  },
+  "entry": {
+    "side": "BUY",
+    "conditions": [
+      {
+        "indicator": "RSI",
+        "operator": "<",
+        "value": 35
+      }
+    ]
+  },
+  "exit": {
+    "conditions": [
+      {
+        "indicator": "RSI",
+        "operator": ">",
+        "value": 65
+      }
+    ]
+  },
+  "risk": {
+    "leverage": 3,
+    "max_position_usdt": 20,
+    "stop_loss_percent": 1.0,
+    "take_profit_percent": 2.0
+  }
+}

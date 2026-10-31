@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "mode": "PROTECTION",
+  "security": {
+    "verifyCpAuthentication": true,
+    "verifySignatures": true,
+    "verifyTimestamp": true,
+    "maxMessageAgeSeconds": 30
+  },
+  "duplicateProtection": {
+    "enabled": true,
+    "windowSeconds": 30
+  }
+}

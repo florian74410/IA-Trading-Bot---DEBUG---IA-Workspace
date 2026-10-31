@@ -1,0 +1,41 @@
+{
+  "id": "ai_gateway",
+  "label": "AI Secret Gateway",
+  "type": "SERVICE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8001,
+    "cpPath": "/api/internal/ai-gateway/cp/v1",
+    "healthPath": "/api/health"
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "ai_gateway.context",
+        "arguments": {
+          "allowed": []
+        },
+        "description": "Return non-secret AI/application context needed by domain engines: configured state, active model and language."
+      },
+      {
+        "name": "ai_gateway.responses",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "usageContext"
+          ],
+          "required": [
+            "payload"
+          ]
+        },
+        "description": "Secure OpenAI Responses transport. The API key remains inside Core and is never returned to callers."
+      }
+    ],
+    "dataTypes": [],
+    "events": []
+  },
+  "registration": {
+    "dynamic": false
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "cci",
+  "name": "Commodity Channel Index",
+  "version": "2.1",
+  "category": "momentum",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 20,
+      "min": 2,
+      "max": 500
+    },
+    "constant": {
+      "type": "number",
+      "default": 0.015,
+      "min": 0.0001,
+      "max": 1
+    }
+  },
+  "engine": {
+    "operation": "cci"
+  },
+  "outputs": {
+    "value": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": null,
+    "max": null,
+    "visual": {
+      "layers": [],
+      "levels": [
+        {
+          "value": -100,
+          "color": "#b38cff"
+        },
+        {
+          "value": 0,
+          "color": "#71849f"
+        },
+        {
+          "value": 100,
+          "color": "#b38cff"
+        }
+      ]
+    }
+  }
+}

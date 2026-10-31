@@ -1,0 +1,81 @@
+{
+  "schema": "iatb.router-protocol/1.0",
+  "appVersion": "1.8.12",
+  "protocol": "CP/1",
+  "transport": "HTTP_LOCAL_AUTHENTICATED",
+  "request": {
+    "required": [
+      "protocol",
+      "request_id",
+      "timestamp",
+      "target",
+      "action",
+      "arguments"
+    ],
+    "fields": {
+      "protocol": "CP/1",
+      "request_id": "unique <=96 chars",
+      "timestamp": "epoch ms, max skew 30s",
+      "target": "registered component id",
+      "action": "registry-declared command",
+      "detail": [
+        "summary",
+        "analysis",
+        "evidence"
+      ],
+      "arguments": "plain JSON object"
+    }
+  },
+  "response": {
+    "required": [
+      "protocol",
+      "request_id",
+      "engine",
+      "action",
+      "status",
+      "schema",
+      "generated_at",
+      "duration_ms",
+      "data_hash",
+      "data"
+    ],
+    "status": [
+      "OK",
+      "DEGRADED",
+      "PROTECTION",
+      "OFFLINE",
+      "ERROR"
+    ]
+  },
+  "security": {
+    "host": "127.0.0.1 only",
+    "auth": "X-IATB-CP-Token",
+    "integrity": "X-IATB-CP-Signature HMAC-SHA256",
+    "replayProtection": true,
+    "arbitraryShell": false,
+    "arbitraryPath": false,
+    "arbitraryURL": false
+  },
+  "normalization": {
+    "rule": "Business engines expose Router-facing CP/1 adapters. Internal engine APIs remain private implementation details.",
+    "activeCP1": [
+      "indicator",
+      "trading",
+      "risk",
+      "portfolio",
+      "marketdata",
+      "liquidity",
+      "fundamental"
+    ],
+    "bridges": [
+      "firewall"
+    ],
+    "reserved": [
+      "strategy",
+      "supervisor"
+    ]
+  },
+  "status": "DEPRECATED",
+  "replacedBy": "Core/Communication/router_protocol_spec_v2.0.json",
+  "note": "Historical v1.8.12 snapshot retained until grand cleanup; not authoritative for the v2 runtime."
+}

@@ -1,0 +1,40 @@
+IA-TB Protocol Registry v2.0
+============================
+
+Objectif
+--------
+Repertorier tous les composants connectables au Router sans codage metier en dur dans le Router.
+
+Une entree = un manifeste JSON dans Core/Communication/ProtocolRegistry/.
+
+Chaque manifeste declare
+------------------------
+- id / label / type ;
+- transport ;
+- endpoint (host, port, cpPath, healthPath) ;
+- commands ;
+- dataTypes ;
+- events ;
+- politique de registration statique ou dynamique.
+
+Ajout d'un composant
+--------------------
+1. Ajouter un manifeste.
+2. Declarer endpoint et transport.
+3. Declarer commandes et arguments autorises.
+4. Declarer dataTypes / events.
+5. Pour un composant dynamique, enregistrer un sous-ensemble exact de ses capabilities.
+6. Aucun changement metier du coeur du Router ne doit etre necessaire.
+
+Regles de securite
+------------------
+- composant inconnu refuse ;
+- action non declaree refusee ;
+- arguments valides ;
+- host dynamique limite a 127.0.0.1 ;
+- UI separee des endpoints CP internes ;
+- Trading cible la frontiere Firewall, pas directement le Trading Engine.
+
+Composants v2
+-------------
+Core, UI, Router, Firewall, Indicator, Market Data, Liquidity, Fundamental, Trading, Strategy, Risk, Portfolio, Supervisor, plus AI Gateway et X Gateway.

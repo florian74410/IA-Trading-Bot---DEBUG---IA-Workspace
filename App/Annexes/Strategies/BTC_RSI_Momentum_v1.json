@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "name": "BTC RSI Momentum",
+  "version": "1.0",
+  "exchange": "GMX",
+  "symbol": "BTCUSD",
+  "timeframe": "1m",
+  "indicators": {
+    "rsi": {
+      "period": 14
+    }
+  },
+  "entry": {
+    "side": "BUY",
+    "conditions": [
+      {
+        "indicator": "RSI",
+        "operator": "<",
+        "value": 30
+      }
+    ]
+  },
+  "exit": {
+    "conditions": [
+      {
+        "indicator": "RSI",
+        "operator": ">",
+        "value": 70
+      }
+    ]
+  },
+  "risk": {
+    "leverage": 5,
+    "max_position_usdt": 20,
+    "stop_loss_percent": 1.0,
+    "take_profit_percent": 2.0
+  }
+}

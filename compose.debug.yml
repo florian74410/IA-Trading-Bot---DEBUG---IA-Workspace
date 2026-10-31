@@ -1,0 +1,209 @@
+# IA-TB GEN-1 DEBUG — safe validation profile only.
+# This file deliberately does not start application services or publish ports.
+# Full service orchestration will be enabled only after auth and path audits.
+name: iatb-debug
+
+services:
+  preflight:
+    profiles: ["validate"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_RUNTIME_ROOT: /tmp/iatb-debug/runtime
+      IATB_DATA_ROOT: /tmp/iatb-debug/data
+      IATB_STATE_ROOT: /tmp/iatb-debug/state
+      IATB_TRADING_LIVE: "0"
+    restart: "no"
+
+  storage-check:
+    profiles: ["storage"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/storage_preflight.js"]
+    network_mode: "none"
+    read_only: true
+    user: "${IATB_UID:?Set IATB_UID to id -u}:${IATB_GID:?Set IATB_GID to id -g}"
+    volumes:
+      - /var/lib/iatb/debug/runtime:/iatb/debug/runtime:rw
+      - /var/lib/iatb/debug/data:/iatb/debug/data:rw
+      - /var/lib/iatb/debug/state:/iatb/debug/state:rw
+      - /var/lib/iatb/debug/annexes:/iatb/debug/annexes:rw
+      - /var/lib/iatb/debug/updates:/iatb/debug/updates:rw
+    environment:
+      IATB_RUNTIME_ROOT: /iatb/debug/runtime
+      IATB_DATA_ROOT: /iatb/debug/data
+      IATB_STATE_ROOT: /iatb/debug/state
+      IATB_ANNEX_ROOT: /iatb/debug/annexes
+      IATB_UPDATES_ROOT: /iatb/debug/updates
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+    restart: "no"
+
+  router-smoke:
+    profiles: ["router-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/router_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+    restart: "no"
+
+  core-router-smoke:
+    profiles: ["core-router-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/core_router_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_DEBUG_MODE: "0"
+    restart: "no"
+
+  ui-core-router-smoke:
+    profiles: ["ui-core-router-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/ui_core_router_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_DEBUG_MODE: "0"
+      IATB_AUTH_MODE: "disabled"
+    restart: "no"
+
+  firewall-smoke:
+    profiles: ["firewall-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/firewall_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_FIREWALL_ENABLED: "1"
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+    restart: "no"
+
+  marketdata-smoke:
+    profiles: ["marketdata-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/marketdata_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+    restart: "no"
+
+  orchestrator-sqlite-smoke:
+    profiles: ["orchestrator-sqlite-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/orchestrator_sqlite_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    restart: "no"
+
+  orchestrator-quota-smoke:
+    profiles: ["orchestrator-quota-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/orchestrator_quota_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    restart: "no"
+
+  provider-policy-smoke:
+    profiles: ["provider-policy-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    command: ["node", "Tools/provider_policy_smoke.js"]
+    network_mode: "none"
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    restart: "no"
+
+  persistence-volume-smoke:
+    profiles: ["persistence-volume-smoke"]
+    build:
+      context: ./App
+      dockerfile: Dockerfile.app
+    image: iatb:node22-app-validation
+    user: "${IATB_UID:?Export IATB_UID}:${IATB_GID:?Export IATB_GID}"
+    command: ["node", "Tools/persistence_volume_smoke.js", "verify"]
+    network_mode: "none"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      - /var/lib/iatb/debug/data:/iatb/debug/data:rw
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,mode=1777
+    environment:
+      IATB_DATA_ROOT: /iatb/debug/data
+      IATB_TRADING_LIVE: "0"
+      IATB_DEBUG_BOOTSTRAP: "0"
+      IATB_MARKETDATA_OFFLINE_DIAGNOSTIC: "1"
+    restart: "no"

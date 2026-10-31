@@ -1,0 +1,6 @@
+IA-TB Portfolio v1.5.0
+Route: /portfolio
+Mode: READ-ONLY
+Sources: Trust Wallet EIP-1193 (ETH + USDC Arbitrum), GMX lecture, Kraken Public.
+Total principal: ETH + USDC du Wallet uniquement pour éviter le double comptage des positions GMX.
+Aucun ordre, transfert, retrait, signature ni nouveau port.

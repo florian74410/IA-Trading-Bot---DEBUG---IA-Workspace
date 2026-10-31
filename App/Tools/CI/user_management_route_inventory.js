@@ -1,0 +1,6 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const {ADMIN_ONLY}=require('../../Core/Clients/UserManagement/admin_routes');
+const {LEGACY_SELF_READ,LEGACY_SELF_WRITE}=require('../../Core/Clients/UserManagement/http');
+function inventory(){const source=fs.readFileSync(path.resolve(__dirname,'../../Core/Server/server.js'),'utf8'),rows=[],seen=new Set();for(const m of source.matchAll(/req\.method==='(GET|POST|PUT|DELETE)'&&p==='([^']+)'/g)){const key=m[1]+' '+m[2];if(seen.has(key))continue;seen.add(key);const isPublic=key==='GET /api/health'||key==='GET /api/bootstrap'||key==='POST /api/login';rows.push({method:m[1],path:m[2],policy:isPublic?'public-or-login':ADMIN_ONLY.has(key)?'authenticated-admin-context':['/api/profile','/api/client/me','/api/logout','/api/settings/apis','/api/settings/apis/clear','/api/session/change-password','/api/session/change-email'].includes(m[2])?'Auth21 handler':(m[1]==='GET'?LEGACY_SELF_READ:LEGACY_SELF_WRITE).has(m[2])?'authenticated-owner-context':'denied-in-authenticated-mode'});}return {literalRoutes:rows.length,rows,unknownPaths:'DENY',dynamicPrefixes:'DENY unless explicitly matched by Auth21 handler',warning:'Coverage inventory; denied legacy features are not migrated business features.'};}
+if(require.main===module)console.log(JSON.stringify(inventory(),null,2));module.exports={inventory};

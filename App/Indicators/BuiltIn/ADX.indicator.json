@@ -1,0 +1,98 @@
+{
+  "schema": "iatb.indicator.v1",
+  "id": "adx",
+  "name": "Average Directional Index",
+  "version": "2.1",
+  "category": "trend",
+  "inputs": {
+    "high": {
+      "type": "series",
+      "default": "high",
+      "allowed": [
+        "high"
+      ]
+    },
+    "low": {
+      "type": "series",
+      "default": "low",
+      "allowed": [
+        "low"
+      ]
+    },
+    "close": {
+      "type": "series",
+      "default": "close",
+      "allowed": [
+        "close"
+      ]
+    },
+    "period": {
+      "type": "integer",
+      "default": 14,
+      "min": 2,
+      "max": 200
+    }
+  },
+  "engine": {
+    "operation": "adx"
+  },
+  "outputs": {
+    "adx": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#4db7ef",
+        "width": 2
+      }
+    },
+    "plus_di": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#fcaf57",
+        "width": 2
+      }
+    },
+    "minus_di": {
+      "type": "number",
+      "strategy": true,
+      "chart": true,
+      "visual": {
+        "color": "#b38cff",
+        "width": 2
+      }
+    }
+  },
+  "strategy": {
+    "operators": [
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "==",
+      "!=",
+      "crosses_above",
+      "crosses_below"
+    ]
+  },
+  "display": {
+    "pane": "separate",
+    "min": 0,
+    "max": 100,
+    "visual": {
+      "layers": [],
+      "levels": [
+        {
+          "value": 20,
+          "color": "#71849f"
+        },
+        {
+          "value": 25,
+          "color": "#f6b25c"
+        }
+      ]
+    }
+  }
+}

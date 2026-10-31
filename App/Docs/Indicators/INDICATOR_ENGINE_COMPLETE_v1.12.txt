@@ -1,0 +1,6 @@
+IA-TB Indicator Engine v1.12 - completion pass
+================================================
+Implemented: Registry dependency graph; IIL USE can reference existing Registry indicators; missing dependencies/cycles/depth >16 rejected and Custom JSON quarantined; runtime recursion guard; per-batch dependency memoization; normalized candles reused; provenance timestamp object/array fix; definition.create typo fix. BuiltIn and Custom remain pure JSON storage. READY/WARMING/INVALID remains the data-state contract. Volume protections propagate through dependencies. Batch limit remains 32.
+
+Boundary: Indicator Engine calculates indicator values/evidence only. Trading decisions remain Strategy/Supervisor -> Risk -> Trading.
+Storage: BuiltIn/*.indicator.json official; Custom/*.indicator.json custom; Quarantine rejected definitions. IIL public, IR private; no eval/arbitrary JS/shell/network/filesystem exposed by IIL.

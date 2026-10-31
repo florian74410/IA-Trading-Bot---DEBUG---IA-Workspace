@@ -1,0 +1,5 @@
+'use strict';
+var assert=require('assert'),Parser=require('../CP1/parser'),AdminConsole=require('../admin_console');
+var plan=Parser.parse('debug trading health');assert.equal(plan.stages[0].name,'debug.health');assert.equal(plan.stages[0].arguments.target,'trading');
+var fake={system:function(){return{cpuCount:2}},logs:{info:function(){return[]}},services:{refresh:function(){this.services={trading:{}}},services:{trading:{}},probe:function(id,cb){cb(null,{id:id,online:true,health:{ok:true}})},spec:function(id){return{id:id,dependencies:['router'],optionalDependencies:[]}},restart:function(id,cb){cb(null,{id:id,online:true})},stop:function(id,cb){cb(null,{id:id,online:false})},setProcessEnabled:function(id,en,cb){cb(null,{id:id,online:en})}},snapshot:function(cb){cb(null,{version:'1.8.11'})}};
+var c=new AdminConsole('/tmp',fake);assert.equal(c.modeForAction('debug.restart'),'command');assert.equal(c.requiresConfirmation('debug.restart'),true);c.executeDebug('debug.health',{target:'trading'},{role:'ADMIN'},function(e,o){if(e)throw e;assert.equal(o.target,'trading');console.log('Unified Admin Debug Framework v1.8.11: OK');});

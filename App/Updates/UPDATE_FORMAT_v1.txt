@@ -1,0 +1,10 @@
+Crypto Chart Viewer IA Trader — FORMAT DES FUTURES MISES A JOUR
+
+Archive attendue : Crypto Chart Viewer IA Trader.zip
+Racine interne : Crypto Chart Viewer IA Trader/
+Contenu :
+  Crypto Chart Viewer IA Trader/update_manifest.json
+  Crypto Chart Viewer IA Trader/payload/**
+
+Le manifeste doit cibler application = "Crypto Chart Viewer IA Trader" et partir de la version actuellement installée.
+Les données utilisateur, secrets, paramètres, stratégies et historiques sont protégés par le moteur de mise à jour.

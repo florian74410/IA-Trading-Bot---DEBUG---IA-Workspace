@@ -1,0 +1,6 @@
+IA-TB Companion v1.12 DEBUG
+Global lightweight companion. One floating UI across application pages. Mood state machine: 1 HELLO, 2 FUNNY, 3 LAUGH, 4 CONGRATS, 5 MARKET_ANALYSIS, 6 THINKING, 7 IDEA, 8 SUCCESS, 9 ERROR, 10 IDLE, 11 CRYPTO, 12 EXPLAIN.
+The current build renders lightweight CSS/emoji fallback faces. Dedicated transparent robot PNG assets can replace each mood without changing protocol.
+Chat endpoint reuses existing OpenAI Chat pipeline and permission enforcement. Page context is advisory only and sanitized. Companion does not get ADMIN privileges.
+Voice: browser SpeechRecognition when supported + SpeechSynthesis response. Requires browser microphone permission. Firefox/macOS compatibility depends on browser Web Speech support; typed chat always remains available.
+Draggable UI; idle mood after 3 minutes. Future PNG map: /assets/companion/robot_01.png ... robot_12.png.

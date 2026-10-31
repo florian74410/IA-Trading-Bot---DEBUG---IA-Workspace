@@ -1,0 +1,25 @@
+{
+  "id": "portfolio",
+  "label": "Portfolio Engine",
+  "type": "ENGINE",
+  "order": 110,
+  "port": 8020,
+  "healthPath": "/health",
+  "marker": "IA-TB Portfolio Engine",
+  "restartable": true,
+  "defaultEnabled": true,
+  "script": "Portfolio/Engine/portfolio_service.js",
+  "log": ".runtime/logs/portfolio.log",
+  "env": {
+    "IATB_PORTFOLIO_PORT": "8020",
+    "ROUTER_PORT": "8021"
+  },
+  "dependencies": [
+    "router"
+  ],
+  "optionalDependencies": [
+    "trading",
+    "marketdata"
+  ],
+  "versionSource": "RUNTIME_HEALTH"
+}

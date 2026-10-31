@@ -1,0 +1,164 @@
+{
+  "id": "strategy",
+  "label": "Strategy Engine v2",
+  "type": "ENGINE",
+  "status": "ACTIVE",
+  "transport": "CP1",
+  "endpoint": {
+    "host": "127.0.0.1",
+    "port": 8018,
+    "cpPath": "/cp/v1",
+    "healthPath": "/health"
+  },
+  "registration": {
+    "dynamic": true
+  },
+  "table": {
+    "commands": [
+      {
+        "name": "strategy.health",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.capabilities",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.catalog",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.validate",
+        "arguments": {
+          "allowUnknown": true
+        }
+      },
+      {
+        "name": "strategy.evaluate",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "timestamp",
+            "market",
+            "indicators",
+            "indicator",
+            "fundamental",
+            "portfolio",
+            "strategy_ids",
+            "strategies",
+            "min_confidence",
+            "correlation_id"
+          ]
+        }
+      },
+      {
+        "name": "strategy.dry_run",
+        "arguments": {
+          "allowed": [
+            "symbol",
+            "timeframe",
+            "timestamp",
+            "market",
+            "indicators",
+            "indicator",
+            "fundamental",
+            "portfolio",
+            "strategy_ids",
+            "strategies",
+            "min_confidence",
+            "correlation_id"
+          ]
+        }
+      },
+      {
+        "name": "strategy.stats",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.state",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.reload",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.pause",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.resume",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.reset_stats",
+        "arguments": {
+          "allowed": []
+        }
+      },
+      {
+        "name": "strategy.user.request",
+        "arguments": {
+          "allowed": [
+            "payload",
+            "proof"
+          ],
+          "required": [
+            "payload",
+            "proof"
+          ]
+        },
+        "description": "Core-bound owner capability with live session revalidation; no browser identity authority"
+      }
+    ],
+    "dataTypes": [
+      {
+        "name": "indicator.analysis",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "fundamental.analysis",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "portfolio.snapshot",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "market.snapshot",
+        "direction": "CONSUME"
+      },
+      {
+        "name": "strategy.signal",
+        "direction": "PRODUCE",
+        "schema": "strategy.signal/2.0"
+      },
+      {
+        "name": "strategy.evaluation",
+        "direction": "PRODUCE",
+        "schema": "strategy.evaluation/2.0"
+      }
+    ],
+    "events": [
+      "strategy.signal.generated",
+      "strategy.evaluation.completed"
+    ]
+  }
+}
