@@ -40,6 +40,7 @@ jobs:
           set -eu
           python3 Infrastructure/DEBUG_ONLINE/verify_deploy.py
           python3 -m py_compile Infrastructure/DEBUG_ONLINE/install_debug_online.py
+          python3 -m py_compile Infrastructure/DEBUG_ONLINE/diagnose.py
           bash -n App/Tools/debug_online_start.sh
           node --check App/Tools/debug_online_forward.js
           node --check App/Tools/debug_online_operator_cli.js
