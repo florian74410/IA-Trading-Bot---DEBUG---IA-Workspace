@@ -44,5 +44,26 @@ jobs:
           docker run --rm \
             -v "$PWD/AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example:/etc/caddy/Caddyfile:ro" \
             caddy:2.10 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: Regression test extracted code permissions under strict umask
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          grep -Fq 'find "$STAGE/AI Agent" -type d -exec chmod 0755' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'find "$STAGE/AI Agent" -type f -exec chmod 0644' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'sudo -u "$ACCOUNT" test -r "$STAGE/AI Agent/AdminPanel/public_server.py"' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          stage="$(mktemp -d)"
+          trap 'rm -rf "$stage"' EXIT
+          mkdir -p "$stage/release"
+          tar -cf "$stage/agent.tar" 'AI Agent'
+          (
+            umask 077
+            tar -C "$stage/release" -xf "$stage/agent.tar" --no-same-owner --no-same-permissions
+            test "$(stat -c '%a' "$stage/release/AI Agent")" = 700
+            find "$stage/release/AI Agent" -type d -exec chmod 0755 {} +
+            find "$stage/release/AI Agent" -type f -exec chmod 0644 {} +
+          )
+          test "$(stat -c '%a' "$stage/release/AI Agent/AdminPanel")" = 755
+          test "$(stat -c '%a' "$stage/release/AI Agent/AdminPanel/public_server.py")" = 644
+          echo 'Strict umask / read-only source permissions regression passed'
       - name: No remote or privileged execution
         run: echo 'No VPS, SSH credentials, Caddy mutation or RELEASE access in this job.'
