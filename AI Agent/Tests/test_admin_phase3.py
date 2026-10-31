@@ -1,7 +1,6 @@
-"""Phase 3 security contract: password+TOTP HTTPS-session, read-only API."""
+"""Phase 3 security contract: password-only HTTPS-session, read-only API."""
 from __future__ import annotations
 
-import base64
 import hashlib
 import http.client
 import importlib.util
@@ -11,7 +10,6 @@ import secrets
 import sys
 import tempfile
 import threading
-import time
 import unittest
 from urllib.parse import urlencode
 
@@ -27,15 +25,11 @@ class Phase3Tests(unittest.TestCase):
         cls.private = Path(cls.temp.name) / "private"
         cls.private.mkdir(mode=0o700)
         cls.cred = cls.private / "credentials.json"
-        cls.mfa = cls.private / "mfa.json"
         salt = secrets.token_bytes(24)
         digest = hashlib.scrypt(b"phase3-test-password-123456", salt=salt, n=16384, r=8, p=1, dklen=32)
         cls.cred.write_text(json.dumps({"algorithm":"scrypt","salt":salt.hex(),"digest":digest.hex()}))
         cls.cred.chmod(0o600)
-        cls.seed = secrets.token_bytes(20)
-        cls.mfa.write_text(json.dumps({"version":1,"totp_secret":base64.b32encode(cls.seed).decode()}))
-        cls.mfa.chmod(0o600)
-        cls.server = public.PublicServer(0,cls.cred,cls.mfa)
+        cls.server = public.PublicServer(0,cls.cred)
         cls.thread = threading.Thread(target=cls.server.serve_forever,daemon=True)
         cls.thread.start()
 
@@ -57,8 +51,8 @@ class Phase3Tests(unittest.TestCase):
         conn.close()
         return status,content,head
 
-    def login(self,code,origin=True):
-        payload=urlencode({"username":"admin","password":"phase3-test-password-123456","totp":code})
+    def login(self,password="phase3-test-password-123456",origin=True):
+        payload=urlencode({"username":"admin","password":password})
         headers={"Content-Type":"application/x-www-form-urlencoded"}
         if origin:
             headers["Origin"]=public.ORIGIN
@@ -69,7 +63,7 @@ class Phase3Tests(unittest.TestCase):
         self.assertEqual(status,400)
         status,_,_=self.req("GET","/api/overview")
         self.assertEqual(status,401)
-        status,_,_=self.login(public.otp_code(self.seed,int(time.time()//30)),origin=False)
+        status,_,_=self.login(origin=False)
         self.assertEqual(status,403)
         status,_,_=self.req("POST","/api/requests","a=1",{"Origin":public.ORIGIN,
                      "Content-Type":"application/x-www-form-urlencoded"})
@@ -77,12 +71,10 @@ class Phase3Tests(unittest.TestCase):
         status,_,_=self.req("GET","/api/../credentials.json")
         self.assertEqual(status,401)
 
-    def test_totp_roundtrip_and_secure_cookie(self):
-        status,_,_=self.login("000000")
+    def test_password_login_and_secure_cookie(self):
+        status,_,_=self.login("wrong-password")
         self.assertEqual(status,401)
-        now=int(time.time()//30)
-        code=public.otp_code(self.seed,now)
-        status,_,headers=self.login(code)
+        status,_,headers=self.login()
         self.assertEqual(status,303)
         token=headers.get("Set-Cookie","")
         self.assertIn("__Host-iatb_admin=",token)
@@ -94,18 +86,19 @@ class Phase3Tests(unittest.TestCase):
         self.assertEqual(status,200)
         payload=json.loads(body)
         self.assertFalse(payload["execution"])
-        self.assertEqual(payload["mode"],"mfa_read_only")
+        self.assertEqual(payload["mode"],"password_read_only")
         self.assertEqual(self.req("PUT","/api/requests",headers={"Cookie":cookie})[0],405)
         self.assertEqual(self.req("GET","/login",headers={"Cookie":cookie})[0],303)
-        # Same TOTP step cannot be consumed twice.
-        self.assertEqual(self.login(code)[0],401)
+        # Same valid password may create an independent session without OTP.
+        self.assertEqual(self.login()[0],303)
 
-    def test_mfa_invalid_seed_and_file(self):
-        self.assertIsNone(public.verify_totp(self.seed,"123"))
-        self.assertIsNone(public.verify_totp(self.seed,"abcdef"))
-        self.assertIsNotNone(public.verify_totp(self.seed,public.otp_code(self.seed,int(time.time()//30))))
-        with self.assertRaises(ValueError):
-            public.read_mfa(self.private/"unknown")
+    def test_anonymous_requests_and_form_strictness(self):
+        self.assertEqual(self.req("GET","/login")[0],200)
+        self.assertEqual(self.req("GET","/")[0],303)
+        self.assertEqual(self.req("GET","/api/memory")[0],401)
+        self.assertEqual(self.req("GET","/api/overview",headers={"Host":"evil.example"})[0],400)
+        status,_,_=self.req("POST","/login",urlencode({"username":"admin","password":"phase3-test-password-123456","totp":"123456"}),{"Origin":public.ORIGIN,"Content-Type":"application/x-www-form-urlencoded"})
+        self.assertEqual(status,400)
 
 if __name__=="__main__":
     unittest.main()
