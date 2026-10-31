@@ -33,5 +33,12 @@ jobs:
           grep -q 'IPAddressDeny=any' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
           grep -q 'NoNewPrivileges=yes' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
           echo 'Phase 3 manifest safety checks passed'
+      - name: Validate isolated Caddy HTTPS site syntax
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          docker run --rm \
+            -v "$PWD/AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example:/etc/caddy/Caddyfile:ro" \
+            caddy:2.10 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
       - name: No remote or privileged execution
         run: echo 'No VPS, SSH credentials, Caddy mutation or RELEASE access in this job.'
