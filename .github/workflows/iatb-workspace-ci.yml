@@ -55,6 +55,7 @@ jobs:
           set -Eeuo pipefail
           trap 'sudo rm -rf /var/lib/iatb-ai-dev' EXIT
           sudo mkdir -p /var/lib/iatb-ai-dev/workspace/{drafts,patches,reports}
+          sudo chown -R "$(id -u):$(id -g)" /var/lib/iatb-ai-dev
           printf 'hello from CI\n' | SSH_ORIGINAL_COMMAND='write drafts/check.md' \
             python3 Infrastructure/DEBUG_ONLINE/ssh/ai_dev_gateway.py | grep -Fx 'WRITE_OK drafts/check.md'
           SSH_ORIGINAL_COMMAND='read drafts/check.md' \
