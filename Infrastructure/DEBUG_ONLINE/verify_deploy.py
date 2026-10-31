@@ -22,7 +22,8 @@ need('/srv/iatb-debug/online/private:/debug-private' in c,"Dedicated host data r
 need('cap_drop: [ALL]' in c,"Drop capabilities")
 need('no-new-privileges:true' in c,"No privilege escalation")
 need('IATB_DEPLOYMENT_MODE: AUTHENTICATED' in c,"Authenticated deployment mode")
-need('/var/run/docker.sock' not in c and '/var/lib/iatb' not in c,"Forbidden production bind")
+active_yaml='\n'.join(line.partition('#')[0] for line in c.splitlines())
+need('/var/run/docker.sock' not in active_yaml and '/var/lib/iatb' not in active_yaml,"Forbidden production bind")
 need('IATB_TRADING_LIVE' in s and '== "0"' in s, "Trading safety enforcement")
 need("server.listen(18000,'0.0.0.0'" in f,"Internal TLS stream edge missing")
 need("check_dns()" in i and "verify_ci(sha)" in i and "init_admin()" in i,
