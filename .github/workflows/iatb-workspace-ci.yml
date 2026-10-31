@@ -45,6 +45,21 @@ jobs:
           docker compose -f Infrastructure/DEBUG_ONLINE/compose.yml config --quiet
       - name: Build full IA-TB image (never start engines)
         run: docker build -f App/Dockerfile.app --pull -t iatb-workspace:ci App
+      - name: Seed disposable DEBUG identity database (no RELEASE accounts)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scratch="$(mktemp -d)"
+          trap 'sudo rm -rf "$scratch"' EXIT
+          sudo mkdir -p "$scratch/data"
+          sudo chown -R 10053:10053 "$scratch"
+          docker run --rm --network none --user 10053:10053 \
+            --volume "$scratch:/debug-private" \
+            --env IATB_DATA_ROOT=/debug-private/data \
+            --entrypoint node iatb-workspace:ci Tools/debug_online_seed_db.js
+          test -s "$scratch/data/Database/clients.sqlite"
+          test -s "$scratch/data/Security/client_master.key"
+          test "$(stat -c %a "$scratch/data/Security/client_master.key")" = 600
       - name: Check package version without running IA-TB
         run: |
           docker run --rm --network none --entrypoint node iatb-workspace:ci \
