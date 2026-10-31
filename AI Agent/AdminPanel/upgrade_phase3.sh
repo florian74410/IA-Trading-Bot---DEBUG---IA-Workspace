@@ -55,11 +55,6 @@ if [[ -e "$STATE" ]]; then
   [[ "$(stat -c '%a' "$STATE")" == '700' ]] || fail 'Existing private state directory is not 0700'
   [[ "$(stat -c '%U' "$STATE")" == "$ACCOUNT" ]] || fail 'Existing private state owner differs'
 fi
-# An enrollment seed was visible in a shared screenshot. Fail closed if it was
-# already confirmed to disk; require an explicit supervised rotation offline.
-if [[ -e "$STATE/mfa.json" || -L "$STATE/mfa.json" ]]; then
-  fail 'Existing MFA enrollment: verify/rotate the exposed seed offline before publication'
-fi
 printf 'Existing installation retained at %s\n' "$ORIGINAL"
 printf 'Versioned Phase3 deployment at %s\n' "$STAGE"
 printf 'To approve Phase3 HTTPS on %s, type PUBLISH IA-TB ADMIN PHASE3: ' "$DOMAIN"
@@ -150,11 +145,6 @@ if [[ ! -e "$STATE/credentials.json" ]]; then
   sudo -u "$ACCOUNT" python3 "$STAGE/AI Agent/AdminPanel/server.py" init-admin \
     --credential-file "$STATE/credentials.json" < /dev/tty
 fi
-if [[ ! -e "$STATE/mfa.json" ]]; then
-  echo 'TOTP enrollment (do not share the private seed or code):'
-  sudo -u "$ACCOUNT" python3 "$STAGE/AI Agent/AdminPanel/public_server.py" init-mfa \
-    --mfa-file "$STATE/mfa.json" < /dev/tty
-fi
 sudo -u "$ACCOUNT" python3 "$STAGE/AI Agent/AdminPanel/preflight.py" \
   --credential-file "$STATE/credentials.json" || fail 'Identity preflight failed'
 # Fail closed if credentials were changed/invalid. Never overwrite.
@@ -163,10 +153,8 @@ import importlib.util,sys
 from pathlib import Path
 sys.path.insert(0,sys.argv[1])
 from server import load_admin
-from public_server import read_mfa
 load_admin(Path(sys.argv[2])/'credentials.json')
-read_mfa(Path(sys.argv[2])/'mfa.json')
-print('PASSWORD_AND_MFA_FILES_VALID')
+print('PASSWORD_FILE_VALID')
 PY
 
 # Generate a dedicated unit for the *versioned* code, leaving the original service untouched.
@@ -185,7 +173,7 @@ if printf '%s\n' "$LISTEN" | grep -Eq '0[.]0[.]0[.]0:18083|\[::\]:18083'; then
   fail 'Phase3 backend must not bind publicly'
 fi
 curl -fsS --max-time 5 -H "Host: $DOMAIN" http://127.0.0.1:18083/healthz \
-  | grep -Fq '"mode":"mfa_read_only"' || fail 'Backend health failed'
+  | grep -Fq '"mode":"password_read_only"' || fail 'Backend health failed'
 CODE="$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" http://127.0.0.1:18083/api/overview)"
 [[ "$CODE" == 401 ]] || fail 'Unauthenticated API did not return 401'
 
