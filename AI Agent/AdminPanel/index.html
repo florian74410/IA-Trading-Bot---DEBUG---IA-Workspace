@@ -1,86 +1,88 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IA-TB | AI Agent Security Console (preview)</title>
-<style>
-:root{color-scheme:dark;--bg:#080d17;--panel:#131c2b;--line:#30465b;--ink:#e5eef9;--dim:#99aabc;--aqua:#39d4ec;--violet:#b099ff;--warning:#f4b85e}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% 0,#1b2e42,#080d17 65%);font:13px system-ui,'Segoe UI',sans-serif;color:var(--ink)}
-main{max-width:1020px;margin:30px auto;padding:0 18px}header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-h1{font-size:23px;letter-spacing:.07em;margin:3px 0 6px}h2{font-size:15px;margin:0}.overline{letter-spacing:.19em;color:var(--aqua);font-size:10px;text-transform:uppercase}
-.sub{color:var(--dim)}.flag{font-size:11px;border:1px solid var(--warning);color:var(--warning);padding:8px 12px;clip-path:polygon(0 0,calc(100% - 9px) 0,100% 9px,100% 100%,9px 100%,0 calc(100% - 9px))}
-.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
-.tile,.panel{border:1px solid var(--line);background:linear-gradient(160deg,#162339ee,#101a29ef);clip-path:polygon(0 0,calc(100% - 11px) 0,100% 11px,100% 100%,11px 100%,0 calc(100% - 11px))}
-.tile{padding:16px}.tile strong{display:block;color:var(--aqua);font-size:24px;margin-top:5px}.tile small{color:var(--dim)}
-.panel{padding:15px 18px 20px}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-nav{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px}button{font:inherit;color:var(--ink);background:#1a283b;border:1px solid #334d61;padding:9px 13px;cursor:pointer}
-button:hover,button:focus-visible{border-color:var(--aqua)}button[aria-selected=true]{color:var(--aqua);border-color:var(--aqua);background:#143043}
-button:disabled{color:#697b8d;cursor:not-allowed}input{padding:9px 12px;background:#0c1421;border:1px solid var(--line);color:var(--ink);min-width:180px}
-.scroller{overflow:auto;max-height:370px;border:1px solid #293e53}table{width:100%;border-collapse:collapse;white-space:nowrap;text-align:left}
-th{color:#a8c4d6;background:#1d2b3e;text-transform:uppercase;letter-spacing:.07em;font-size:10px;position:sticky;top:0}
-th,td{padding:12px;border-bottom:1px solid #26384c}td{color:#dae6f2}
-.tag{border:1px solid #526d83;padding:4px 7px;font-size:10px;letter-spacing:.06em}
-.tag.hard{color:#ff8f96;border-color:#97414b}.tag.restricted{color:var(--warning);border-color:#8b6c3b}.tag.off{color:#94a6b7}
-.empty{color:var(--dim);padding:24px;text-align:center}
-footer{color:var(--dim);margin:15px 0;font-size:11px;line-height:1.6}
-@media(max-width:570px){.summary{grid-template-columns:1fr}.tile strong{font-size:20px}}
-</style></head>
-<body><main>
-<header><div><div class="overline">IA-TB / AI AGENT v0.2</div><h1>SECURITY CONSOLE</h1><div class="sub">Permissions · Administrateur · Audit · Skills · Memory</div></div>
-<div class="flag">PREVIEW HORS LIGNE<br>NON CONNECTÉE À GEN-1</div></header>
-<section class="summary" aria-label="Résumé"><div class="tile"><small>État passerelle</small><strong>ISOLATED</strong><small>Aucune exécution distante</small></div>
-<div class="tile"><small>Décision par défaut</small><strong>DENY</strong><small>Contrôles locaux uniquement</small></div>
-<div class="tile"><small>Autorisations actives</small><strong>0</strong><small>Pas d'autorité raccordée</small></div></section>
-<div class="panel"><nav id="tabs" aria-label="Console administrateur"></nav>
-<div class="panel-head"><h2 id="sectionTitle">Permissions</h2><input id="filter" type="search" placeholder="Filtrer le tableau…" aria-label="Filtrer les lignes"></div>
-<div class="scroller"><table><thead id="thead"></thead><tbody id="tbody"></tbody></table></div>
-<p class="sub" id="note"></p></div>
-<footer>Cette interface constitue une maquette statique de consultation. Aucune approbation, révocation, installation de Skill ou commande SSH/Docker n'est disponible.
-Un raccordement futur exigera Auth administrateur indépendante, API protégée, anti-CSRF, journal d'audit et contrôle serveur de chaque action.</footer>
-</main><script>
-(function(){
-"use strict";
-var sections={
-"Permissions":{head:["Action","Ressource","Principal","État"],rows:[
-["memory.stats","general-memory","iatb-agent","Déclarée / non activée"],
-["debug.status","iatb-debug-online","iatb-debug-ci","Désactivée"],
-["debug.health","iatb-debug-online","iatb-debug-ci","Désactivée"],
-["github.read","iatb-debug-workspace","iatb-agent","Désactivée"]],note:"Un fichier JSON versionné ne confère jamais de permission technique."},
-"Denied":{head:["Action","Périmètre","Catégorie","Exception"],rows:[
-["release.*","RELEASE","HARD_DENY","Jamais par cet agent"],
-["keys.private.*","Tous","HARD_DENY","Jamais par cet agent"],
-["debug.package.install","DEBUG","RESTRICTED","Autorité externe"],
-["debug.support.restart","DEBUG","RESTRICTED","Autorité externe"]],note:"Une interdiction HARD_DENY ne peut pas être levée depuis cette console."},
-"Requests":{head:["Demande","Action","État","Gestion"],rows:[],note:"Aucune demande réelle chargée. La future API nécessitera une authentification administrateur indépendante."},
-"Audit":{head:["Date UTC","Principal","Action","Décision"],rows:[],note:"Aucun journal réel affiché. L'audit persistant reste dans une base privée distincte."},
-"Skills":{head:["Skill","Version","Statut","Portée"],rows:[
-["SSH","0.2.0","Catalogue uniquement","DEBUG limité"],
-["GitHub","0.2.0","Catalogue uniquement","Workspace"],
-["Deploy-DEBUG","0.2.0","Catalogue uniquement","DEBUG"],
-["Diagnostics","0.2.0","Catalogue uniquement","Métadonnées"],
-["Memory","0.2.0","Catalogue uniquement","General SQLite"],
-["SkillManager","0.2.0","Catalogue uniquement","Manifests"]],note:"Aucune installation ni activation automatique."},
-"Memory":{head:["Date UTC","Catégorie","Source","Référence"],rows:[],note:"La mémoire générale SQLite existante est préservée; aucune lecture live n'est activée ici."}
-};
-var active="Permissions",tabs=document.getElementById("tabs"),filter=document.getElementById("filter");
-Object.keys(sections).forEach(function(key){
-var button=document.createElement("button");button.textContent=key;button.type="button";
-button.addEventListener("click",function(){active=key;filter.value="";render()});tabs.appendChild(button);
-});
-function render(){
-Array.prototype.forEach.call(tabs.children,function(b){b.setAttribute("aria-selected",String(b.textContent===active))});
-var data=sections[active];document.getElementById("sectionTitle").textContent=active;
-document.getElementById("note").textContent=data.note;
-var th=document.getElementById("thead"),body=document.getElementById("tbody");th.replaceChildren();body.replaceChildren();
-var hr=document.createElement("tr");data.head.forEach(function(k){var h=document.createElement("th");h.textContent=k;hr.appendChild(h)});th.appendChild(hr);
-var term=filter.value.toLowerCase().trim();
-var rows=data.rows.filter(function(row){return row.join(" ").toLowerCase().includes(term)});
-rows.forEach(function(row){
-var tr=document.createElement("tr");row.forEach(function(v){
-var td=document.createElement("td");td.textContent=v;
-if(v==="HARD_DENY"||v==="RESTRICTED"){td.className="tag "+(v==="HARD_DENY"?"hard":"restricted")}
-tr.appendChild(td)});body.appendChild(tr);
-});
-if(!rows.length){var tr=document.createElement("tr"),cell=document.createElement("td");cell.colSpan=data.head.length;cell.className="empty";cell.textContent="Aucune donnée disponible";tr.appendChild(cell);body.appendChild(tr)}
-}
-filter.addEventListener("input",render);render();
-})();
-</script></body></html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080e1a">
+  <title>IA-TB / AI Agent — Admin Security Console</title>
+  <link rel="stylesheet" href="app.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+<div class="shell" id="shell">
+  <aside class="sidebar" aria-label="Navigation AI Agent">
+    <div class="identity">
+      <div class="symbol" aria-hidden="true">✣</div>
+      <div class="identity-copy"><span class="eyebrow">IA-TB / CONTROL</span><strong>AI AGENT</strong><span class="muted tiny">ADMIN CONSOLE · v0.3</span></div>
+    </div>
+    <div class="sidebar-label">SECURITY &amp; GOVERNANCE</div>
+    <nav id="navigation" aria-label="Sections administratives"></nav>
+    <div class="sidebar-bottom">
+      <div class="separator"></div>
+      <div class="mini-row"><span class="status-light good"></span><span>Default deny</span><strong>ON</strong></div>
+      <div class="mini-row"><span class="status-light yellow"></span><span>Execution gateway</span><strong>LOCKED</strong></div>
+      <div class="mini-row"><span class="status-light blue"></span><span>Target</span><strong>DEBUG ONLY</strong></div>
+    </div>
+  </aside>
+  <main class="content">
+    <header class="masthead">
+      <div class="pathline"><span class="emblem">✦</span> IA-TB <span class="slash">/</span> AI AGENT <span class="slash">/</span> <b>SECURITY CONSOLE</b></div>
+      <div class="head-tools">
+        <span class="pill" id="modeBadge">PREVIEW / OFFLINE</span>
+        <span class="role">⬡ ADMIN</span>
+      </div>
+    </header>
+    <div class="head-intro">
+      <div><span class="eyebrow cyan">OPERATIONAL GOVERNANCE / 0.3.0</span>
+        <h1>IA-TB <span>Administration</span></h1>
+        <p>Un seul poste de contrôle pour les permissions, les décisions et l'historique de l'agent.</p>
+      </div>
+      <button class="refresh" id="refreshBtn" type="button" aria-label="Rafraîchir les données">↻ <span>Actualiser</span></button>
+    </div>
+    <div class="alert" role="status" id="securityNotice"><span class="alert-icon">◈</span><div><b>SECURITY ENFORCEMENT</b><span id="noticeText">Aucune permission d'exécution, de déploiement ni d'approbation depuis cette console.</span></div><span class="alert-label">READ ONLY</span></div>
+    <section class="metrics" aria-label="Indicateurs de sécurité">
+      <div class="metric"><div class="metric-top">CAPABILITÉS DÉCLARÉES <span>◇</span></div><strong id="metricPerms">—</strong><small>Ce ne sont pas des droits techniques</small><i class="metric-rule cyan-bg"></i></div>
+      <div class="metric"><div class="metric-top">DEMANDES EN ATTENTE <span>◷</span></div><strong id="metricRequests">—</strong><small>Soumises à l'autorité indépendante</small><i class="metric-rule orange-bg"></i></div>
+      <div class="metric"><div class="metric-top">SKILLS CATALOGUÉS <span>✧</span></div><strong id="metricSkills">—</strong><small>Pas d'exécution depuis les manifests</small><i class="metric-rule violet-bg"></i></div>
+      <div class="metric"><div class="metric-top">AUTORISATIONS EXÉCUTABLES <span>⬡</span></div><strong id="metricGrants">0</strong><small>Contrôleur non raccordé</small><i class="metric-rule red-bg"></i></div>
+    </section>
+    <section class="workbench" aria-label="Tableaux administratifs">
+      <div class="workbench-head">
+        <div class="section-heading"><span class="heading-icon" id="sectionIcon">⬡</span><div><span class="eyebrow">SECURITY / EXPLORER</span><h2 id="sectionHeading">Permissions</h2></div></div>
+        <div class="data-state"><span class="status-light blue"></span><span id="sourceLabel">SOURCE : PREVIEW</span></div>
+      </div>
+      <div class="tabs" id="mobileTabs" aria-label="Navigation rapide"></div>
+      <div class="toolbar">
+        <label class="search-wrap"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Rechercher une action, ressource, module…" autocomplete="off"></label>
+        <select id="statusFilter" aria-label="Filtrer par état"><option value="">Tous les états</option></select>
+        <span id="itemCount" class="count">0 éléments</span>
+      </div>
+      <div class="table-scroll" tabindex="0" aria-label="Tableau défilant">
+        <table><thead id="dataHead"></thead><tbody id="dataBody"></tbody></table>
+      </div>
+      <div class="table-footer"><span id="footerNote">Les capacités restent soumises au contrôleur de confiance.</span><span>MAX 100 ROWS / SOURCE</span></div>
+    </section>
+    <div class="two-panels">
+      <section class="info-panel"><div class="panel-title">◈ <b>RÈGLES D'EXÉCUTION</b></div>
+        <div class="rule"><span class="check">✓</span> RELEASE isolé de DEBUG</div>
+        <div class="rule"><span class="check">✓</span> Aucune élévation depuis GitHub</div>
+        <div class="rule"><span class="check">✓</span> Interdictions HARD_DENY prioritaires</div>
+        <div class="rule"><span class="check">✓</span> Approbation indépendante obligatoire</div>
+      </section>
+      <section class="info-panel last-panel"><div class="panel-title">◎ <b>CONNEXION &amp; ENVIRONNEMENT</b></div>
+        <div class="kv"><span>Mode de consultation</span><strong id="connectionMode">PREVIEW LOCALE</strong></div>
+        <div class="kv"><span>Identité applicative</span><strong>ADMIN</strong></div>
+        <div class="kv"><span>Exécution distante</span><strong class="warning">DÉSACTIVÉE</strong></div>
+        <div class="kv"><span>Version</span><strong>0.3.0</strong></div>
+      </section>
+    </div>
+    <footer>IA-TB GAME MASTER / ADMINISTRATIVE BOUNDARY <span>●</span> Aucun contrôle Docker ou SSH n'est exposé par cette page.</footer>
+  </main>
+</div>
+<dialog id="recordDialog" aria-labelledby="dialogTitle">
+  <div class="dialog-head"><div><span class="eyebrow cyan" id="dialogType">INSPECTOR</span><h2 id="dialogTitle">Détail de l'enregistrement</h2></div><button type="button" id="closeDialog" aria-label="Fermer">✕</button></div>
+  <div id="dialogRows" class="dialog-body"></div>
+  <div class="dialog-actions"><span>Lecture seule · aucune opération administrative</span><button id="approveBtn" disabled title="Contrôleur d'approbation non connecté">Approuver</button><button id="rejectBtn" disabled title="Contrôleur d'approbation non connecté">Refuser</button></div>
+</dialog>
+</body>
+</html>

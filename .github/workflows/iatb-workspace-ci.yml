@@ -115,6 +115,10 @@ jobs:
         run: |
           set -Eeuo pipefail
           python3 -m py_compile 'AI Agent/Memory/General/journal.py'
+          python3 -m py_compile 'AI Agent/AdminPanel/server.py'
+          node --check 'AI Agent/AdminPanel/app.js'
+          test -f 'AI Agent/AdminPanel/index.html'
+          test -f 'AI Agent/AdminPanel/app.css'
           python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
           test -f 'AI Agent/Soul/identity.md'
           test -f 'AI Agent/Rules/Authorized/README.md'
