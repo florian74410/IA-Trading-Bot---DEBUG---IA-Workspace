@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "required": [
+    {
+      "action": "github.read",
+      "resource": "iatb-debug-workspace",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "github.branch.create",
+      "resource": "iatb-debug-workspace",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "github.commit",
+      "resource": "iatb-debug-workspace",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    },
+    {
+      "action": "github.ci.status",
+      "resource": "iatb-debug-workspace",
+      "approval": "external_authority",
+      "enforced_by": "protected_controller"
+    }
+  ]
+}
