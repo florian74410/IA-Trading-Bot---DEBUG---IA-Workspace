@@ -40,7 +40,16 @@ jobs:
             --exclude='/README.md' --exclude='/Infrastructure/DEBUG_ONLINE/' \
             "$RUNNER_TEMP/iatb-public-source/" ./
           # Never import local environment files or sensitive state.
-          if git status --porcelain --untracked-files=all | grep -Ei '(^|/)([.]env([.]|$)|[^/]*[.]sqlite$|[^/]*[.]key$|[^/]*[.]pem$|[^/]*[.]p12$|[^/]*[.]pfx$)'; then
+          # The sole .pem exemption is the public CA bundle already committed in the source repository.
+          test -f App/Core/Certificates/cacert.pem
+          grep -q -- '-----BEGIN CERTIFICATE-----' App/Core/Certificates/cacert.pem
+          if grep -Eq -- '-----BEGIN ([A-Z ]+ )?PRIVATE KEY-----' App/Core/Certificates/cacert.pem; then
+            echo 'Unexpected private key in source CA bundle; import blocked'
+            exit 1
+          fi
+          if git status --porcelain --untracked-files=all |
+             grep -vF 'App/Core/Certificates/cacert.pem' |
+             grep -Ei '(^|/)([.]env([.]|$)|[^/]*[.]sqlite$|[^/]*[.]key$|[^/]*[.]pem$|[^/]*[.]p12$|[^/]*[.]pfx$)'; then
             echo 'Potential secret-containing file detected: import blocked'
             exit 1
           fi
