@@ -17,7 +17,7 @@ jobs:
           persist-credentials: false
       - name: Compile Python and JavaScript
         run: |
-          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py'
+          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py' 'AI Agent/AdminPanel/dns_guard.py'
           node --check 'AI Agent/AdminPanel/app.js'
           bash -n 'AI Agent/AdminPanel/install_phase3.sh'
           bash -n 'AI Agent/AdminPanel/upgrade_phase3.sh'
