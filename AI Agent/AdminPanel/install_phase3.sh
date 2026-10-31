@@ -58,9 +58,6 @@ chmod -R go-w "$ROOT/AI Agent"
 if [[ ! -e "$STATE/credentials.json" ]]; then
   sudo -u "$ACCOUNT" python3 "$ROOT/AI Agent/AdminPanel/server.py" init-admin --credential-file "$STATE/credentials.json" < /dev/tty
 fi
-if [[ ! -e "$STATE/mfa.json" ]]; then
-  sudo -u "$ACCOUNT" python3 "$ROOT/AI Agent/AdminPanel/public_server.py" init-mfa --mfa-file "$STATE/mfa.json" < /dev/tty
-fi
 sudo -u "$ACCOUNT" python3 "$ROOT/AI Agent/AdminPanel/preflight.py" --credential-file "$STATE/credentials.json" || fail 'Service account preflight failed'
 install -o root -g root -m 0644 "$ROOT/AI Agent/AdminPanel/systemd/iatb-admin-public.service.example" /etc/systemd/system/iatb-admin-public.service
 systemd-analyze verify /etc/systemd/system/iatb-admin-public.service || fail 'Invalid unit'
@@ -68,7 +65,7 @@ systemctl daemon-reload
 systemctl start iatb-admin-public
 systemctl is-active --quiet iatb-admin-public || fail 'Public backend failed to start'
 ss -ltn '( sport = :18083 )' | grep -Fq '127.0.0.1:18083' || fail 'Backend not bound to loopback'
-curl -fsS --max-time 6 -H "Host: $DOMAIN" http://127.0.0.1:18083/healthz | grep -Fq '"mode":"mfa_read_only"' || fail 'Health failed'
+curl -fsS --max-time 6 -H "Host: $DOMAIN" http://127.0.0.1:18083/healthz | grep -Fq '"mode":"password_read_only"' || fail 'Health failed'
 CODE="$(curl -sS --max-time 6 -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" http://127.0.0.1:18083/api/overview)"
 [[ "$CODE" == 401 ]] || fail 'Anonymous API leak'
 install -o root -g root -m 0644 "$ROOT/AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example" "$SITE"
