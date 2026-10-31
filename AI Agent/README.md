@@ -1,6 +1,6 @@
-# IA-TB — AI Agent v0.2 (incrément de sécurité)
+# IA-TB — AI Agent v0.3 (Admin Panel isolé)
 
-Branche : `work/ai-agent-v0.2` — évolution de `work/ai-agent-v0.1`.
+Branche : `work/ai-agent-admin-v0.3` — évolution de `work/ai-agent-v0.2`.
 
 > **IMPORTANT : NON DÉPLOYÉ, NON AUTONOME.**
 > Ce dépôt public contient du code source, un catalogue de capacités et une
@@ -24,7 +24,7 @@ Branche : `work/ai-agent-v0.2` — évolution de `work/ai-agent-v0.1`.
   RESTRICTED prédéfinies, décision administrative via vérificateur externe injecté,
   expiration/rejet/révocation. **Un état APPROVED n'accorde aucun droit technique.**
 - `Audit/` : base d'audit distincte append-only avec traces structurées.
-- `AdminPanel/index.html` : prévisualisation IA-TB Admin **statique et lecture seule**.
+- `AdminPanel/` : interface **IA-TB Admin** dédiée, styles propres, filtres et vues en lecture seule ; serveur Python limité à `127.0.0.1` avec authentification ADMIN distincte. Aucun accès à un programme local de monitoring.
 - `Tests/test_agent_v02.py` : tests sans accès réseau ou VPS.
 
 ## Matrice d'avancement
@@ -35,7 +35,7 @@ Branche : `work/ai-agent-v0.2` — évolution de `work/ai-agent-v0.1`.
 | B — Permissions | Socle implémenté | Schémas JSON complets, adaptation au contrôleur réel |
 | C — Demandes administratives | File locale prototype | Signature d'approbations, quota atomique, délégation permanente et révocation au contrôleur |
 | D — Skills | Manifests et catalogue | Interfaces exécutables limitées + tests de gateway |
-| E — Admin Panel | Prévisualisation locale | API authenticated read, approbation indépendante, rôles et tests UI |
+| E — Admin Panel | UI native IA-TB + API GET authentifiée (prototype) | Revue sécurité, déploiement local sous SSH et autorité d'approbation indépendante |
 | F — GEN-1 | Non commencé | Contrôle des comptes Linux, chaîne CI→SSH→contrôleur→santé, rollback contrôlé |
 
 Le chemin autorisé de la base SQLite mémoire est défini par
@@ -56,7 +56,7 @@ python3 -m py_compile 'AI Agent/Memory/General/journal.py' \
 python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
 ```
 
-`AdminPanel/index.html` peut être ouvert localement dans un navigateur;
+`AdminPanel/index.html` peut être ouvert localement dans un navigateur (prévisualisation);
 aucune requête réseau ni commande administrative n'en part.
 
 ## Frontières de confiance
