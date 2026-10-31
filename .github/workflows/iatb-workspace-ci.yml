@@ -1,0 +1,45 @@
+name: IA-TB Workspace - build-only CI
+
+on:
+  push:
+    branches:
+      - 'work/**'
+    paths:
+      - 'App/**'
+      - 'Infrastructure/DEBUG_ONLINE/**'
+      - '.github/workflows/iatb-workspace-ci.yml'
+  pull_request:
+    paths:
+      - 'App/**'
+      - 'Infrastructure/DEBUG_ONLINE/**'
+      - '.github/workflows/iatb-workspace-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: iatb-workspace-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout workspace commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate full source present
+        run: test -f App/package.json && test -f App/Dockerfile.app
+      - name: Static checks
+        run: python3 Infrastructure/DEBUG_ONLINE/preflight.py
+      - name: Build full IA-TB image (never start engines)
+        run: docker build -f App/Dockerfile.app --pull -t iatb-workspace:ci App
+      - name: Check package version without running IA-TB
+        run: |
+          docker run --rm --network none --entrypoint node iatb-workspace:ci \
+            -e 'const v=require("./package.json").version; if(!/^2\\.\\d+\\.\\d+$/.test(v))process.exit(2); console.log("IA-TB:",v);'
+      - name: No deployment on CI
+        run: echo "Build only. VPS, DNS, RELEASE and user databases not accessed."
