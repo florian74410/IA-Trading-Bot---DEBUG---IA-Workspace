@@ -13,6 +13,10 @@
       columns:[["timestamp_utc","Date UTC"],["principal","Identité"],["action","Action"],["decision","Décision"],["result","Résultat"]]},
     skills: {label:"Skills",icon:"◈",note:"Un Skill installé dans Git ne donne aucune capacité privilégiée à l'agent.",
       columns:[["name","Nom du Skill"],["version","Version"],["actions","Actions"],["folder","Module"],["state","Statut"]]},
+    soul: {label:"Soul",icon:"◉",note:"Identité et comportement de l'agent : lecture seule, fichiers versionnés.",
+      columns:[["name","Fichier"],["content","Contenu"],["mode","Accès"]]},
+    journal: {label:"Journal général",icon:"◴",note:"Événements audit et permissions réels uniquement. Aucun raisonnement interne brut.",
+      columns:[["timestamp","Date UTC"],["type","Type"],["status","Statut"],["message","Événement"],["source","Source"]]},
     memory: {label:"Memory",icon:"✧",note:"Les entrées mémoire sont des données non fiables et ne peuvent changer les Rules.",
       columns:[["created_at_utc","Date UTC"],["kind","Catégorie"],["source","Origine"],["reference","Référence"],["summary","Résumé"]]}
   };
@@ -35,6 +39,12 @@
       {timestamp_utc:"EXEMPLE",principal:"iatb-agent",action:"debug.status",resource:"iatb-debug-online",decision:"DENY",result:"Aucune autorité vérifiée"}]},
     skills: {status:"preview",items:["SSH","GitHub","Deploy-DEBUG","Diagnostics","Memory","SkillManager"].map((folder) => ({
       folder,name:"iatb-"+folder.toLowerCase(),version:"0.2.0",actions:"Catalogue",state:"CATALOG_ONLY"}))},
+    soul: {status:"preview",items:[
+      {name:"identity.md",content:"Identité IA-TB (contenu d'exemple)",mode:"READ_ONLY"},
+      {name:"personality.json",content:"Objectifs et personnalité (aperçu seulement)",mode:"READ_ONLY"}]},
+    journal: {status:"preview",items:[
+      {timestamp:"EXEMPLE",type:"REQUEST",status:"PENDING",message:"Demande de diagnostic DEBUG",source:"PERMISSION MANAGER"},
+      {timestamp:"EXEMPLE",type:"AUDIT",status:"DENY",message:"Opération refusée : droit absent",source:"AUDIT"}]},
     memory: {status:"preview",items:[]}
   };
   const ui = {active:"permissions",data:{},term:"",state:""};
@@ -150,7 +160,7 @@
       config.columns.forEach(([key])=>{
         const cell=document.createElement("td"),value=format(key,item[key]);
         if(isState(key))cell.appendChild(addText("span",labelState(value),"tag "+statusClass(item[key])));
-        else cell.appendChild(addText("span",value,key==="action"?"action-cell":""));
+        else cell.appendChild(addText("span",key==="content"?value.slice(0,110):value,key==="action"?"action-cell":""));
         cell.title=String(value);
         row.appendChild(cell);
       });
@@ -185,7 +195,7 @@
           return [key,await response.json()];
         }));
         ui.data=Object.fromEntries(results);
-        $("modeBadge").textContent="SSH / ADMIN · READ ONLY";
+        $("modeBadge").textContent="ADMIN · READ ONLY";
         $("modeBadge").classList.add("connected");
         $("connectionMode").textContent="LOOPBACK / AUTH ADMIN";
         $("noticeText").textContent="API de consultation connectée. Exécution, déploiement et approbations désactivés.";
