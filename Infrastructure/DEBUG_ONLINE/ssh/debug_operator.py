@@ -8,6 +8,7 @@ Does not configure Caddy, create accounts, edit /var/lib/iatb, or modify RELEASE
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -29,7 +30,10 @@ BRANCH = "work/debug-online-v1"
 PROJECT = "iatb-debug-online"
 CONTAINER = "iatb-debug-online-app"
 IMAGE = "iatb-debug-online:local"
-SAFE_FILES = ("Infrastructure/DEBUG_ONLINE/compose.yml", "App/Dockerfile.app")
+APPROVED_BLOBS = {
+    "Infrastructure/DEBUG_ONLINE/compose.yml": "8dda6c3918b83007174e15d874c2239f956e4a18",
+    "App/Dockerfile.app": "9527f539a796ea504959408799064d8976f11ac5",
+}
 SHA = re.compile(r"^[0-9a-f]{40}$")
 
 def error(reason: str) -> None:
@@ -62,12 +66,15 @@ def preflight():
         error("Unexpected Git remote")
     if not (PRIVATE / "data" / "Database" / "clients.sqlite").is_file():
         error("DEBUG identity store missing: bootstrap must complete first")
-    # The Compose and Dockerfile are approved as a fixed deployment boundary.
-    for relative in SAFE_FILES:
-        expected = run("git", "-C", str(SOURCE), "show",
-                       BASELINE + ":" + relative).stdout.encode()
-        actual = (SOURCE / relative).read_bytes()
-        if actual != expected:
+    # Compare against pinned Git blob hashes, independent of checkout history.
+    # Prevent branch changes from mounting RELEASE data or enabling host access.
+    for relative, approved_blob in APPROVED_BLOBS.items():
+        target = SOURCE / relative
+        if target.is_symlink() or not target.is_file():
+            error("Missing or unsafe approved deployment file")
+        actual = target.read_bytes()
+        digest = hashlib.sha1(b"blob " + str(len(actual)).encode() + b"\\x00" + actual).hexdigest()
+        if digest != approved_blob:
             error(f"Unapproved deployment definition: {relative}")
     config = json.loads(compose("config", "--format", "json").stdout)
     services = config.get("services", {})
