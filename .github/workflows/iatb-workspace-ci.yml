@@ -50,8 +50,7 @@ jobs:
       - name: Verify Auth21 runtime imports inside the built image
         run: |
           set -eu
-          docker run --rm --network none --entrypoint node iatb-workspace:ci \\
-            -e 'const assert=require("node:assert/strict"); const p="./Core/Clients/auth21_trading_attestation.js"; assert.equal(typeof require(p).verify,"function"); const factory=require("./Core/Clients/auth21_trading_admin_bridge").createAuthenticatedDispatcher; assert.equal(typeof factory({sessions:{verifySession:()=>null},env:{IATB_AUTH21_TRADING_ADMIN_BRIDGE:"0"}}),"function"); console.log("PASS: Auth21 trading-admin runtime imports");'
+          docker run --rm --network none --entrypoint node iatb-workspace:ci -e 'const assert=require("node:assert/strict"); const att=require("./Core/Clients/auth21_trading_attestation.js"); assert.equal(typeof att.verify,"function"); const factory=require("./Core/Clients/auth21_trading_admin_bridge").createAuthenticatedDispatcher; assert.equal(typeof factory({sessions:{verifySession:()=>null},env:{IATB_AUTH21_TRADING_ADMIN_BRIDGE:"0"}}),"function"); console.log("PASS: Auth21 trading-admin runtime imports");'
       - name: Seed disposable DEBUG identity database (no RELEASE accounts)
         shell: bash
         run: |
