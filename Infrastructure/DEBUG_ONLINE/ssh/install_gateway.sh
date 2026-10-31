@@ -34,12 +34,13 @@ install -d -o root -g root -m 0755 /usr/local/libexec
 if [[ ! -f "$GATEWAY" && -e "$GATEWAY" ]]; then
   echo 'Unsafe gateway destination' >&2; exit 1
 fi
+TMP_GATEWAY="$(mktemp /tmp/iatb-debug-ssh-gateway.XXXXXXXX)"
+trap 'rm -f "$TMP_GATEWAY"' EXIT
 curl --fail --silent --show-error --location \
   'https://raw.githubusercontent.com/florian74410/IA-Trading-Bot---DEBUG---IA-Workspace/69df841987857c920060146e96b370e65a33b603/Infrastructure/DEBUG_ONLINE/ssh/ssh_gateway.sh' \
-  -o /tmp/iatb-debug-ssh-gateway.new
-/bin/sh -n /tmp/iatb-debug-ssh-gateway.new
-install -o root -g root -m 0755 /tmp/iatb-debug-ssh-gateway.new "$GATEWAY"
-rm -f /tmp/iatb-debug-ssh-gateway.new
+  -o "$TMP_GATEWAY"
+/bin/sh -n "$TMP_GATEWAY"
+install -o root -g root -m 0755 "$TMP_GATEWAY" "$GATEWAY"
 install -d -o "$ACCOUNT" -g "$PRIMARY_GROUP" -m 0700 "$HOME_DIR" "$SSH_DIR"
 TMP_AUTH="$(mktemp "$SSH_DIR/.authorized_keys.XXXXXX")"
 printf 'restrict,command="%s" %s\n' "$GATEWAY" "$AUTHORIZED_KEY" > "$TMP_AUTH"
