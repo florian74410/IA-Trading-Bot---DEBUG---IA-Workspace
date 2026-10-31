@@ -57,9 +57,9 @@ jobs:
             --volume "$scratch:/debug-private" \
             --env IATB_DATA_ROOT=/debug-private/data \
             --entrypoint node iatb-workspace:ci Tools/debug_online_seed_db.js
-          test -s "$scratch/data/Database/clients.sqlite"
-          test -s "$scratch/data/Security/client_master.key"
-          test "$(stat -c %a "$scratch/data/Security/client_master.key")" = 600
+          sudo test -s "$scratch/data/Database/clients.sqlite"
+          sudo test -s "$scratch/data/Security/client_master.key"
+          test "$(sudo stat -c %a "$scratch/data/Security/client_master.key")" = 600
       - name: Check package version without running IA-TB
         run: |
           docker run --rm --network none --entrypoint node iatb-workspace:ci \
