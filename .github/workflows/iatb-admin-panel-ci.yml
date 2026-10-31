@@ -20,6 +20,7 @@ jobs:
           python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py'
           node --check 'AI Agent/AdminPanel/app.js'
           bash -n 'AI Agent/AdminPanel/install_phase3.sh'
+          bash -n 'AI Agent/AdminPanel/upgrade_phase3.sh'
       - name: Unit, localhost HTTP and security regression tests
         run: python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
       - name: Verify Phase 3 deployment assets
@@ -32,6 +33,9 @@ jobs:
           grep -q 'User=iatb-admin-panel' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
           grep -q 'IPAddressDeny=any' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
           grep -q 'NoNewPrivileges=yes' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -Fq "ORIGINAL='/opt/iatb-admin/AI Agent'" 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'STAGE="$ROOT/releases/$REV"' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'trap cleanup EXIT' 'AI Agent/AdminPanel/upgrade_phase3.sh'
           echo 'Phase 3 manifest safety checks passed'
       - name: Validate isolated Caddy HTTPS site syntax
         shell: bash
