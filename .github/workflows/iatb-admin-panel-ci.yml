@@ -1,0 +1,25 @@
+name: IA-TB Admin Panel security tests
+on:
+  push:
+    branches: ['work/**']
+    paths: ['AI Agent/**', '.github/workflows/iatb-admin-panel-ci.yml']
+  pull_request:
+    paths: ['AI Agent/**', '.github/workflows/iatb-admin-panel-ci.yml']
+permissions:
+  contents: read
+jobs:
+  admin-security:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Compile Python and JavaScript
+        run: |
+          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py'
+          node --check 'AI Agent/AdminPanel/app.js'
+      - name: Unit, localhost HTTP and security regression tests
+        run: python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
+      - name: No remote or privileged execution
+        run: echo 'No VPS, SSH credentials, Caddy mutation or RELEASE access in this job.'
