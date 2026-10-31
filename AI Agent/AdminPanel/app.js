@@ -149,7 +149,7 @@
       const row=document.createElement("tr");row.tabIndex=0;row.setAttribute("aria-label","Voir les détails");
       config.columns.forEach(([key])=>{
         const cell=document.createElement("td"),value=format(key,item[key]);
-        if(isState(key))cell.appendChild(addText("span",labelState(value),"tag "+statusClass(value)));
+        if(isState(key))cell.appendChild(addText("span",labelState(value),"tag "+statusClass(item[key])));
         else cell.appendChild(addText("span",value,key==="action"?"action-cell":""));
         cell.title=String(value);
         row.appendChild(cell);
