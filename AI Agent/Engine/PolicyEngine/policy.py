@@ -20,7 +20,9 @@ SENSITIVE_PATH = re.compile(r"(^/|\.\.|\\|//)")
 FORBIDDEN_ACTIONS = ("release.*", "prod.*", "production.*",
                      "secrets.*", "keys.private.*", "trading.live.*",
                      "docker.raw.*", "sudo.*", "policy.grant.*",
-                     "audit.delete", "audit.update")
+                     "audit.delete", "audit.update", "ssh.shell",
+                     "security.disable", "auth.disable", "firewall.disable",
+                     "debug.volumes.delete", "debug.security.disable")
 
 
 class Authority(Protocol):
