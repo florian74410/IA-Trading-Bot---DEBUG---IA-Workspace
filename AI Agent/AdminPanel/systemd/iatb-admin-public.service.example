@@ -1,10 +1,9 @@
 # IA-TB Admin Phase 3 — example, must be approved and installed by GEN-1 operator.
 # Read-only API; bound to loopback; Caddy terminates TLS.
 [Unit]
-Description=IA-TB Admin Panel HTTPS MFA Backend (read-only)
+Description=IA-TB Admin Panel HTTPS Password Backend (read-only)
 After=network.target
 ConditionPathExists=/var/lib/iatb-admin-panel/credentials.json
-ConditionPathExists=/var/lib/iatb-admin-panel/mfa.json
 
 [Service]
 Type=simple
@@ -12,7 +11,7 @@ User=iatb-admin-panel
 Group=iatb-admin-panel
 WorkingDirectory=/opt/iatb-admin
 Environment=PYTHONDONTWRITEBYTECODE=1
-ExecStart=/usr/bin/python3 "/opt/iatb-admin/AI Agent/AdminPanel/public_server.py" serve --credential-file /var/lib/iatb-admin-panel/credentials.json --mfa-file /var/lib/iatb-admin-panel/mfa.json --port 18083
+ExecStart=/usr/bin/python3 "/opt/iatb-admin/AI Agent/AdminPanel/public_server.py" serve --credential-file /var/lib/iatb-admin-panel/credentials.json --port 18083
 Restart=on-failure
 RestartSec=5
 UMask=0077
