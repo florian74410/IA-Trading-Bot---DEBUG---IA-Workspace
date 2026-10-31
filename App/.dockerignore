@@ -42,7 +42,14 @@ logs.dat
 # All engine/unit/integration suites and diagnostic CLI tooling are source-only.
 **/Tests/
 **/tests/
-**/*test*.js
+# Test files only: never exclude runtime modules such as auth21_trading_attestation.js.
+**/*.test.js
+**/*.spec.js
+**/test_*.js
+**/test-*.js
+**/*_test.js
+**/*-test.js
+**/*_tests.js
 Tools/*smoke*.js
 Tools/*audit*.js
 Tools/*preflight*.js
