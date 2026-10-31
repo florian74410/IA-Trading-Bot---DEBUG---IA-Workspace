@@ -127,7 +127,17 @@ install -d -o "$ACCOUNT" -g "$ACCOUNT" -m 0700 "$STATE"
 tar -C "$TMP/checkout" -cf "$TMP/agent.tar" 'AI Agent'
 tar -C "$STAGE" -xf "$TMP/agent.tar" --no-same-owner --no-same-permissions
 chown -R root:root "$STAGE"
-chmod -R go-w "$STAGE"
+# The source archive contains only public, versioned code. Under umask 077,
+# tar --no-same-permissions extracts directories as 0700 and files as 0600,
+# which prevents the unprivileged service account from reading public_server.py.
+# Normalize the code tree ONLY; never relax $STATE (credentials/TOTP: 0700/0600).
+find "$STAGE/AI Agent" -type d -exec chmod 0755 {} +
+find "$STAGE/AI Agent" -type f -exec chmod 0644 {} +
+# Check the effective Linux identity and traversal rights BEFORE TOTP enrollment.
+sudo -u "$ACCOUNT" test -r "$STAGE/AI Agent/AdminPanel/public_server.py" || fail 'Admin service cannot read public_server.py'
+sudo -u "$ACCOUNT" test -r "$STAGE/AI Agent/AdminPanel/server.py" || fail 'Admin service cannot read server.py'
+sudo -u "$ACCOUNT" test -r "$STAGE/AI Agent/AdminPanel/login.css" || fail 'Admin service cannot read login.css'
+echo 'SOURCE_PERMISSIONS_OK: root-owned versioned code readable by isolated service'
 
 # Keep old credentials in the same private directory; never reinitialize or print them.
 if [[ ! -e "$STATE/credentials.json" ]]; then
