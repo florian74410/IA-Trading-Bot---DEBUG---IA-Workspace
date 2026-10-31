@@ -1,38 +1,75 @@
-# IA-TB — AI Agent v0.1
+# IA-TB — AI Agent v0.2 (incrément de sécurité)
 
-Espace de travail documentaire et technique de l'agent IA-TB. Ce dossier définit des règles, des compétences et une mémoire opérationnelle **simulée par le LLM** ; il ne crée ni agent autonome, ni processus résident, ni accès automatique au VPS.
+Branche : `work/ai-agent-v0.2` — évolution de `work/ai-agent-v0.1`.
 
-## Structure
+> **IMPORTANT : NON DÉPLOYÉ, NON AUTONOME.**
+> Ce dépôt public contient du code source, un catalogue de capacités et une
+> **maquette locale**. Il ne contient pas de secrets ni d'autorité de permission.
+> Aucun droit SSH/Docker, aucun accès RELEASE et aucun trading LIVE ne sont accordés.
 
-- Memory/ — mémoire persistante et journal SQLite horodaté.
-- Soul/ — identité fonctionnelle, tonalité, objectifs et limites.
-- Skills/SSH/ — utilisation de la passerelle SSH restreinte.
-- Skills/GitHub/ — branches versionnées, commits, CI et audit.
-- Skills/Deploy-DEBUG/ — contrôleur DEBUG (status/start/stop/restart/deploy).
-- Rules/Authorized/ — actions permises selon les permissions réelles.
-- Rules/Non-Authorized/ — actions interdites et limites de sécurité.
-- Tests/ — vérification de la mémoire et de ses règles.
+## Ce qui fonctionne dans le code de cette branche
 
-## Source de vérité et environnement
+- `Memory/General/` : base v0.1 conservée, table et triggers append-only inchangés.
+- `Engine/MemoryManager/manager.py` : façade `init,append,search,get,stats,correct,export`.
+- `Memory/Episodic|Project|Procedural|Config` : définitions de classement et contraintes.
+- `Soul/` : identité v0.1 préservée; personnalité, objectifs et comportement v0.2.
+- `Skills/` : six manifestes versionnés, permissions nécessaires et validateur de catalogue
+  `Engine/SkillLoader/loader.py`. Ils **n'exécutent pas** leurs actions.
+- `Rules/Authorized/permissions.json` : souhaits déclaratifs, jamais des privilèges.
+- `Rules/Non-Authorized/denied.json` : interdictions HARD_DENY et RESTRICTED.
+- `Engine/PolicyEngine/policy.py` : refus par défaut, rejet des chemins suspects,
+  précédence HARD_DENY, contrôle d'une autorité injectée indépendante (refus par défaut).
+  Même une décision `ALLOW` de ce moteur est `executable=false`.
+- `Engine/PermissionManager/requests.py` : file SQLite privée pour les demandes
+  RESTRICTED prédéfinies, décision administrative via vérificateur externe injecté,
+  expiration/rejet/révocation. **Un état APPROVED n'accorde aucun droit technique.**
+- `Audit/` : base d'audit distincte append-only avec traces structurées.
+- `AdminPanel/index.html` : prévisualisation Cyber Nexus **statique et lecture seule**.
+- `Tests/test_agent_v02.py` : tests sans accès réseau ou VPS.
 
-- Code : dépôt GitHub IA-Trading-Bot---DEBUG---IA-Workspace.
-- Développement : branches versionnées work/* ; les déploiements nécessitent un commit et un CI réussis.
-- DEBUG VPS : /srv/iatb-debug/online/source (code) et /srv/iatb-debug/online/private (données protégées).
-- Brouillons éventuels : espace de travail indépendant et explicitement autorisé, sans droits implicites sur le runtime.
-- RELEASE : hors périmètre de l'agent.
-- Base SQLite mémoire : fichier **hors dépôt**. Le dépôt contient uniquement le schéma et l'outil de gestion. Pas de clés SSH, secrets, jetons, comptes ou données clients dans Git.
+## Matrice d'avancement
 
-## Modèle d'exécution
+| Phase | État réel | Restant |
+|---|---|---|
+| A — Architecture et mémoire | Partiellement implémentée | Rétention, sauvegardes, migration/stockage protégé hôte |
+| B — Permissions | Socle implémenté | Schémas JSON complets, adaptation au contrôleur réel |
+| C — Demandes administratives | File locale prototype | Signature d'approbations, quota atomique, délégation permanente et révocation au contrôleur |
+| D — Skills | Manifests et catalogue | Interfaces exécutables limitées + tests de gateway |
+| E — Admin Panel | Prévisualisation locale | API authenticated read, approbation indépendante, rôles et tests UI |
+| F — GEN-1 | Non commencé | Contrôle des comptes Linux, chaîne CI→SSH→contrôleur→santé, rollback contrôlé |
 
-1. Lire Soul et Rules avant toute action.
-2. Lire uniquement les mémoires pertinentes à la tâche.
-3. Rédiger une synthèse vérifiable : contexte → décision → action → résultat.
-4. Mettre à jour un brouillon/une branche GitHub, exécuter les tests, contrôler le CI.
-5. Ne déployer qu'avec la passerelle installée et les permissions réellement accordées.
-6. Journaliser la décision et le résultat dans Memory/General via SQLite, lorsque la base et le canal d'écriture sont disponibles.
+Le chemin autorisé de la base SQLite mémoire est défini par
+`IATB_AGENT_MEMORY_DB` (chemin absolu, répertoire privé, hors Git).
+Les bases d'audit et de demandes sont également stockées hors dépôt.
 
-**Important** : un LLM ne peut pas capturer sa chaîne de raisonnement interne. La mémoire stocke des **synthèses explicites** de diagnostics, décisions, actions et enseignements avec horodatage, pas des raisonnements cachés. Elle ne s'actualise pas toute seule : un outil ou un workflow doit appeler son journal.
+## Exécution des tests
 
-## État v0.1
+À la racine du dépôt :
 
-Les fichiers de ce dossier sont publiés sur GitHub et testables. La persistance sur GEN-1, la synchronisation entre sessions ChatGPT et l'automatisation des écritures ne sont pas activées par la seule présence de ces fichiers.
+```bash
+python3 -m py_compile 'AI Agent/Memory/General/journal.py' \
+  'AI Agent/Engine/PolicyEngine/policy.py' \
+  'AI Agent/Engine/PermissionManager/requests.py' \
+  'AI Agent/Engine/MemoryManager/manager.py' \
+  'AI Agent/Engine/SkillLoader/loader.py' \
+  'AI Agent/Audit/audit.py'
+python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
+```
+
+`AdminPanel/index.html` peut être ouvert localement dans un navigateur;
+aucune requête réseau ni commande administrative n'en part.
+
+## Frontières de confiance
+
+1. Le LLM et ses mémoires n'ont aucun rôle d'autorité.
+2. Le Git public versionne les politiques candidates; il ne signe aucun grant.
+3. Une autorité d'administration indépendante doit vérifier identité et portée,
+   puis la passerelle technique *doit revalider* chaque opération à l'exécution.
+4. Les approbations ne doivent jamais être signées depuis une interface/script
+   modifiable par l'agent.
+5. Ne jamais accorder un sudo générique, un shell arbitraire, l'accès au socket Docker
+   ou un contrôle des secrets/volumes RELEASE.
+6. Une CI réussie ne démontre ni déploiement ni santé HTTP en situation réelle.
+
+Ce jalon **ne déclenche aucun déploiement** : le DEBUG reste fermé jusqu'à
+une recette complète de la chaîne sécurisée.
