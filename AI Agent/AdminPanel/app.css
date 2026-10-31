@@ -1,4 +1,4 @@
-:root{color-scheme:dark;--night:#0b1018;--base:#101923;--card:#15212c;--card2:#1b2a36;--stroke:#2b3d4b;--stroke-light:#405766;--txt:#ebf2f8;--muted:#94a9b8;--cyan:#65afff;--orange:#eeb56b;--violet:#b2a1e9;--red:#eb8391;--green:#66c7a2}
+:root{color-scheme:dark;--night:#060f20;--base:#0c1930;--card:#10243b;--card2:#1b2a36;--stroke:#2b3d4b;--stroke-light:#405766;--txt:#ebf2f8;--muted:#94a9b8;--cyan:#268cff;--orange:#eeb56b;--violet:#b2a1e9;--red:#eb8391;--green:#66c7a2}
 *,*::before,*::after{box-sizing:border-box}
 html{min-width:320px;background:var(--night)}
 body{margin:0;color:var(--txt);font:13px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(155deg,#111b25 0%,var(--night) 58%)}
@@ -125,3 +125,14 @@ dialog::backdrop{background:#050b16d9;backdrop-filter:blur(5px)}
 @media(max-width:860px){.shell{display:block}.sidebar{position:relative;width:100%;height:auto;padding:10px 16px;border-right:0;border-bottom:1px solid var(--stroke)}.identity{padding:0}.sidebar-label,.sidebar nav,.sidebar-bottom{display:none}.content{padding:0 15px 25px}.masthead{height:53px}.head-intro{margin:20px 0 14px}.tabs{display:flex;overflow:auto;gap:5px;padding-bottom:11px;margin-bottom:9px}.mobile-btn{background:#17273a;border:1px solid #2c4a5e;color:#9db7c9;padding:8px 11px;white-space:nowrap}.mobile-btn[aria-current="page"]{background:#174458;border-color:var(--cyan);color:var(--cyan)}}
 @media(max-width:590px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.metric{padding:11px}.metric strong{font-size:23px}.metric small{font-size:9px}.metric-top{font-size:8px}.alert-label{display:none}.role{display:none}.head-intro{align-items:flex-start}.head-intro p{max-width:290px}.refresh{padding:8px}.refresh span{display:none}.toolbar{flex-wrap:wrap}.search-wrap{flex-basis:100%;max-width:none}.count{margin-left:auto}.two-panels{grid-template-columns:1fr}.workbench{padding:12px}.table-footer span:last-child{display:none}.dialog-kv{grid-template-columns:1fr;gap:2px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* IA-TB Electric Blue v1.0; own identity, distinct from desktop HUD. */
+:root{--glow:rgba(38,140,255,.23)}
+.identity .symbol{box-shadow:0 0 20px var(--glow);animation:bluePulse 4s ease-in-out infinite}
+.masthead .emblem{filter:drop-shadow(0 0 8px #268cff)}
+.metric:hover,.info-panel:hover{border-color:#337bb3;box-shadow:0 5px 22px rgba(15,95,194,.13)}
+.nav-btn[aria-current="page"]{box-shadow:inset 0 0 23px rgba(26,124,235,.08)}
+.workbench{box-shadow:0 12px 48px rgba(0,20,53,.22)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;background-image:linear-gradient(#2861b013 1px,transparent 1px),linear-gradient(90deg,#2861b013 1px,transparent 1px);background-size:34px 34px}
+@keyframes bluePulse{0%,100%{box-shadow:0 0 9px rgba(38,140,255,.20)}50%{box-shadow:0 0 27px rgba(38,140,255,.40)}}
+@media(prefers-reduced-motion:reduce){.identity .symbol{animation:none}}
