@@ -83,10 +83,9 @@ def init_mfa(path: Path) -> None:
     code = base64.b32encode(seed).decode()
     print("PRIVATE TOTP ENROLLMENT: never copy this seed to Git, ChatGPT or logs.")
     print("Issuer: IA-TB Admin; account: admin@" + HOST)
+    print("Enter the following one-time enrollment key MANUALLY into your authenticator app.")
+    print("This value is private: do not photograph, record, paste, or share it.")
     print("Secret for authenticator app: " + code)
-    uri = "otpauth://totp/" + urllib.parse.quote("IA-TB Admin:admin@" + HOST)
-    uri += "?secret=" + code + "&issuer=IA-TB%20Admin&algorithm=SHA1&digits=6&period=30"
-    print("Authenticator URI (private): " + uri)
     checked = getpass.getpass("Enter the current 6-digit authenticator code: ")
     if verify_totp(seed, checked) is None:
         raise ValueError("TOTP verification failed; no enrollment performed")
