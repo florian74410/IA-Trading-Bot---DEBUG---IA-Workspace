@@ -1,0 +1,17 @@
+{
+  "name": "iatb-deploy-debug",
+  "version": "0.2.0",
+  "description": "Capability inventory, not a gateway or an authority.",
+  "actions": [
+    "debug.status",
+    "debug.start",
+    "debug.stop",
+    "debug.restart",
+    "debug.deploy",
+    "debug.health",
+    "debug.rollback"
+  ],
+  "dependencies": [],
+  "executable": false,
+  "approval_required_for_new_powers": true
+}
