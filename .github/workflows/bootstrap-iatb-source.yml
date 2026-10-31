@@ -1,0 +1,54 @@
+name: Bootstrap IA-TB 2.5.3 source into workspace
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/bootstrap-iatb-source.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-pinned-source:
+    if: github.repository == 'florian74410/IA-Trading-Bot---DEBUG---IA-Workspace'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout Workspace
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Import public source into a NEW branch, never into main
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          TARGET_REF='refs/heads/work/base-2.5.3'
+          SOURCE_SHA='8caae37ac25ffbd72c25f52ca4eeab21ee10aa8b'
+          if git ls-remote --heads origin "$TARGET_REF" | grep -q .; then
+            echo "Workspace base already exists; not overwriting it."
+            exit 0
+          fi
+          git switch -c work/base-2.5.3
+          git clone --filter=blob:none --no-checkout https://github.com/florian74410/IA-Trading-Bot.git "$RUNNER_TEMP/iatb-public-source"
+          git -C "$RUNNER_TEMP/iatb-public-source" checkout --detach "$SOURCE_SHA"
+          test "$(git -C "$RUNNER_TEMP/iatb-public-source" rev-parse HEAD)" = "$SOURCE_SHA"
+          # Do not import Git history, other repository workflows, or source README.
+          # Keep workspace-specific security documentation and CI.
+          rsync -a --exclude='/.git/' --exclude='/.github/' \
+            --exclude='/README.md' --exclude='/Infrastructure/DEBUG_ONLINE/' \
+            "$RUNNER_TEMP/iatb-public-source/" ./
+          # Never import local environment files or sensitive state.
+          if git status --porcelain --untracked-files=all | grep -Ei '(^|/)([.]env([.]|$)|[^/]*[.]sqlite$|[^/]*[.]key$|[^/]*[.]pem$|[^/]*[.]p12$|[^/]*[.]pfx$)'; then
+            echo 'Potential secret-containing file detected: import blocked'
+            exit 1
+          fi
+          git add -A
+          test -f App/package.json
+          git -c user.name='iatb-debug-workspace-bot' \
+              -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+              commit -m 'chore(workspace): importer source public IA-TB 2.5.3 au SHA fixe'
+          git push origin HEAD:"$TARGET_REF"
+      - name: No deployment
+        run: echo 'Import only, no VPS access, no secrets, no RELEASE mutation.'
