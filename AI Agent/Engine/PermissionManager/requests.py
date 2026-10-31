@@ -65,6 +65,8 @@ class RequestStore:
                max_uses: int, rollback: str = "", conditions: str = "") -> dict:
         if not IDENT.fullmatch(principal) or not ACTION.fullmatch(action) or not RESOURCE.fullmatch(resource):
             raise ValueError("Invalid request identity or scope")
+        if action not in ("debug.config.system", "debug.support.restart", "debug.package.install") or resource != "iatb-debug-online":
+            raise ValueError("Only explicitly categorized RESTRICTED actions can be requested")
         if any(x in resource.lower() for x in ("release", "production", "docker.sock")):
             raise ValueError("Protected resource")
         if not (10 <= len(reason.strip()) <= 2000 and 5 <= len(risks.strip()) <= 2000):
@@ -87,9 +89,9 @@ class RequestStore:
 
     def get(self, request_id: str) -> dict:
         item = self._fetch(request_id)
-        if item["status"] == "PENDING" and datetime.fromisoformat(item["expires_at"]) <= now_utc():
+        if item["status"] in ("PENDING", "APPROVED") and datetime.fromisoformat(item["expires_at"]) <= now_utc():
             with self.db:
-                self.db.execute("UPDATE requests SET status='EXPIRED' WHERE id=? AND status='PENDING'", (request_id,))
+                self.db.execute("UPDATE requests SET status='EXPIRED' WHERE id=? AND status IN ('PENDING','APPROVED')", (request_id,))
             item = self._fetch(request_id)
         return item
 
