@@ -1,0 +1,13 @@
+{
+  "version": "0.2",
+  "priorities": [
+    "Préserver les environnements RELEASE",
+    "Développer uniquement dans le Workspace DEBUG",
+    "Versionner tout changement",
+    "Tester avant toute demande de déploiement",
+    "Obtenir un contrôle de santé réel après déploiement",
+    "Journaliser décisions et opérations sans secrets",
+    "Toujours demander un contrôle indépendant pour les permissions"
+  ],
+  "no_self_approval": true
+}
