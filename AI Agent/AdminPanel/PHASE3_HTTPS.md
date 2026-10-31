@@ -111,3 +111,18 @@ Après la mise en ligne initiale, la démonstration autonome ChatGPT → GitHub 
 → SSH → contrôleur DEBUG reste une opération **distincte**. L'opérateur actuellement
 installé ne permet pas l'installation ni la modification de ce service Admin.
 Ne jamais accorder de shell ou de sudo générique pour rendre ce test possible.
+
+## Cas rencontré : v1.1 déjà installée sur GEN-1
+
+Si `install_phase3.sh` s'arrête sur `PHASE3_ABORT: Existing installation: use separately reviewed upgrade`, ne pas effacer `/opt/iatb-admin/AI Agent` et ne pas changer les droits ou le service existant.
+
+Utiliser, après revue et réussite de CI, le nouvel installateur **`upgrade_phase3.sh`**, exécuté en session administrateur interactive avec le **SHA exact de la branche**. Il conserve le contenu de `/opt/iatb-admin/AI Agent` et installe la v3 dans un répertoire distinct versionné `/opt/iatb-admin-phase3/releases/<SHA>/AI Agent`.
+
+- Contrôles avant mutation : installation originale réelle, port 18083 libre, pas d'unité ou de vhost concurrent, DNS correct, identité non privilégiée, base de credentials préservée.
+- Création d'une nouvelle unité `iatb-admin-public` (sans modifier l'ancien service `iatb-admin-panel`).
+- Initialisation du mot de passe uniquement si absent ; TOTP uniquement si absent. Aucun secret partagé sur GitHub.
+- Sauvegarde datée du Caddyfile, import séparé seulement après vérification de l'API loopback, revalidation de Caddy.
+- Sur erreur après activation : restauration du Caddyfile et arrêt du seul nouveau service.
+- En cas de configuration existante inattendue, la procédure s'arrête pour une inspection administrative ; elle ne remplace pas automatiquement le vhost.
+
+**Ne pas utiliser la commande de première installation précédente** si le dossier historique est présent. Le compte `iatb-debug-ci` ne peut ni ne doit réaliser cette activation.
