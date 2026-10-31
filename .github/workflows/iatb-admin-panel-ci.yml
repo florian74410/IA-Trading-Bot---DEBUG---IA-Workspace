@@ -19,6 +19,7 @@ jobs:
         run: |
           python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py'
           node --check 'AI Agent/AdminPanel/app.js'
+          bash -n 'AI Agent/AdminPanel/install_phase3.sh'
       - name: Unit, localhost HTTP and security regression tests
         run: python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
       - name: Verify Phase 3 deployment assets
