@@ -35,6 +35,14 @@ jobs:
         run: test -f App/package.json && test -f App/Dockerfile.app
       - name: Static checks
         run: python3 Infrastructure/DEBUG_ONLINE/preflight.py
+      - name: Validate DEBUG Online files
+        run: |
+          set -eu
+          python3 Infrastructure/DEBUG_ONLINE/verify_deploy.py
+          python3 -m py_compile Infrastructure/DEBUG_ONLINE/install_debug_online.py
+          bash -n App/Tools/debug_online_start.sh
+          node --check App/Tools/debug_online_forward.js
+          docker compose -f Infrastructure/DEBUG_ONLINE/compose.yml config --quiet
       - name: Build full IA-TB image (never start engines)
         run: docker build -f App/Dockerfile.app --pull -t iatb-workspace:ci App
       - name: Check package version without running IA-TB
