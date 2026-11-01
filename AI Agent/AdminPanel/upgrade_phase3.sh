@@ -166,14 +166,32 @@ systemd-analyze verify "$UNIT" || fail 'Generated systemd unit invalid'
 systemctl daemon-reload
 SERVICE_CREATED=1
 systemctl start "$SERVICE"
-systemctl is-active --quiet "$SERVICE" || fail 'Phase3 service could not start'
-LISTEN="$(ss -ltn '( sport = :18083 )')"
-printf '%s\n' "$LISTEN" | grep -Fq '127.0.0.1:18083' || fail 'Phase3 backend not on loopback'
-if printf '%s\n' "$LISTEN" | grep -Eq '0[.]0[.]0[.]0:18083|\[::\]:18083'; then
-  fail 'Phase3 backend must not bind publicly'
+# Type=simple marks a unit "active" before its Python process has finished
+# loading credentials and listening. Readiness is checked with a bounded loop.
+# Never relax the loopback-only listener or authenticated API checks.
+echo 'PHASE3_BACKEND_STARTING: checking exact loopback listener and HTTP readiness'
+BACKEND_READY=0
+for attempt in {1..40}; do
+  LISTEN="$(ss -H -ltn '( sport = :18083 )')" || fail 'Unable to inspect backend listening sockets'
+  if printf '%s\n' "$LISTEN" | grep -Eq '(^|[[:space:]])(0[.]0[.]0[.]0|\[::\]|\*):18083([[:space:]]|$)'; then
+    fail 'Phase3 backend is listening on a public/wildcard interface'
+  fi
+  if printf '%s\n' "$LISTEN" | grep -Fq '127.0.0.1:18083'; then
+    if curl -fsS --max-time 2 -H "Host: $DOMAIN" http://127.0.0.1:18083/healthz \
+      | grep -Fq '"mode":"password_read_only"'; then
+      BACKEND_READY=1
+      break
+    fi
+  fi
+  sleep 0.25
+done
+if [[ "$BACKEND_READY" != 1 ]]; then
+  # This exposes service state but no credentials, request headers or env vars.
+  systemctl show "$SERVICE" -p ActiveState -p SubState -p Result -p ExecMainStatus -p MainPID --no-pager || true
+  fail 'Phase3 backend was not ready on 127.0.0.1:18083 after bounded checks; consult systemctl/journalctl locally'
 fi
-curl -fsS --max-time 5 -H "Host: $DOMAIN" http://127.0.0.1:18083/healthz \
-  | grep -Fq '"mode":"password_read_only"' || fail 'Backend health failed'
+systemctl is-active --quiet "$SERVICE" || fail 'Phase3 backend was ready but the service is no longer active'
+echo 'PHASE3_BACKEND_READY: loopback listener and local HTTP health confirmed'
 CODE="$(curl -sS --max-time 5 -o /dev/null -w '%{http_code}' -H "Host: $DOMAIN" http://127.0.0.1:18083/api/overview)"
 [[ "$CODE" == 401 ]] || fail 'Unauthenticated API did not return 401'
 
