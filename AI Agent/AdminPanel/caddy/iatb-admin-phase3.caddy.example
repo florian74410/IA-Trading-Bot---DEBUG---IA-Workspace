@@ -1,0 +1,32 @@
+# IA-TB Admin Phase 3 — requires ADMIN review before import.
+# Never use the old Basic Auth-only server as an Internet upstream.
+# Hostname must have verified DNS A/AAAA and working ACME port 80/443.
+ia.iatb.duckdns.org {
+    encode zstd gzip
+
+    # Local health is not a public endpoint.
+    @internal_health path /healthz
+    respond @internal_health 404
+
+    reverse_proxy 127.0.0.1:18083 {
+        # The application validates this exact host and never trusts client identity headers.
+        header_up Host ia.iatb.duckdns.org
+        header_up -Authorization
+        header_up -Forwarded
+        header_up -X-Remote-User
+        header_up -X-Auth-Request-User
+        header_up -X-Forwarded-User
+    }
+
+    header {
+        X-Content-Type-Options "nosniff"
+        Referrer-Policy "no-referrer"
+        X-Frame-Options "DENY"
+        Strict-Transport-Security "max-age=31536000"
+        Cache-Control "no-store"
+    }
+
+    log {
+        output discard
+    }
+}

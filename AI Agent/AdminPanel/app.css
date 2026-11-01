@@ -150,3 +150,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.13;ba
   .head-tools{min-width:0;flex-wrap:wrap}.head-intro>div{min-width:0}
   .content,.workbench,.metrics{min-width:0}.workbench-head{gap:10px;flex-wrap:wrap}
 }
+
+/* Phase 3 authenticated sign-out */
+.iatb-logout{color:#91e5ff;text-decoration:none;border:1px solid #236c91;border-radius:7px;padding:7px 10px;font-size:12px;white-space:nowrap}
+.iatb-logout:hover,.iatb-logout:focus-visible{background:#122d47;text-decoration:underline}

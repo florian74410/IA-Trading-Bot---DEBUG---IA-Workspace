@@ -17,9 +17,99 @@ jobs:
           persist-credentials: false
       - name: Compile Python and JavaScript
         run: |
-          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py'
+          python3 -m py_compile 'AI Agent/AdminPanel/server.py' 'AI Agent/AdminPanel/preflight.py' 'AI Agent/AdminPanel/public_server.py' 'AI Agent/AdminPanel/dns_guard.py'
           node --check 'AI Agent/AdminPanel/app.js'
+          bash -n 'AI Agent/AdminPanel/install_phase3.sh'
+          bash -n 'AI Agent/AdminPanel/upgrade_phase3.sh'
       - name: Unit, localhost HTTP and security regression tests
         run: python3 -m unittest discover -s 'AI Agent/Tests' -p 'test_*.py' -v
+      - name: Verify Phase 3 deployment assets
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          grep -q '^ia.iatb.duckdns.org {' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q '^    respond @internal_health 404' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q 'reverse_proxy 127.0.0.1:18083' 'AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example'
+          grep -q 'User=iatb-admin-panel' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -q 'IPAddressDeny=any' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -q 'NoNewPrivileges=yes' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -Fq "ORIGINAL='/opt/iatb-admin/AI Agent'" 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'STAGE="$ROOT/releases/$REV"' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'trap cleanup EXIT' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          # Password-only contract: no OTP enrollment, no MFA file in systemd.
+          if grep -Eq 'init-mfa|--mfa-file|totp_secret' 'AI Agent/AdminPanel/upgrade_phase3.sh' 'AI Agent/AdminPanel/public_server.py' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'; then
+            echo 'Unexpected MFA requirement in password-only public panel'
+            exit 1
+          fi
+          grep -Fq 'ConditionPathExists=/var/lib/iatb-admin-panel/credentials.json' 'AI Agent/AdminPanel/systemd/iatb-admin-public.service.example'
+          grep -Fq '"password_read_only"' 'AI Agent/AdminPanel/public_server.py'
+          echo 'Phase 3 manifest safety checks passed'
+      - name: Validate isolated Caddy HTTPS site syntax
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          docker run --rm \
+            -v "$PWD/AI Agent/AdminPanel/caddy/iatb-admin-phase3.caddy.example:/etc/caddy/Caddyfile:ro" \
+            caddy:2.10 caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: Regression test extracted code permissions under strict umask
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          grep -Fq 'find "$STAGE/AI Agent" -type d -exec chmod 0755' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'find "$STAGE/AI Agent" -type f -exec chmod 0644' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'sudo -u "$ACCOUNT" test -r "$STAGE/AI Agent/AdminPanel/public_server.py"' 'AI Agent/AdminPanel/upgrade_phase3.sh'
+          stage="$(mktemp -d)"
+          trap 'rm -rf "$stage"' EXIT
+          mkdir -p "$stage/release"
+          tar -cf "$stage/agent.tar" 'AI Agent'
+          (
+            umask 077
+            tar -C "$stage/release" -xf "$stage/agent.tar" --no-same-owner --no-same-permissions
+            test "$(stat -c '%a' "$stage/release/AI Agent")" = 700
+            find "$stage/release/AI Agent" -type d -exec chmod 0755 {} +
+            find "$stage/release/AI Agent" -type f -exec chmod 0644 {} +
+          )
+          test "$(stat -c '%a' "$stage/release/AI Agent/AdminPanel")" = 755
+          test "$(stat -c '%a' "$stage/release/AI Agent/AdminPanel/public_server.py")" = 644
+          echo 'Strict umask / read-only source permissions regression passed'
+      - name: Check systemd startup race regression
+        shell: bash
+        run: |
+          set -Eeuo pipefail
+          script='AI Agent/AdminPanel/upgrade_phase3.sh'
+          grep -Fq 'for attempt in {1..40}; do' "$script"
+          grep -Fq 'ss -H -ltn' "$script"
+          grep -Fq 'BACKEND_READY=1' "$script"
+          grep -Fq 'PHASE3_BACKEND_READY: loopback listener and local HTTP health confirmed' "$script"
+          grep -Fq 'fail '\''Phase3 backend is listening on a public/wildcard interface'\''' "$script"
+          # Confirm that the real ss filter matches an actual delayed localhost listener.
+          python3 - <<'PY'
+          import subprocess, time
+          from http.server import BaseHTTPRequestHandler, HTTPServer
+          import threading
+          class Handler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                  self.send_response(200)
+                  self.end_headers()
+                  self.wfile.write(b'{"mode":"password_read_only"}')
+              def log_message(self,*args): pass
+          ready=threading.Event()
+          def listen():
+              time.sleep(0.35)
+              server=HTTPServer(("127.0.0.1",0), Handler)
+              ready.port=server.server_port
+              ready.server=server
+              ready.set()
+              server.serve_forever()
+          t=threading.Thread(target=listen,daemon=True)
+          t.start()
+          assert ready.wait(3)
+          output=subprocess.check_output(["ss","-H","-ltn","(","sport","=",":"+str(ready.port),")"],text=True)
+          assert "127.0.0.1:"+str(ready.port) in output, output
+          import urllib.request
+          with urllib.request.urlopen("http://127.0.0.1:"+str(ready.port)+"/healthz",timeout=2) as res:
+              assert res.read()==b'{"mode":"password_read_only"}'
+          ready.server.shutdown()
+          PY
       - name: No remote or privileged execution
         run: echo 'No VPS, SSH credentials, Caddy mutation or RELEASE access in this job.'
