@@ -104,6 +104,53 @@ class WorkspaceOps:
         finally:
             os.close(fd)
 
+    def write_file(self, relative: str, content: str) -> dict:
+        """Atomically replace one workspace file without following directory symlinks."""
+        safe_path(self.root, relative)
+        data = content.encode("utf-8")
+        if len(data) > 512 * 1024:
+            raise Denied("File too large")
+        pieces = relative.split("/")
+        rootfd = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        dirfd = rootfd
+        pending = None
+        try:
+            for component in pieces[:-1]:
+                nextfd = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                                 dir_fd=dirfd)
+                if dirfd != rootfd:
+                    os.close(dirfd)
+                dirfd = nextfd
+            name = pieces[-1]
+            try:
+                fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW, dir_fd=dirfd)
+                try:
+                    if not __import__("stat").S_ISREG(os.fstat(fd).st_mode):
+                        raise Denied("Only regular files")
+                finally:
+                    os.close(fd)
+            except FileNotFoundError:
+                pass
+            import secrets
+            pending = ".iatb-" + secrets.token_hex(12)
+            tmpfd = os.open(pending, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                            0o600, dir_fd=dirfd)
+            try:
+                with os.fdopen(tmpfd, "wb") as out:
+                    out.write(data)
+                    out.flush()
+                    os.fsync(out.fileno())
+                os.replace(pending, name, src_dir_fd=dirfd, dst_dir_fd=dirfd)
+                pending = None
+            finally:
+                if pending is not None:
+                    os.unlink(pending, dir_fd=dirfd)
+        finally:
+            if dirfd != rootfd:
+                os.close(dirfd)
+            os.close(rootfd)
+        return {"file": relative, "bytes_written": len(data), "deployed": False}
+
     def git_status(self) -> dict:
         return _run(["git", "-c", "core.pager=cat", "status", "--short"], self.root)
 
