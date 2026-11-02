@@ -1,0 +1,25 @@
+name: MCP Framework v0.3 tests
+on:
+  push:
+    paths:
+      - 'Infrastructure/DEBUG_ONLINE/mcp_framework_v03/**'
+      - '.github/workflows/mcp-framework-v03.yml'
+  pull_request:
+    paths:
+      - 'Infrastructure/DEBUG_ONLINE/mcp_framework_v03/**'
+      - '.github/workflows/mcp-framework-v03.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run policy and integration unit tests
+        working-directory: Infrastructure/DEBUG_ONLINE/mcp_framework_v03
+        run: |
+          python3 -m unittest discover -v
+          python3 -m py_compile framework.py test_framework.py
