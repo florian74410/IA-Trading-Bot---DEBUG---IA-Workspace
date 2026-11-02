@@ -92,17 +92,34 @@ class WorkspaceOps:
         return paths
 
     def read_file(self, relative: str) -> str:
-        p = safe_path(self.root, relative)
-        if not p.is_file() or p.stat().st_size > 512 * 1024:
-            raise Denied("File missing or too large")
-        # Keep open descriptor within verified root; disallow symlinks at final component.
-        fd = os.open(p, os.O_RDONLY | os.O_NOFOLLOW)
+        """Read one text file through directory descriptors, rejecting symlinks."""
+        safe_path(self.root, relative)
+        pieces = relative.split("/")
+        rootfd = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        dirfd = rootfd
         try:
-            if os.fstat(fd).st_size > 512 * 1024:
-                raise Denied("File too large")
-            return os.read(fd, 512 * 1024 + 1).decode("utf-8")
+            for component in pieces[:-1]:
+                nextfd = os.open(component, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW,
+                                 dir_fd=dirfd)
+                if dirfd != rootfd:
+                    os.close(dirfd)
+                dirfd = nextfd
+            fd = os.open(pieces[-1], os.O_RDONLY | os.O_NOFOLLOW, dir_fd=dirfd)
+            try:
+                import stat
+                info = os.fstat(fd)
+                if not stat.S_ISREG(info.st_mode) or info.st_size > 512 * 1024:
+                    raise Denied("Not a regular file or file too large")
+                data = os.read(fd, 512 * 1024 + 1)
+                if len(data) > 512 * 1024:
+                    raise Denied("File too large")
+                return data.decode("utf-8")
+            finally:
+                os.close(fd)
         finally:
-            os.close(fd)
+            if dirfd != rootfd:
+                os.close(dirfd)
+            os.close(rootfd)
 
     def write_file(self, relative: str, content: str) -> dict:
         """Atomically replace one workspace file without following directory symlinks."""
