@@ -8,12 +8,11 @@ from __future__ import annotations
 import os
 import re
 import subprocess
-import time
 from pathlib import Path
 
 MAX_OUTPUT = 64 * 1024
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
-NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._/-]{0,99}$")
+SENSITIVE_NAMES = {".git", ".ssh", ".env", ".env.local", ".env.production", ".netrc", "id_rsa", "id_ed25519", "credentials", "credentials.json", "secrets.json"}
 
 
 class Denied(ValueError):
@@ -33,6 +32,8 @@ def safe_path(root: Path, relative: str) -> Path:
     pieces = relative.split("/")
     if any(p in ("", ".", "..") for p in pieces):
         raise Denied("Invalid path component")
+    if any(p.lower() in SENSITIVE_NAMES or p.lower().endswith((".pem", ".key", ".p12", ".pfx")) for p in pieces):
+        raise Denied("Protected file or directory")
     current = root
     for piece in pieces:
         current = current / piece
@@ -82,10 +83,10 @@ class WorkspaceOps:
             raise Denied("Invalid limit")
         paths = []
         for base, dirs, files in os.walk(self.root, followlinks=False):
-            dirs[:] = sorted(d for d in dirs if d != ".git" and not (Path(base) / d).is_symlink())
+            dirs[:] = sorted(d for d in dirs if d.lower() not in SENSITIVE_NAMES and not (Path(base) / d).is_symlink())
             for name in sorted(files):
                 p = Path(base) / name
-                if not p.is_symlink():
+                if not p.is_symlink() and name.lower() not in SENSITIVE_NAMES and not name.lower().endswith((".pem", ".key", ".p12", ".pfx")):
                     paths.append(p.relative_to(self.root).as_posix())
                     if len(paths) >= limit:
                         return paths
@@ -182,18 +183,12 @@ class WorkspaceOps:
     def git_branch(self) -> dict:
         return _run(["git", "branch", "--list", "--no-color"], self.root)
 
-    def git_commit(self, message: str) -> dict:
-        # Deliberately no "git add -A": caller must stage specific files through reviewed workflow.
-        if not 1 <= len(message) <= 160 or any(ord(c) < 32 for c in message):
-            raise Denied("Invalid message")
-        return _run(["git", "-c", "commit.gpgsign=false", "commit", "--only", "--allow-empty-message", "--dry-run"], self.root)
-
     def run_test(self, test_id: str) -> dict:
         # Only tests explicitly installed in this package, not scripts from the mutable workspace.
         if test_id != "python_compile":
             raise Denied("Unknown test")
         files = [str(p.relative_to(self.root)) for p in self.root.rglob("*.py")
-                 if ".git" not in p.parts and not p.is_symlink()]
+                 if ".git" not in p.parts and not p.is_symlink() and not any(part.lower() in SENSITIVE_NAMES for part in p.relative_to(self.root).parts)]
         if len(files) > 50:
             raise Denied("Too many Python files")
         # Python compiler via subprocess is restricted to syntax and cannot run user code.
