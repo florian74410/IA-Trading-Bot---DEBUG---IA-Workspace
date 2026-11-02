@@ -16,6 +16,16 @@ class FrameworkTests(unittest.TestCase):
         self.assertEqual(self.ops.read_file("ok.txt"), "hello")
         self.assertIn("ok.txt", self.ops.list_files())
 
+    def test_atomic_workspace_write(self):
+        result = self.ops.write_file("ok.txt", "changed")
+        self.assertFalse(result["deployed"])
+        self.assertEqual(self.ops.read_file("ok.txt"), "changed")
+        with self.assertRaises(Denied):
+            self.ops.write_file("../outside.txt", "x")
+        (self.root / "dirlink").symlink_to("/tmp")
+        with self.assertRaises(Denied):
+            self.ops.write_file("dirlink/attack", "x")
+
     def test_traversal(self):
         for bad in ("../etc/passwd", "/etc/passwd", ".", "a/../ok.txt", "a//b"):
             with self.subTest(bad=bad), self.assertRaises(Denied):
