@@ -36,6 +36,21 @@ class FrameworkTests(unittest.TestCase):
         with self.assertRaises(Denied):
             self.ops.read_file("link/passwd")
 
+    def test_sensitive_files_hidden_and_denied(self):
+        (self.root / ".env").write_text("API_KEY=secret")
+        (self.root / ".git").mkdir()
+        (self.root / ".git" / "config").write_text("private")
+        (self.root / "private.pem").write_text("private")
+        listed = self.ops.list_files()
+        self.assertNotIn(".env", listed)
+        self.assertNotIn(".git/config", listed)
+        self.assertNotIn("private.pem", listed)
+        for path in (".env", ".git/config", "private.pem"):
+            with self.subTest(path=path), self.assertRaises(Denied):
+                self.ops.read_file(path)
+            with self.subTest(path=path), self.assertRaises(Denied):
+                self.ops.write_file(path, "changed")
+
     def test_limits(self):
         with self.assertRaises(Denied):
             self.ops.list_files(10000)
