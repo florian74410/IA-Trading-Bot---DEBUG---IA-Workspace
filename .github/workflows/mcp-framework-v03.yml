@@ -18,8 +18,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Install pinned MCP transport
+        run: python3 -m pip install 'mcp==2.3.0'
       - name: Run policy and integration unit tests
         working-directory: Infrastructure/DEBUG_ONLINE/mcp_framework_v03
         run: |
           python3 -m unittest discover -v
-          python3 -m py_compile framework.py test_framework.py
+          python3 -m py_compile framework.py test_framework.py mission.py staging_server.py smoke_http.py
+          python3 smoke_http.py
