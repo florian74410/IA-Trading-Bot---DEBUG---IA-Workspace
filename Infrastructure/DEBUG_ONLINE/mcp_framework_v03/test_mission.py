@@ -23,8 +23,8 @@ class MissionTests(unittest.TestCase):
 
     def test_retry_cap(self):
         m = Mission("debug", "Run several safe test corrections")
+        m.transition(Phase.CODING, reason="start")
         for i in range(3):
-            m.transition(Phase.CODING, reason="attempt")
             m.transition(Phase.TESTING, reason="validate")
             if i < 2:
                 m.transition(Phase.CODING, reason="retry")
